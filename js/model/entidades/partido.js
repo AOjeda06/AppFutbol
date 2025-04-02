@@ -29,6 +29,14 @@ class Partido {
     getEstadisticas() {
         return this.#estadisticas;
     }
+
+    setJugado(jugado) {
+        this.#jugado = jugado;
+    }
+
+    actualizarEstadisticas(estadisticas) {
+        this.#estadisticas = estadisticas;
+    }
 }
 
 export default Partido;

@@ -22,6 +22,18 @@ class Liga {
     agregarEquipo(equipo) {
         this.#equipos.push(equipo);
     }
+
+    getEquipos() {
+        return this.#equipos;
+    }
+
+    setEquipos(equipos) {
+        this.#equipos = equipos;
+    }
+
+    getTemporada() {
+        return this.#temporada;
+    }
 }
 
 export default Liga;
