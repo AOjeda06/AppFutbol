@@ -30,3 +30,5 @@ class Partido {
         return this.#estadisticas;
     }
 }
+
+export default Partido;

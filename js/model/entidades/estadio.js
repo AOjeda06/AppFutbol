@@ -19,3 +19,5 @@ class Estadio {
         return this.#nombre;
     }
 }
+
+export default Estadio;

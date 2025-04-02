@@ -45,3 +45,5 @@ class Equipo {
         this.#plantilla.push(jugador);
     }
 }
+
+export default Equipo;

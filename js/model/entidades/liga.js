@@ -23,3 +23,5 @@ class Liga {
         this.#equipos.push(equipo);
     }
 }
+
+export default Liga;
