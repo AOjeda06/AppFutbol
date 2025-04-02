@@ -8,8 +8,9 @@ class Jugador {
     #anioNacimiento;
     #equipoId;
     #estadisticas;
+    #nacionalidad;
 
-    constructor(id, nombre, apellidos, apodo, posicion, numero, anioNacimiento, equipoId, estadisticas = {}) {
+    constructor(id, nombre, apellidos, apodo, posicion, numero, anioNacimiento, equipoId, estadisticas = {}, nacionalidad = null) {
         this.#id = id;
         this.#nombre = nombre;
         this.#apellidos = apellidos;
@@ -25,6 +26,7 @@ class Jugador {
             tarjetasAmarillas: estadisticas.tarjetasAmarillas || 0,
             tarjetasRojas: estadisticas.tarjetasRojas || 0,
         };
+        this.#nacionalidad = nacionalidad;
     }
 
     getId() {
@@ -61,6 +63,22 @@ class Jugador {
 
     getEstadisticas() {
         return this.#estadisticas;
+    }
+
+    getNacionalidad() {
+        return this.#nacionalidad;
+    }
+
+    setNacionalidad(nacionalidad) {
+        this.#nacionalidad = nacionalidad;
+    }
+
+    setEquipoId(equipoId) {
+        this.#equipoId = equipoId;
+    }
+
+    setEstadisticas(estadisticas) {
+        this.#estadisticas = estadisticas;
     }
 
     actualizarEstadisticas(nuevasEstadisticas) {
