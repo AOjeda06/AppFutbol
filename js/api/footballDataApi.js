@@ -1,5 +1,5 @@
 const BASE_URL = 'https://v3.football.api-sports.io'; // URL directa de la API
-const API_KEY = '63c2dc2585864c2aaf7efa1ed187db0a'; // Tu clave de API
+const API_KEY = '63c2dc2585864c2aaf7efa1ed187db0a'; // Clave de API
 
 let datosCache = {
     ligas: null,
