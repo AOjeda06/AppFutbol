@@ -1,12 +1,25 @@
+/**
+ * Clase Partido: Representa un partido de fútbol con sus detalles.
+ */
 class Partido {
-    _id;
-    _fechaHora;
-    _estadio;
-    _estado;
-    _equipos;
-    _goles;
-    _marcador;
+    _id; // ID único del partido.
+    _fechaHora; // Fecha y hora del partido.
+    _estadio; // Información del estadio (nombre, ciudad).
+    _estado; // Estado del partido (ej. en curso, finalizado).
+    _equipos; // Equipos que participan en el partido (local y visitante).
+    _goles; // Goles anotados por cada equipo.
+    _marcador; // Detalles del marcador (mitad, tiempo completo, etc.).
 
+    /**
+     * Constructor: Inicializa los atributos del partido.
+     * @param {number} id - ID único del partido.
+     * @param {string} fechaHora - Fecha y hora del partido.
+     * @param {Object} estadio - Información del estadio.
+     * @param {Object} estado - Estado del partido.
+     * @param {Object} equipos - Equipos participantes.
+     * @param {Object} goles - Goles anotados.
+     * @param {Object} marcador - Detalles del marcador.
+     */
     constructor(id, fechaHora, estadio, estado, equipos, goles, marcador) {
         this._id = id;
         this._fechaHora = fechaHora;
@@ -17,6 +30,7 @@ class Partido {
         this._marcador = marcador; // { halftime, fulltime, extratime, penalty }
     }
 
+    // Métodos para acceder a los atributos del partido.
     getId() {
         return this._id;
     }
