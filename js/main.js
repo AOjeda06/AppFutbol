@@ -20,6 +20,15 @@ import Model from './model/model.js';
             .flatMap(result => result.value);
 
         console.log("Jugadores procesados:", jugadores);
+
+        // Almacenar los datos en el modelo
+        Model.cargarDatosIniciales({ equipos: equiposChampions, jugadores });
+        console.log("Datos almacenados en el modelo.");
+
+        // Guardar los datos en el localStorage
+        localStorage.setItem('equipos', JSON.stringify(equiposChampions));
+        localStorage.setItem('jugadores', JSON.stringify(jugadores));
+        console.log("Datos guardados en el localStorage.");
     } catch (error) {
         console.error("Error al obtener los datos:", error);
     }
