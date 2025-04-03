@@ -1,5 +1,6 @@
 import FootballDataApi from './api/footballDataApi.js';
 import Model from './model/model.js';
+import './server.js'; // Updated path for server.js
 
 (async function () {
     console.log("Iniciando la obtención de datos...");
