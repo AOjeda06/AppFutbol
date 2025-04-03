@@ -5,71 +5,41 @@ import Model from './model/model.js';
     console.log("Iniciando la obtención de datos...");
 
     try {
-        // Mapeo de países a ligas principales (IDs de ligas)
-        const ligasPorPais = {
-            England: { id: 39, name: "Premier League" },
-            Spain: { id: 140, name: "La Liga" },
-            Italy: { id: 135, name: "Serie A" },
-            Germany: { id: 78, name: "Bundesliga" },
-            France: { id: 61, name: "Ligue 1" },
-            // Agregar más países y ligas según sea necesario
-        };
+        // Obtener la lista de ligas
+        const ligas = await FootballDataApi.obtenerLigas();
+        const ligasSeleccionadas = ligas.slice(0, 5); // Limitar a 5 ligas para pruebas
 
-        // ID de la Champions League
-        const championsLeagueId = 2; // ID de la Champions League en la API
-        const temporada = 2022; // Temporada 2022/2023
+        const datosLigas = await Promise.all(
+            ligasSeleccionadas.map(async liga => {
+                try {
+                    // Obtener equipos de la liga
+                    const equipos = await FootballDataApi.obtenerEquipos(liga.strLeague);
 
-        // Paso 1: Obtener equipos que participan en la UCL
-        console.log(`Solicitando equipos que participan en la Champions League (ID: ${championsLeagueId})...`);
-        const equiposChampions = await FootballDataApi.obtenerEquipos(championsLeagueId, temporada);
+                    // Obtener jugadores de cada equipo
+                    const jugadoresPorEquipo = await Promise.all(
+                        equipos.map(async equipo => {
+                            const jugadores = await FootballDataApi.obtenerJugadores(equipo.idTeam);
+                            return { equipo, jugadores };
+                        })
+                    );
 
-        // Filtrar equipos válidos
-        const equiposFiltrados = equiposChampions.filter(equipo => equipo.team && equipo.team.id); // Verifica que 'team' y 'team.id' existan
-        console.log("Equipos válidos de la Champions League recibidos:", equiposFiltrados);
+                    return { liga, equipos: jugadoresPorEquipo };
+                } catch (error) {
+                    console.error(`Error al procesar la liga ${liga.strLeague}:`, error);
+                    throw error;
+                }
+            })
+        );
 
-        // Paso 2: Identificar las ligas de los equipos
-        const ligasSet = new Set();
-        equiposFiltrados.forEach(equipo => {
-            const pais = equipo.team.country;
-            const esNacional = equipo.team.national;
-
-            // Si el equipo no es nacional, buscar la liga principal del país
-            if (!esNacional && ligasPorPais[pais]) {
-                ligasSet.add(ligasPorPais[pais].id);
-            }
-        });
-
-        const ligasIds = Array.from(ligasSet);
-        console.log("IDs de ligas identificadas:", ligasIds);
-
-        // Paso 3: Obtener datos de equipos y jugadores por liga
-        const datosLigas = [];
-        for (const ligaId of ligasIds) {
-            console.log(`Solicitando equipos para la liga ID: ${ligaId}...`);
-            const equiposLiga = await FootballDataApi.obtenerEquipos(ligaId, temporada);
-
-            console.log(`Solicitando jugadores para los equipos de la liga ID: ${ligaId}...`);
-            const jugadoresLiga = [];
-            for (const equipo of equiposLiga) {
-                const jugadoresEquipo = await FootballDataApi.obtenerJugadores(equipo.team.id);
-                jugadoresLiga.push(...jugadoresEquipo);
-            }
-
-            datosLigas.push({ equipos: equiposLiga, jugadores: jugadoresLiga });
-            console.log(`Datos recibidos para la liga ID ${ligaId}:`, { equipos: equiposLiga, jugadores: jugadoresLiga });
-        }
-
-        // Paso 4: Procesar los datos recibidos
-        const equiposLigas = datosLigas.flatMap(dato => dato.equipos);
-        const jugadores = datosLigas.flatMap(dato => dato.jugadores);
+        // Procesar los datos recibidos
+        console.log("Datos de ligas procesados:", datosLigas);
 
         // Almacenar los datos en el modelo
-        Model.cargarDatosIniciales({ equipos: equiposLigas, jugadores });
+        Model.cargarDatosIniciales(datosLigas);
         console.log("Datos almacenados en el modelo.");
 
         // Guardar los datos en el localStorage
-        localStorage.setItem('equipos', JSON.stringify(equiposLigas));
-        localStorage.setItem('jugadores', JSON.stringify(jugadores));
+        localStorage.setItem('ligas', JSON.stringify(datosLigas));
         console.log("Datos guardados en el localStorage.");
 
         console.log("Obtención de datos completada. Revisa los datos en la consola.");
