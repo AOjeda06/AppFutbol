@@ -7,9 +7,6 @@
     <title>Futbol App</title>
     <link rel="icon" type="img/futbol.icon" href="img/favicon.png">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/view/view.js"></script>
-    <script src="js/model/model.js"></script>
-    <script src="js/controller/controller.js"></script>
 </head>
 
 <body>
@@ -20,6 +17,16 @@
         <button id="btnAsignarEquipo">Asignar Equipo</button>
     </div>
     <div id="vista"></div>
+
+    <!-- Importar los scripts en el orden correcto -->
+    <script type="module">
+        import Controller from './js/controller/controller.js';
+
+        // Inicializar la aplicación
+        document.addEventListener("DOMContentLoaded", () => {
+            Controller.init();
+        });
+    </script>
 </body>
 
 </html>
