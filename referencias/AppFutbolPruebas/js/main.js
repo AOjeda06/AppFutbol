@@ -2,6 +2,7 @@ import FootballDataApi from './api/footballDataApi.js';
 import Model from './model/model.js';
 
 (async () => {
+    /*
     try {
         console.log("Iniciando la obtención de datos...");
         const equiposChampions = await FootballDataApi.obtenerEquiposChampions();
@@ -23,4 +24,5 @@ import Model from './model/model.js';
     } catch (error) {
         console.error("Error al obtener los datos:", error);
     }
+        */
 })();
