@@ -1,41 +1,48 @@
 class Partido {
-    #id;
-    #equipoLocalId;
-    #equipoVisitanteId;
-    #estadioId;
-    #competicionId;
-    #fechaHora;
-    #jugado;
-    #estadisticas;
+    _id;
+    _fechaHora;
+    _estadio;
+    _estado;
+    _equipos;
+    _goles;
+    _marcador;
 
-    constructor(id, equipoLocalId, equipoVisitanteId, estadioId, competicionId, fechaHora, jugado = false, estadisticas = {}) {
-        this.#id = id;
-        this.#equipoLocalId = equipoLocalId;
-        this.#equipoVisitanteId = equipoVisitanteId;
-        this.#estadioId = estadioId;
-        this.#competicionId = competicionId;
-        this.#fechaHora = fechaHora;
-        this.#jugado = jugado;
-        this.#estadisticas = {
-            local: estadisticas.local || { goles: 0, tarjetasAmarillas: 0, tarjetasRojas: 0, disparos: 0 },
-            visitante: estadisticas.visitante || { goles: 0, tarjetasAmarillas: 0, tarjetasRojas: 0, disparos: 0 },
-        };
+    constructor(id, fechaHora, estadio, estado, equipos, goles, marcador) {
+        this._id = id;
+        this._fechaHora = fechaHora;
+        this._estadio = estadio; // { nombre, ciudad }
+        this._estado = estado; // { long, short, elapsed }
+        this._equipos = equipos; // { home: { id, name, logo, winner }, away: { id, name, logo, winner } }
+        this._goles = goles; // { home, away }
+        this._marcador = marcador; // { halftime, fulltime, extratime, penalty }
     }
 
     getId() {
-        return this.#id;
+        return this._id;
     }
 
-    getEstadisticas() {
-        return this.#estadisticas;
+    getFechaHora() {
+        return this._fechaHora;
     }
 
-    setJugado(jugado) {
-        this.#jugado = jugado;
+    getEstadio() {
+        return this._estadio;
     }
 
-    actualizarEstadisticas(estadisticas) {
-        this.#estadisticas = estadisticas;
+    getEstado() {
+        return this._estado;
+    }
+
+    getEquipos() {
+        return this._equipos;
+    }
+
+    getGoles() {
+        return this._goles;
+    }
+
+    getMarcador() {
+        return this._marcador;
     }
 }
 

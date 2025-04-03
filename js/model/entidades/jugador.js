@@ -1,58 +1,58 @@
 class Jugador {
-    #id;
-    #nombre;
-    #apellidos;
-    #apodo;
-    #posicion;
-    #numero;
-    #anioNacimiento;
-    #equipoId;
+    _id;
+    _nombre;
+    _apellidos;
+    _apodo;
+    _posicion;
+    _numero;
+    _anioNacimiento;
+    _equipoId;
 
     constructor(id, nombre, apellidos, apodo, posicion, numero, anioNacimiento, equipoId) {
-        this.#id = id;
-        this.#nombre = nombre;
-        this.#apellidos = apellidos;
-        this.#apodo = apodo;
-        this.#posicion = posicion;
-        this.#numero = numero;
-        this.#anioNacimiento = anioNacimiento;
-        this.#equipoId = equipoId;
+        this._id = id;
+        this._nombre = nombre;
+        this._apellidos = apellidos;
+        this._apodo = apodo;
+        this._posicion = posicion;
+        this._numero = numero;
+        this._anioNacimiento = anioNacimiento;
+        this._equipoId = equipoId;
     }
 
     getId() {
-        return this.#id;
+        return this._id;
     }
 
     getNombre() {
-        return this.#nombre;
+        return this._nombre;
     }
 
     getApellidos() {
-        return this.#apellidos;
+        return this._apellidos;
     }
 
     getApodo() {
-        return this.#apodo;
+        return this._apodo;
     }
 
     getPosicion() {
-        return this.#posicion;
+        return this._posicion;
     }
 
     getNumero() {
-        return this.#numero;
+        return this._numero;
     }
 
     getAnioNacimiento() {
-        return this.#anioNacimiento;
+        return this._anioNacimiento;
     }
 
     getEquipoId() {
-        return this.#equipoId;
+        return this._equipoId;
     }
 
     setEquipoId(equipoId) {
-        this.#equipoId = equipoId;
+        this._equipoId = equipoId;
     }
 }
 

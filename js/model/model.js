@@ -2,7 +2,6 @@
 import Jugador from './entidades/jugador.js';
 import Equipo from './entidades/equipo.js';
 import Partido from './entidades/partido.js';
-import Copa from './entidades/copa.js'; // Nueva clase para competiciones tipo Copa
 import Utils from '../utils.js'; // Importar las utilidades
 import FootballDataApi from '../api/footballDataApi.js'; // Importar la API de datos de fútbol
 
@@ -10,14 +9,12 @@ import FootballDataApi from '../api/footballDataApi.js'; // Importar la API de d
 let jugadorIdCounter = 0;
 let equipoIdCounter = 0;
 let partidoIdCounter = 0;
-let copaIdCounter = 0;
 let ligaIdCounter = 0; // Contador para ligas
 
 // Arrays para almacenar los objetos
 let jugadores = [];
 let equipos = [];
 let partidos = [];
-let copas = []; // Array para almacenar las competiciones tipo Copa
 let ligas = []; // Array para almacenar las ligas
 
 // Clase modelo
@@ -30,7 +27,6 @@ const Model = {
             jugadores = estadoGuardado.jugadores.map(j => new Jugador(...Object.values(j)));
             equipos = estadoGuardado.equipos.map(e => new Equipo(...Object.values(e)));
             partidos = estadoGuardado.partidos.map(p => new Partido(...Object.values(p)));
-            copas = estadoGuardado.copas.map(c => new Copa(...Object.values(c)));
             ligas = estadoGuardado.ligas.map(l => new Liga(...Object.values(l)));
             console.log("Datos cargados desde localStorage.");
         } else {
@@ -40,7 +36,6 @@ const Model = {
                 jugadores = datosIniciales.jugadores.map(j => new Jugador(...Object.values(j)));
                 equipos = datosIniciales.equipos.map(e => new Equipo(...Object.values(e)));
                 partidos = datosIniciales.partidos.map(p => new Partido(...Object.values(p)));
-                copas = datosIniciales.copas.map(c => new Copa(...Object.values(c)));
                 ligas = datosIniciales.ligas.map(l => new Liga(...Object.values(l)));
                 console.log("Datos cargados desde el archivo JSON.");
             }
@@ -49,7 +44,7 @@ const Model = {
 
     // Guardar el estado actual en localStorage
     guardarEstado: function () {
-        const estadoActual = { jugadores, equipos, partidos, copas, ligas };
+        const estadoActual = { jugadores, equipos, partidos, ligas };
         Utils.guardarEstadoEnLocalStorage('estadoApp', estadoActual);
     },
 
@@ -123,38 +118,36 @@ const Model = {
         return partidos;
     },
 
-    // Funciones para copas
-    agregarCopa: function (nombre, temporada, equipos = []) {
-        const copa = new Copa(++copaIdCounter, nombre, temporada, equipos);
-        copas.push(copa);
-        this.guardarEstado(); // Guardar el estado actualizado
-        return copa;
-    },
-
-    obtenerCopas: function () {
-        return copas;
-    },
-
-    agregarEquipoACopa: function (copaId, equipo) {
-        const copa = copas.find(c => c.getId() === copaId);
-        if (!copa) throw new Error("Copa no encontrada.");
-        copa.agregarEquipo(equipo);
-        this.guardarEstado(); // Guardar el estado actualizado
-    },
-
-    agregarPartidoACopa: function (copaId, partido) {
-        const copa = copas.find(c => c.getId() === copaId);
-        if (!copa) throw new Error("Copa no encontrada.");
-        copa.agregarPartido(partido);
-        this.guardarEstado(); // Guardar el estado actualizado
-    },
-
     // Funciones para ligas
     agregarLiga: function (nombre, temporada, equipos) {
         const liga = new Liga(++ligaIdCounter, nombre, temporada, equipos);
         ligas.push(liga);
         this.guardarEstado(); // Guardar el estado actualizado
         return liga;
+    },
+
+    // Método para cargar datos iniciales
+    cargarDatosIniciales: function ({ ligas, equipos, partidos }) {
+        ligas.forEach(liga => {
+            this.agregarLiga(
+                liga.league.name,
+                liga.seasons[0].year, // Temporada más reciente
+                equipos.filter(equipo => equipo.league.id === liga.league.id)
+            );
+        });
+
+        partidos.forEach(partido => {
+            this.agregarPartido(
+                partido.teams.home.id,
+                partido.teams.away.id,
+                partido.fixture.venue.id,
+                partido.league.id,
+                partido.fixture.date
+            );
+        });
+
+        this.guardarEstado(); // Guardar el estado actualizado
+        console.log("Datos iniciales cargados en el modelo.");
     },
 
     // Cargar datos desde la API
@@ -186,31 +179,6 @@ const Model = {
                 );
             });
 
-            // Obtener las ligas de los equipos participantes en la Champions League
-            const ligasProcesadas = new Set();
-            for (const equipo of equiposChampions) {
-                const ligaId = equipo.area.id; // Usamos el área (país) como identificador de liga
-                if (!ligasProcesadas.has(ligaId)) {
-                    const datosLiga = await FootballDataApi.obtenerLiga(ligaId);
-                    const equiposLiga = await FootballDataApi.obtenerEquipos(ligaId);
-                    const partidosLiga = await FootballDataApi.obtenerPartidos(ligaId);
-
-                    // Agregar la liga al modelo
-                    const liga = this.agregarLiga(datosLiga.competition.name, datosLiga.season.startDate, equiposLiga);
-                    partidosLiga.forEach(partido => {
-                        this.agregarPartido(
-                            partido.homeTeam.id,
-                            partido.awayTeam.id,
-                            null, // Estadio no disponible en la API
-                            liga.getId(),
-                            partido.utcDate
-                        );
-                    });
-
-                    ligasProcesadas.add(ligaId);
-                }
-            }
-
             // Guardar el estado actualizado en localStorage
             this.guardarEstado();
 
@@ -233,10 +201,6 @@ const Model = {
         const equipo = equipos.find(e => e.getId() === equipoId);
         if (!equipo) throw new Error("Equipo no encontrado.");
         return equipo.getEstadisticas();
-    },
-
-    obtenerEstadisticasJugador: function (jugadorId) {
-        throw new Error("La API no proporciona estadísticas individuales de jugadores.");
     },
 
     obtenerCalendario: function () {

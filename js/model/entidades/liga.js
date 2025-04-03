@@ -1,38 +1,39 @@
 class Liga {
-    #id;
-    #nombre;
-    #temporada;
-    #equipos;
-
-    constructor(id, nombre, temporada, equipos = []) {
-        this.#id = id;
-        this.#nombre = nombre;
-        this.#temporada = temporada;
-        this.#equipos = equipos;
+    constructor(id, nombre, pais, logo, bandera, temporadas = []) {
+        this._id = id;
+        this._nombre = nombre;
+        this._pais = pais;
+        this._logo = logo;
+        this._bandera = bandera;
+        this._temporadas = temporadas; // Array de temporadas disponibles
     }
 
     getId() {
-        return this.#id;
+        return this._id;
     }
 
     getNombre() {
-        return this.#nombre;
+        return this._nombre;
     }
 
-    agregarEquipo(equipo) {
-        this.#equipos.push(equipo);
+    getPais() {
+        return this._pais;
     }
 
-    getEquipos() {
-        return this.#equipos;
+    getLogo() {
+        return this._logo;
     }
 
-    setEquipos(equipos) {
-        this.#equipos = equipos;
+    getBandera() {
+        return this._bandera;
     }
 
-    getTemporada() {
-        return this.#temporada;
+    getTemporadas() {
+        return this._temporadas;
+    }
+
+    setTemporadas(temporadas) {
+        this._temporadas = temporadas;
     }
 }
 
