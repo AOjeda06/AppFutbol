@@ -108,6 +108,62 @@ const FootballDataApi = {
                 }
             });
         });
+    },
+
+    obtenerJugadores: async function (equipoId) {
+        console.log(`Solicitando jugadores para el equipo ID: ${equipoId}`);
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${BASE_URL}/players`,
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-key': API_KEY,
+                    'x-rapidapi-host': 'v3.football.api-sports.io'
+                },
+                data: { team: equipoId, season: 2023 },
+                success: function (response) {
+                    console.log("Jugadores recibidos:", response.response);
+                    if (response.response && response.response.length > 0) {
+                        resolve(response.response);
+                    } else {
+                        console.warn("La API devolvió un array vacío para los jugadores.");
+                        resolve([]);
+                    }
+                },
+                error: function (error) {
+                    console.error("Error al obtener jugadores:", error);
+                    reject(error);
+                }
+            });
+        });
+    },
+
+    obtenerLigaDeEquipo: async function (equipoId) {
+        console.log(`Solicitando la liga del equipo ID: ${equipoId}`);
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${BASE_URL}/teams`,
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-key': API_KEY,
+                    'x-rapidapi-host': 'v3.football.api-sports.io'
+                },
+                data: { id: equipoId },
+                success: function (response) {
+                    console.log("Liga del equipo recibida:", response.response);
+                    if (response.response && response.response.length > 0) {
+                        resolve(response.response[0].team.league);
+                    } else {
+                        console.warn("La API devolvió un array vacío para la liga del equipo.");
+                        resolve(null);
+                    }
+                },
+                error: function (error) {
+                    console.error("Error al obtener la liga del equipo:", error);
+                    reject(error);
+                }
+            });
+        });
     }
 };
 

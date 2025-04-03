@@ -8,33 +8,48 @@ import Model from './model/model.js';
         // ID de la Champions League
         const championsLeagueId = 2; // ID de la Champions League en la API
 
-        // Solicitar ligas relacionadas con la Champions League
-        console.log(`Solicitando ligas relacionadas con la Champions League (ID: ${championsLeagueId})...`);
-        const ligasChampions = await FootballDataApi.obtenerLigas(championsLeagueId);
-        console.log("Ligas relacionadas con la Champions League recibidas:", ligasChampions);
+        // Paso 1: Obtener equipos que participan en la UCL
+        console.log(`Solicitando equipos que participan en la Champions League (ID: ${championsLeagueId})...`);
+        const equiposChampions = await FootballDataApi.obtenerEquipos(championsLeagueId, 2023);
+        console.log("Equipos de la Champions League recibidos:", equiposChampions);
 
-        // Crear arrays para almacenar equipos y partidos
-        const equipos = [];
-        const partidos = [];
+        // Paso 2: Identificar las ligas de los equipos (sin duplicados)
+        const ligasSet = new Set();
+        for (const equipo of equiposChampions) {
+            const liga = await FootballDataApi.obtenerLigaDeEquipo(equipo.team.id);
+            if (liga) {
+                ligasSet.add(liga.id);
+            }
+        }
+        const ligasIds = Array.from(ligasSet);
+        console.log("Ligas identificadas:", ligasIds);
 
-        // Iterar sobre las ligas relacionadas con la Champions League
-        for (const liga of ligasChampions) {
-            console.log(`Procesando la liga: ${liga.league.name} (ID: ${liga.league.id})`);
+        // Paso 3: Obtener los equipos de cada liga
+        const equiposLigas = [];
+        for (const ligaId of ligasIds) {
+            console.log(`Solicitando equipos de la liga ID: ${ligaId}...`);
+            const equiposLiga = await FootballDataApi.obtenerEquipos(ligaId, 2023);
+            equiposLigas.push(...equiposLiga);
+            console.log(`Equipos de la liga ID ${ligaId} recibidos:`, equiposLiga);
+        }
 
-            // Obtener equipos de la liga
-            const equiposLiga = await FootballDataApi.obtenerEquipos(liga.league.id, 2023); // Temporada 2023
-            equipos.push(...equiposLiga);
-            console.log(`Equipos de la liga ${liga.league.name} recibidos:`, equiposLiga);
-
-            // Obtener partidos de la liga
-            const partidosLiga = await FootballDataApi.obtenerPartidos(liga.league.id, 2023); // Temporada 2023
-            partidos.push(...partidosLiga);
-            console.log(`Partidos de la liga ${liga.league.name} recibidos:`, partidosLiga);
+        // Paso 4: Obtener los jugadores de cada equipo
+        const jugadores = [];
+        for (const equipo of equiposLigas) {
+            console.log(`Solicitando jugadores del equipo: ${equipo.team.name} (ID: ${equipo.team.id})...`);
+            const jugadoresEquipo = await FootballDataApi.obtenerJugadores(equipo.team.id);
+            jugadores.push(...jugadoresEquipo);
+            console.log(`Jugadores del equipo ${equipo.team.name} recibidos:`, jugadoresEquipo);
         }
 
         // Almacenar los datos en el modelo
-        Model.cargarDatosIniciales({ ligas: ligasChampions, equipos, partidos });
+        Model.cargarDatosIniciales({ equipos: equiposLigas, jugadores });
         console.log("Datos almacenados en el modelo.");
+
+        // Guardar los datos en el localStorage
+        localStorage.setItem('equipos', JSON.stringify(equiposLigas));
+        localStorage.setItem('jugadores', JSON.stringify(jugadores));
+        console.log("Datos guardados en el localStorage.");
 
         console.log("Obtención de datos completada. Revisa los datos en la consola.");
     } catch (error) {

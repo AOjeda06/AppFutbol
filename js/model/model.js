@@ -2,7 +2,8 @@
 import Jugador from './entidades/jugador.js';
 import Equipo from './entidades/equipo.js';
 import Partido from './entidades/partido.js';
-import Utils from '../utils.js'; // Importar las utilidades
+// Eliminamos la importación de Utils
+// import Utils from '../utils.js'; 
 import FootballDataApi from '../api/footballDataApi.js'; // Importar la API de datos de fútbol
 
 // Contadores para asignar IDs únicos
@@ -21,31 +22,23 @@ let ligas = []; // Array para almacenar las ligas
 const Model = {
     // Inicializar el modelo con datos
     inicializar: async function () {
-        // Intentar cargar datos desde localStorage
-        const estadoGuardado = Utils.cargarEstadoDesdeLocalStorage('estadoApp');
-        if (estadoGuardado) {
-            jugadores = estadoGuardado.jugadores.map(j => new Jugador(...Object.values(j)));
-            equipos = estadoGuardado.equipos.map(e => new Equipo(...Object.values(e)));
-            partidos = estadoGuardado.partidos.map(p => new Partido(...Object.values(p)));
-            ligas = estadoGuardado.ligas.map(l => new Liga(...Object.values(l)));
+        const equiposGuardados = localStorage.getItem('equipos');
+        const jugadoresGuardados = localStorage.getItem('jugadores');
+
+        if (equiposGuardados && jugadoresGuardados) {
+            equipos = JSON.parse(equiposGuardados);
+            jugadores = JSON.parse(jugadoresGuardados);
             console.log("Datos cargados desde localStorage.");
         } else {
-            // Si no hay datos en localStorage, cargar desde el archivo JSON
-            const datosIniciales = await Utils.cargarDatosDesdeJSON('../datos_temporada2324.json');
-            if (datosIniciales) {
-                jugadores = datosIniciales.jugadores.map(j => new Jugador(...Object.values(j)));
-                equipos = datosIniciales.equipos.map(e => new Equipo(...Object.values(e)));
-                partidos = datosIniciales.partidos.map(p => new Partido(...Object.values(p)));
-                ligas = datosIniciales.ligas.map(l => new Liga(...Object.values(l)));
-                console.log("Datos cargados desde el archivo JSON.");
-            }
+            console.log("No se encontraron datos en localStorage. Se deben obtener desde la API.");
         }
     },
 
     // Guardar el estado actual en localStorage
     guardarEstado: function () {
-        const estadoActual = { jugadores, equipos, partidos, ligas };
-        Utils.guardarEstadoEnLocalStorage('estadoApp', estadoActual);
+        localStorage.setItem('equipos', JSON.stringify(equipos));
+        localStorage.setItem('jugadores', JSON.stringify(jugadores));
+        console.log("Estado guardado en localStorage.");
     },
 
     // Funciones para jugadores
@@ -127,24 +120,9 @@ const Model = {
     },
 
     // Método para cargar datos iniciales
-    cargarDatosIniciales: function ({ ligas, equipos, partidos }) {
-        ligas.forEach(liga => {
-            this.agregarLiga(
-                liga.league.name,
-                liga.seasons[0].year, // Temporada más reciente
-                equipos.filter(equipo => equipo.league.id === liga.league.id)
-            );
-        });
-
-        partidos.forEach(partido => {
-            this.agregarPartido(
-                partido.teams.home.id,
-                partido.teams.away.id,
-                partido.fixture.venue.id,
-                partido.league.id,
-                partido.fixture.date
-            );
-        });
+    cargarDatosIniciales: function ({ equipos: equiposNuevos, jugadores: jugadoresNuevos }) {
+        equipos = equiposNuevos;
+        jugadores = jugadoresNuevos;
 
         this.guardarEstado(); // Guardar el estado actualizado
         console.log("Datos iniciales cargados en el modelo.");
