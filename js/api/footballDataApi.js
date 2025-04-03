@@ -1,57 +1,59 @@
 import axios from 'axios';
 
-const API_KEY = 'TU_CLAVE_DE_API'; // Reemplaza con tu clave de API
-const BASE_URL = 'https://api.football-data.org/v4';
+const BASE_URL = 'https://v3.football.api-sports.io';
+const API_KEY = '63c2dc2585864c2aaf7efa1ed187db0a'; // Tu clave de API
 
 const FootballDataApi = {
-    // Obtener datos de una liga específica
     obtenerLiga: async function (ligaId) {
         try {
-            const response = await axios.get(`${BASE_URL}/competitions/${ligaId}/standings`, {
-                headers: { 'X-Auth-Token': API_KEY }
+            console.log(`Solicitando datos de la liga con ID: ${ligaId}`);
+            const response = await axios.get(`${BASE_URL}/leagues`, {
+                headers: { 'x-rapidapi-key': API_KEY, 'x-rapidapi-host': 'v3.football.api-sports.io' },
+                params: { id: ligaId }
             });
-            return response.data;
+            console.log("Respuesta de la API para la liga:", response.data);
+            return response.data.response;
         } catch (error) {
-            console.error('Error al obtener datos de la liga:', error);
+            console.error("Error al obtener datos de la liga:", error.response?.data || error.message);
             throw error;
         }
     },
 
-    // Obtener equipos de una competición
-    obtenerEquipos: async function (ligaId) {
+    obtenerEquipos: async function (ligaId, temporada) {
         try {
-            const response = await axios.get(`${BASE_URL}/competitions/${ligaId}/teams`, {
-                headers: { 'X-Auth-Token': API_KEY }
+            const response = await axios.get(`${BASE_URL}/teams`, {
+                headers: { 'x-rapidapi-key': API_KEY, 'x-rapidapi-host': 'v3.football.api-sports.io' },
+                params: { league: ligaId, season: temporada }
             });
-            return response.data.teams;
+            return response.data.response;
         } catch (error) {
             console.error('Error al obtener equipos:', error);
             throw error;
         }
     },
 
-    // Obtener partidos de una competición
-    obtenerPartidos: async function (ligaId) {
+    obtenerPartidos: async function (ligaId, temporada) {
         try {
-            const response = await axios.get(`${BASE_URL}/competitions/${ligaId}/matches`, {
-                headers: { 'X-Auth-Token': API_KEY }
+            const response = await axios.get(`${BASE_URL}/fixtures`, {
+                headers: { 'x-rapidapi-key': API_KEY, 'x-rapidapi-host': 'v3.football.api-sports.io' },
+                params: { league: ligaId, season: temporada }
             });
-            return response.data.matches;
+            return response.data.response;
         } catch (error) {
             console.error('Error al obtener partidos:', error);
             throw error;
         }
     },
 
-    // Obtener ligas por área (país)
-    obtenerLigasPorArea: async function (areaId) {
+    obtenerPartidosDeHoy: async function () {
         try {
-            const response = await axios.get(`${BASE_URL}/areas/${areaId}/competitions`, {
-                headers: { 'X-Auth-Token': API_KEY }
+            const response = await axios.get(`${BASE_URL}/fixtures`, {
+                headers: { 'x-rapidapi-key': API_KEY, 'x-rapidapi-host': 'v3.football.api-sports.io' },
+                params: { date: new Date().toISOString().split('T')[0] }
             });
-            return response.data.competitions;
+            return response.data.response;
         } catch (error) {
-            console.error('Error al obtener ligas por área:', error);
+            console.error('Error al obtener partidos de hoy:', error);
             throw error;
         }
     }

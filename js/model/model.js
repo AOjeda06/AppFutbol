@@ -232,24 +232,11 @@ const Model = {
     obtenerEstadisticasEquipo: function (equipoId) {
         const equipo = equipos.find(e => e.getId() === equipoId);
         if (!equipo) throw new Error("Equipo no encontrado.");
-        const plantilla = equipo.getPlantilla();
-        const estadisticas = plantilla.reduce(
-            (acc, jugador) => {
-                const stats = jugador.getEstadisticas();
-                acc.goles += stats.goles;
-                acc.tarjetasAmarillas += stats.tarjetasAmarillas;
-                acc.tarjetasRojas += stats.tarjetasRojas;
-                return acc;
-            },
-            { goles: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 }
-        );
-        return estadisticas;
+        return equipo.getEstadisticas();
     },
 
     obtenerEstadisticasJugador: function (jugadorId) {
-        const jugador = jugadores.find(j => j.getId() === jugadorId);
-        if (!jugador) throw new Error("Jugador no encontrado.");
-        return jugador.getEstadisticas();
+        throw new Error("La API no proporciona estadísticas individuales de jugadores.");
     },
 
     obtenerCalendario: function () {

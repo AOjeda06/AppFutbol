@@ -17,8 +17,8 @@ class Partido {
         this.#fechaHora = fechaHora;
         this.#jugado = jugado;
         this.#estadisticas = {
-            local: estadisticas.local || { goles: 0, tarjetasAmarillas: 0, tarjetasRojas: 0, disparos: 0, posesion: 0 },
-            visitante: estadisticas.visitante || { goles: 0, tarjetasAmarillas: 0, tarjetasRojas: 0, disparos: 0, posesion: 0 },
+            local: estadisticas.local || { goles: 0, tarjetasAmarillas: 0, tarjetasRojas: 0, disparos: 0 },
+            visitante: estadisticas.visitante || { goles: 0, tarjetasAmarillas: 0, tarjetasRojas: 0, disparos: 0 },
         };
     }
 

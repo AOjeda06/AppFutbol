@@ -6,29 +6,23 @@ class Equipo {
     #pais;
     #estadioId;
     #plantilla;
-    #entrenador;
     #estadisticas;
-    #esSeleccion;
 
-    constructor(id, tipo, nombre, ciudad = null, pais = null, estadioId = null, entrenador = null, plantilla = [], estadisticas = {}, esSeleccion = false) {
+    constructor(id, tipo, nombre, ciudad = null, pais = null, estadioId = null, plantilla = [], estadisticas = {}) {
         this.#id = id;
         this.#tipo = tipo;
         this.#nombre = nombre;
         this.#ciudad = ciudad;
         this.#pais = pais;
         this.#estadioId = estadioId;
-        this.#entrenador = entrenador;
         this.#plantilla = plantilla;
         this.#estadisticas = {
             ganados: estadisticas.ganados || 0,
             perdidos: estadisticas.perdidos || 0,
             empatados: estadisticas.empatados || 0,
             golesFavor: estadisticas.golesFavor || 0,
-            golesContra: estadisticas.golesContra || 0,
-            tarjetasAmarillasTotales: estadisticas.tarjetasAmarillasTotales || 0,
-            tarjetasRojasTotales: estadisticas.tarjetasRojasTotales || 0,
+            golesContra: estadisticas.golesContra || 0
         };
-        this.#esSeleccion = esSeleccion;
     }
 
     getId() {
@@ -47,10 +41,6 @@ class Equipo {
         this.#plantilla.push(jugador);
     }
 
-    esEquipoSeleccion() {
-        return this.#esSeleccion;
-    }
-
     getEstadisticas() {
         return this.#estadisticas;
     }
@@ -61,8 +51,6 @@ class Equipo {
         this.#estadisticas.empatados += nuevasEstadisticas.empatados || 0;
         this.#estadisticas.golesFavor += nuevasEstadisticas.golesFavor || 0;
         this.#estadisticas.golesContra += nuevasEstadisticas.golesContra || 0;
-        this.#estadisticas.tarjetasAmarillasTotales += nuevasEstadisticas.tarjetasAmarillasTotales || 0;
-        this.#estadisticas.tarjetasRojasTotales += nuevasEstadisticas.tarjetasRojasTotales || 0;
     }
 }
 
