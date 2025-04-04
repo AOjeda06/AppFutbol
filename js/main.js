@@ -1,5 +1,5 @@
-import FootballDataApi from './api/footballDataApi.js';
-import Model from './model/model.js';
+import FootballDataApi from '../js/api/footballDataApi.js';
+import Model from '../js/model/model.js';
 
 (async () => {
     try {
