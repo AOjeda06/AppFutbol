@@ -1,7 +1,5 @@
-const Controller = {
+export const Controller = {
     init: function () {
-        
+        console.log("Controller inicializado");
     }
 };
-
-export default Controller;
