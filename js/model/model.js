@@ -1,6 +1,7 @@
 // Importar las clases de las entidades
 import Jugador from './entidades/jugador.js';
 import Equipo from './entidades/equipo.js';
+import Liga from './entidades/liga.js';
 
 // Contadores para asignar IDs únicos
 let jugadorIdCounter = 0;
@@ -9,6 +10,7 @@ let equipoIdCounter = 0;
 // Arrays para almacenar los objetos
 let jugadores = [];
 let equipos = [];
+let ligas = []; // Array para almacenar las ligas
 
 // El objeto Model actúa como una capa de datos para la aplicación.
 const Model = {
@@ -40,8 +42,35 @@ const Model = {
      */
     guardarEstado: function () {
         try {
-            localStorage.setItem('equipos', JSON.stringify(equipos));
-            localStorage.setItem('jugadores', JSON.stringify(jugadores));
+            // Compactar datos
+            const equiposCompactos = (equipos || []).map(equipo => ({
+                idTeam: equipo?.idTeam || null,
+                strTeam: equipo?.strTeam || null,
+                strLeague: equipo?.strLeague || null
+            }));
+
+            const jugadoresCompactos = (jugadores || []).map(jugador => ({
+                idPlayer: jugador?.idPlayer || null,
+                strPlayer: jugador?.strPlayer || null,
+                dateBorn: jugador?.dateBorn || null,
+                strNationality: jugador?.strNationality || null
+            }));
+
+            const ligasCompactas = (ligas || []).map(({ id, nombre, equipos }) => ({
+                id,
+                nombre,
+                equipos: (equipos || []).map(e => e?.idTeam || null)
+            }));
+
+            // Dividir jugadores en fragmentos más pequeños
+            const fragmentSize = 100; // Tamaño del fragmento
+            for (let i = 0; i < jugadoresCompactos.length; i += fragmentSize) {
+                localStorage.setItem(`jugadores_${i / fragmentSize}`, JSON.stringify(jugadoresCompactos.slice(i, i + fragmentSize)));
+            }
+
+            // Guardar equipos y ligas
+            localStorage.setItem('equipos', JSON.stringify(equiposCompactos));
+            localStorage.setItem('ligas', JSON.stringify(ligasCompactas));
             console.log("Estado guardado en localStorage.");
         } catch (error) {
             if (error.name === "QuotaExceededError") {
@@ -140,9 +169,51 @@ const Model = {
      */
     cargarDatosIniciales: function ({ equipos: equiposNuevos, jugadores: jugadoresNuevos }) {
         equipos = equiposNuevos;
-        jugadores = jugadoresNuevos;
+
+        // Reconstruir jugadores desde fragmentos
+        jugadores = [];
+        let index = 0;
+        while (localStorage.getItem(`jugadores_${index}`)) {
+            jugadores.push(...JSON.parse(localStorage.getItem(`jugadores_${index}`)));
+            index++;
+        }
+
+        // Reconstruir ligas
+        const ligasGuardadas = JSON.parse(localStorage.getItem('ligas')) || [];
+        ligas = ligasGuardadas.map(ligaData => {
+            const equiposLiga = equipos.filter(e => ligaData.equipos.includes(e.idTeam));
+            return new Liga(ligaData.id, ligaData.nombre, equiposLiga);
+        });
+
         this.guardarEstado(); // Guardar el estado actualizado
         console.log("Datos iniciales cargados en el modelo.");
+    },
+
+    /**
+     * Crear ligas a partir de los equipos.
+     */
+    crearLigas: function () {
+        const ligasMap = new Map();
+        const ligasPermitidas = [
+            "UEFA Champions League",
+            "English Premier League",
+            "Spanish La Liga",
+            "Italian Serie A",
+            "German Bundesliga"
+        ];
+
+        equipos.forEach(equipo => {
+            if (ligasPermitidas.includes(equipo.strLeague)) {
+                if (!ligasMap.has(equipo.strLeague)) {
+                    ligasMap.set(equipo.strLeague, new Liga(ligasMap.size + 1, equipo.strLeague, []));
+                }
+                ligasMap.get(equipo.strLeague).agregarEquipo(equipo);
+            }
+        });
+
+        ligas = Array.from(ligasMap.values());
+        this.guardarEstado();
+        console.log("Ligas creadas y guardadas en el modelo.");
     }
 };
 

@@ -44,13 +44,28 @@ import Model from './model/model.js';
         Model.cargarDatosIniciales({ equipos: todosLosEquipos, jugadores });
         console.log("Datos almacenados en el modelo.");
 
-        // Paso 5: Guardar los datos en el localStorage
+        // Paso 5: Crear ligas y guardar en el modelo
+        const equiposValidos = todosLosEquipos.filter(equipo => equipo?.idTeam && equipo?.strLeague);
+        if (equiposValidos.length > 0) {
+            Model.crearLigas();
+            console.log("Ligas creadas y almacenadas en el modelo.");
+        } else {
+            console.error("No se encontraron equipos válidos para crear ligas.");
+        }
+
+        // Paso 6: Guardar los datos en el localStorage
         try {
             const equiposCompactos = todosLosEquipos.map(({ idTeam, strTeam, strLeague }) => ({ idTeam, strTeam, strLeague }));
             const jugadoresCompactos = jugadores.map(({ idPlayer, strPlayer, dateBorn, strNationality }) => ({ idPlayer, strPlayer, dateBorn, strNationality }));
 
+            // Dividir jugadores en fragmentos más pequeños
+            const fragmentSize = 100; // Tamaño del fragmento
+            for (let i = 0; i < jugadoresCompactos.length; i += fragmentSize) {
+                localStorage.setItem(`jugadores_${i / fragmentSize}`, JSON.stringify(jugadoresCompactos.slice(i, i + fragmentSize)));
+            }
+
+            // Guardar equipos
             localStorage.setItem('equipos', JSON.stringify(equiposCompactos));
-            localStorage.setItem('jugadores', JSON.stringify(jugadoresCompactos));
             console.log("Datos guardados en el localStorage.");
         } catch (error) {
             if (error.name === "QuotaExceededError") {

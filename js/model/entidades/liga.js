@@ -6,19 +6,16 @@ class Liga {
      * Constructor: Inicializa los atributos de la liga.
      * @param {number} id - ID único de la liga.
      * @param {string} nombre - Nombre de la liga.
-     * @param {string} pais - País al que pertenece la liga.
-     * @param {string} logo - URL del logo de la liga.
-     * @param {string} bandera - URL de la bandera del país.
-     * @param {Array} temporadas - Array de temporadas disponibles.
+     * @param {Array} equipos - Equipos participantes.
      */
-    constructor(id, nombre, pais, logo, bandera, temporadas = []) {
+    constructor(id, nombre, equipos = []) {
         this._id = id;
         this._nombre = nombre;
-        this._pais = pais;
-        this._logo = logo;
-        this._bandera = bandera;
-        this._temporadas = temporadas;
-        this._equipos = []; // Lista de equipos en la liga
+        this._equipos = equipos;
+        this._pais = null; // País al que pertenece la liga
+        this._logo = null; // URL del logo de la liga
+        this._bandera = null; // URL de la bandera del país
+        this._temporadas = []; // Array de temporadas disponibles
     }
 
     // Métodos para acceder a los atributos de la liga.
