@@ -1,77 +1,61 @@
+let jugadorIdCounter = 300000; // Auto-generated ID starting from 300000
+
 /**
- * Clase Jugador: Representa un jugador de fútbol con sus detalles.
+ * Clase Jugador: Representa un jugador de fútbol con sus detalles esenciales.
  */
 class Jugador {
-    _id; // ID único del jugador.
-    _nombre; // Nombre del jugador.
-    _apellidos; // Apellidos del jugador.
-    _apodo; // Apodo del jugador.
-    _posicion; // Posición en la que juega (ej. delantero, defensa).
-    _numero; // Número de camiseta del jugador.
-    _anioNacimiento; // Año de nacimiento del jugador.
-    _equipoId; // ID del equipo al que pertenece el jugador.
-
     /**
      * Constructor: Inicializa los atributos del jugador.
-     * @param {number} id - ID único del jugador.
-     * @param {string} nombre - Nombre del jugador.
-     * @param {string} apellidos - Apellidos del jugador.
-     * @param {string} apodo - Apodo del jugador.
-     * @param {string} posicion - Posición en la que juega.
-     * @param {number} numero - Número de camiseta del jugador.
-     * @param {number} anioNacimiento - Año de nacimiento del jugador.
-     * @param {number} equipoId - ID del equipo al que pertenece.
+     * @param {string} strPlayer - Nombre del jugador.
+     * @param {string} strPosition - Posición del jugador.
+     * @param {string} strNationality - Nacionalidad del jugador.
+     * @param {string} dateBorn - Fecha de nacimiento del jugador.
+     * @param {string} strTeam - Nombre del equipo actual del jugador.
+     * @param {string} strHeight - Altura del jugador.
+     * @param {string} strWeight - Peso del jugador.
      */
-    constructor(id, nombre, apellidos, apodo, posicion, numero, anioNacimiento, equipoId) {
-        this._id = id;
-        this._nombre = nombre;
-        this._apellidos = apellidos;
-        this._apodo = apodo;
-        this._posicion = posicion;
-        this._numero = numero;
-        this._anioNacimiento = anioNacimiento;
-        this._equipoId = equipoId;
+    constructor(strPlayer, strPosition, strNationality, dateBorn, strTeam, strHeight, strWeight) {
+        this.idPlayer = jugadorIdCounter++; // Auto-generated ID
+        this.strPlayer = strPlayer;
+        this.strPosition = strPosition;
+        this.strNationality = strNationality;
+        this.dateBorn = dateBorn;
+        this.strTeam = strTeam;
+        this.strHeight = strHeight;
+        this.strWeight = strWeight;
     }
 
     // Métodos para acceder a los atributos del jugador.
-    getId() {
-        return this._id;
+    getIdPlayer() {
+        return this.idPlayer;
     }
 
-    getNombre() {
-        return this._nombre;
+    getStrPlayer() {
+        return this.strPlayer;
     }
 
-    getApellidos() {
-        return this._apellidos;
+    getStrPosition() {
+        return this.strPosition;
     }
 
-    getApodo() {
-        return this._apodo;
+    getStrNationality() {
+        return this.strNationality;
     }
 
-    getPosicion() {
-        return this._posicion;
+    getDateBorn() {
+        return this.dateBorn;
     }
 
-    getNumero() {
-        return this._numero;
+    getStrTeam() {
+        return this.strTeam;
     }
 
-    getAnioNacimiento() {
-        return this._anioNacimiento;
+    getStrHeight() {
+        return this.strHeight;
     }
 
-    getEquipoId() {
-        return this._equipoId;
-    }
-
-    /**
-     * Método para actualizar el equipo al que pertenece el jugador.
-     * @param {number} equipoId - ID del nuevo equipo.
-     */
-    setEquipoId(equipoId) {
-        this._equipoId = equipoId;
+    getStrWeight() {
+        return this.strWeight;
     }
 }
 

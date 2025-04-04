@@ -1,7 +1,7 @@
 const BASE_URL = 'https://www.thesportsdb.com/api/v1/json/3/';
-const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
-const RETRY_DELAY = 10000; // 10 seconds
-const MAX_CONCURRENT_REQUESTS = 3; // Limit concurrent requests
+// Removed PROXY_URL as it causes 403 errors
+const RETRY_DELAY = 10000; // 10 segundos
+const MAX_CONCURRENT_REQUESTS = 5; // Reducir concurrencia para evitar límite de API
 
 const FootballDataApi = {
     /**
@@ -12,7 +12,7 @@ const FootballDataApi = {
      */
     fetchWithRetry: async function (url, retries = 3) {
         try {
-            const response = await fetch(url);
+            const response = await fetch(url); // Removed PROXY_URL
             if (response.status === 429 && retries > 0) {
                 console.warn(`Rate limit hit. Retrying in ${RETRY_DELAY / 1000} seconds...`);
                 await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
@@ -29,29 +29,15 @@ const FootballDataApi = {
     },
 
     /**
-     * Obtiene los equipos de la Champions League.
-     * @returns {Promise<Array>} Lista de equipos de la Champions League.
-     */
-    obtenerEquiposChampions: async function () {
-        console.log("Obteniendo equipos de la Champions League...");
-        try {
-            const response = await this.fetchWithRetry(`${PROXY_URL}${BASE_URL}search_all_teams.php?l=UEFA%20Champions%20League`);
-            return response.teams || [];
-        } catch (error) {
-            console.error("Error al obtener equipos de la Champions League:", error);
-            throw error;
-        }
-    },
-
-    /**
      * Obtiene los equipos de una liga específica.
      * @param {string} leagueName - Nombre de la liga.
      * @returns {Promise<Array>} Lista de equipos de la liga.
      */
-    obtenerEquiposLiga: async function (leagueName) {
+    obtenerEquipos: async function (leagueName) {
         console.log(`Obteniendo equipos de la liga: ${leagueName}`);
         try {
-            const response = await this.fetchWithRetry(`${PROXY_URL}${BASE_URL}search_all_teams.php?l=${encodeURIComponent(leagueName)}`);
+            const url = `${BASE_URL}search_all_teams.php?l=${encodeURIComponent(leagueName)}`;
+            const response = await this.fetchWithRetry(url);
             return response.teams || [];
         } catch (error) {
             console.error(`Error al obtener equipos de la liga ${leagueName}:`, error);
@@ -67,7 +53,8 @@ const FootballDataApi = {
     obtenerJugadoresEquipo: async function (teamId) {
         console.log(`Obteniendo jugadores del equipo ID: ${teamId}`);
         try {
-            const response = await this.fetchWithRetry(`${PROXY_URL}${BASE_URL}lookup_all_players.php?id=${teamId}`);
+            const url = `${BASE_URL}lookup_all_players.php?id=${teamId}`;
+            const response = await this.fetchWithRetry(url);
             return response.player || [];
         } catch (error) {
             console.error(`Error al obtener jugadores del equipo ID ${teamId}:`, error);
@@ -87,7 +74,7 @@ const FootballDataApi = {
             const batchResults = await Promise.allSettled(batch.map(task => task()));
             results.push(...batchResults);
             console.log(`Esperando ${RETRY_DELAY / 1000} segundos antes de procesar el siguiente lote...`);
-            await new Promise(resolve => setTimeout(resolve, RETRY_DELAY)); // Delay between batches
+            await new Promise(resolve => setTimeout(resolve, RETRY_DELAY)); // Retraso entre lotes
         }
         return results;
     }

@@ -18,6 +18,7 @@ class Liga {
         this._logo = logo;
         this._bandera = bandera;
         this._temporadas = temporadas;
+        this._equipos = []; // Lista de equipos en la liga
     }
 
     // Métodos para acceder a los atributos de la liga.
@@ -51,6 +52,44 @@ class Liga {
      */
     setTemporadas(temporadas) {
         this._temporadas = temporadas;
+    }
+
+    /**
+     * Método para agregar un equipo a la liga.
+     * @param {Object} equipo - Objeto equipo a agregar.
+     */
+    agregarEquipo(equipo) {
+        this._equipos.push(equipo);
+    }
+
+    /**
+     * Método para obtener los equipos de la liga.
+     * @returns {Array} Lista de equipos en la liga.
+     */
+    getEquipos() {
+        return this._equipos;
+    }
+
+    /**
+     * Método para calcular estadísticas de la liga.
+     * @returns {Object} Estadísticas agregadas de la liga.
+     */
+    calcularEstadisticas() {
+        const estadisticas = {
+            totalEquipos: this._equipos.length,
+            totalGolesFavor: 0,
+            totalGolesContra: 0,
+            totalPartidos: 0,
+        };
+
+        this._equipos.forEach(equipo => {
+            const equipoStats = equipo.getEstadisticas();
+            estadisticas.totalGolesFavor += equipoStats.golesFavor;
+            estadisticas.totalGolesContra += equipoStats.golesContra;
+            estadisticas.totalPartidos += equipoStats.ganados + equipoStats.perdidos + equipoStats.empatados;
+        });
+
+        return estadisticas;
     }
 }
 

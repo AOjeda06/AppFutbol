@@ -47,9 +47,17 @@ const Model = {
      * Serializa los datos de equipos y jugadores y los almacena en localStorage.
      */
     guardarEstado: function () {
-        localStorage.setItem('equipos', JSON.stringify(equipos));
-        localStorage.setItem('jugadores', JSON.stringify(jugadores));
-        console.log("Estado guardado en localStorage.");
+        try {
+            localStorage.setItem('equipos', JSON.stringify(equipos));
+            localStorage.setItem('jugadores', JSON.stringify(jugadores));
+            console.log("Estado guardado en localStorage.");
+        } catch (error) {
+            if (error.name === "QuotaExceededError") {
+                console.warn("Error: No se pudo guardar el estado en localStorage debido a la cuota excedida.");
+            } else {
+                throw error;
+            }
+        }
     },
 
     /**
