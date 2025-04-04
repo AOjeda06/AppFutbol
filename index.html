@@ -8,18 +8,43 @@
     <link rel="icon" type="img/futbol.icon" href="img/favicon.png">
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/model/model.js"></script>
+    <script src="js/view/view.js"></script>
+    <script src="js/controller/controller.js"></script>
 </head>
 
 <body>
-    <h1>Futbol App</h1>
-    <div id="acciones">
-        <button id="btnAgregarJugador">Agregar Jugador</button>
-        <button id="btnAgregarEquipo">Agregar Equipo</button>
-        <button id="btnAsignarEquipo">Asignar Equipo</button>
-    </div>
+    <header>
+        <h1>Futbol App</h1>
+        <div id="acciones">
+            <div class="dropdown">
+                <button class="dropbtn">Equipo</button>
+                <div class="dropdown-content">
+                    <button class="opcionesBoton" id="addTeams">Agregar Equipo</button>
+                    <button class="opcionesBoton" id="showTeams">Mostrar Equipos</button>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Jugadores</button>
+                <div class="dropdown-content">
+                    <button class="opcionesBoton" id="addPlayer">Añadir Jugador</button>
+                    <button class="opcionesBoton" id="showPlayers">Mostrar Jugadores</button>
+                </div>
+            </div>
+        </div>
+    </header>
     <div id="vista"></div>
 
     <script type="module" src="./js/main.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Cuando el documento se cargue, inicializa el controlador.
+            const controller = new Controller();
+
+        });
+
+
+    </script>
 </body>
 
 </html>
