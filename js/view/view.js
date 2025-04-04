@@ -17,6 +17,8 @@ class View {
     <br>
     <label for="equipo">Equipo:</label>
     <input type="text" id="equipo" required>
+    <br>
+    <button type="button">Enviar</button>
     </div>`
     }
 
@@ -31,6 +33,8 @@ class View {
     <br>
     <label for="estadio">Estadio:</label>
     <input type="text" id="estadio" required>
+    <br>
+    <button type="button">Enviar</button>
     </div>`
     }
 
@@ -43,10 +47,7 @@ class View {
     <label for="equipo">Equipo:</label>
     <input type="number" id="equipo" required>
     <br>
+    <button type="button">Asociar</button>
     </div>`
     }
-
-
-
-
 }
