@@ -42,18 +42,34 @@ const Model = {
      */
     guardarEstado: function () {
         try {
-            // Compactar datos
+            // Compactar datos de equipos
             const equiposCompactos = (equipos || []).map(equipo => ({
                 idTeam: equipo?.idTeam || null,
                 strTeam: equipo?.strTeam || null,
-                strLeague: equipo?.strLeague || null
+                strLeague: equipo?.strLeague || null,
+                strLeague2: equipo?.strLeague2 || null,
+                strLeague3: equipo?.strLeague3 || null,
+                strLeague4: equipo?.strLeague4 || null,
+                strLeague5: equipo?.strLeague5 || null,
+                strLeague6: equipo?.strLeague6 || null,
+                strLeague7: equipo?.strLeague7 || null
             }));
 
+            // Compactar datos de jugadores
             const jugadoresCompactos = (jugadores || []).map(jugador => ({
                 idPlayer: jugador?.idPlayer || null,
                 strPlayer: jugador?.strPlayer || null,
                 dateBorn: jugador?.dateBorn || null,
-                strNationality: jugador?.strNationality || null
+                strNationality: jugador?.strNationality || null,
+                strTeam: jugador?.strTeam || null, // Equipo en el que juega
+                strLeague: jugador?.strLeague || null, // Liga principal
+                strLeague1: jugador?.strLeague1 || null, // Liga adicional 1
+                strLeague2: jugador?.strLeague2 || null, // Liga adicional 2
+                strLeague3: jugador?.strLeague3 || null, // Liga adicional 3
+                strLeague4: jugador?.strLeague4 || null, // Liga adicional 4
+                strLeague5: jugador?.strLeague5 || null, // Liga adicional 5
+                strLeague6: jugador?.strLeague6 || null, // Liga adicional 6
+                strLeague7: jugador?.strLeague7 || null  // Liga adicional 7
             }));
 
             const ligasCompactas = (ligas || []).map(({ id, nombre, equipos }) => ({

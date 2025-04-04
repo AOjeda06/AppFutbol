@@ -13,8 +13,28 @@ class Equipo {
      * @param {string} strStadium - Nombre del estadio del equipo.
      * @param {number} intStadiumCapacity - Capacidad del estadio.
      * @param {string|null} strLeague1 - Liga adicional (ej. Champions League).
+     * @param {string|null} strLeague2 - Liga adicional 2.
+     * @param {string|null} strLeague3 - Liga adicional 3.
+     * @param {string|null} strLeague4 - Liga adicional 4.
+     * @param {string|null} strLeague5 - Liga adicional 5.
+     * @param {string|null} strLeague6 - Liga adicional 6.
+     * @param {string|null} strLeague7 - Liga adicional 7.
      */
-    constructor(strTeam, strLeague, strCountry, intFormedYear, strStadium, intStadiumCapacity, strLeague1 = null) {
+    constructor(
+        strTeam,
+        strLeague,
+        strCountry,
+        intFormedYear,
+        strStadium,
+        intStadiumCapacity,
+        strLeague1 = null,
+        strLeague2 = null,
+        strLeague3 = null,
+        strLeague4 = null,
+        strLeague5 = null,
+        strLeague6 = null,
+        strLeague7 = null
+    ) {
         this.idTeam = equipoIdCounter++; // Auto-generated ID
         this.strTeam = strTeam;
         this.strLeague = strLeague;
@@ -23,6 +43,12 @@ class Equipo {
         this.strStadium = strStadium;
         this.intStadiumCapacity = intStadiumCapacity;
         this.strLeague1 = strLeague1; // Liga adicional
+        this.strLeague2 = strLeague2;
+        this.strLeague3 = strLeague3;
+        this.strLeague4 = strLeague4;
+        this.strLeague5 = strLeague5;
+        this.strLeague6 = strLeague6;
+        this.strLeague7 = strLeague7;
     }
 
     // Métodos para acceder a los atributos del equipo.
@@ -54,12 +80,39 @@ class Equipo {
         return this.strLeague1;
     }
 
+    getStrLeague2() {
+        return this.strLeague2;
+    }
+
+    getStrLeague3() {
+        return this.strLeague3;
+    }
+
+    getStrLeague4() {
+        return this.strLeague4;
+    }
+
+    getStrLeague5() {
+        return this.strLeague5;
+    }
+
+    getStrLeague6() {
+        return this.strLeague6;
+    }
+
+    getStrLeague7() {
+        return this.strLeague7;
+    }
+
     /**
-     * Método para establecer la liga adicional.
-     * @param {string} strLeague1 - Liga adicional (ej. Champions League).
+     * Método para establecer una liga adicional.
+     * @param {string} leagueKey - Clave de la liga adicional (ej. strLeague1, strLeague2).
+     * @param {string} leagueValue - Nombre de la liga adicional.
      */
-    setStrLeague1(strLeague1) {
-        this.strLeague1 = strLeague1;
+    setAdditionalLeague(leagueKey, leagueValue) {
+        if (this.hasOwnProperty(leagueKey)) {
+            this[leagueKey] = leagueValue;
+        }
     }
 }
 

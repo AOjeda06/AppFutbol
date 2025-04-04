@@ -34,7 +34,20 @@ import Model from '../js/model/model.js';
         const tasks = todosLosEquipos.map(equipo => async () => {
             console.log(`Solicitando jugadores del equipo ID: ${equipo.idTeam}...`);
             const jugadoresEquipo = await FootballDataApi.obtenerJugadoresEquipo(equipo.idTeam);
+            jugadoresEquipo.forEach(jugador => {
+                jugador.idTeam = equipo.idTeam; // Asignar el equipo al jugador
+                jugador.strTeam = equipo.strTeam; // Asignar el equipo al jugador
+            });
             jugadores.push(...jugadoresEquipo);
+
+            // Asegurar que todas las ligas del equipo se procesen
+            equipo.strLeague2 = equipo.strLeague2 || null;
+            equipo.strLeague3 = equipo.strLeague3 || null;
+            equipo.strLeague4 = equipo.strLeague4 || null;
+            equipo.strLeague5 = equipo.strLeague5 || null;
+            equipo.strLeague6 = equipo.strLeague6 || null;
+            equipo.strLeague7 = equipo.strLeague7 || null;
+
             console.log(`Jugadores del equipo ID ${equipo.idTeam} obtenidos:`, jugadoresEquipo);
         });
 
