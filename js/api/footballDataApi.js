@@ -1,7 +1,6 @@
 const BASE_URL = 'https://www.thesportsdb.com/api/v1/json/3/';
-// Removed PROXY_URL as it causes 403 errors
-const RETRY_DELAY = 10000; // 10 segundos
-const MAX_CONCURRENT_REQUESTS = 5; // Reducir concurrencia para evitar límite de API
+const RETRY_DELAY = 1000 / 1.5; // 1 segundo dividido entre 1.5 peticiones (~667 ms por lote)
+const MAX_CONCURRENT_REQUESTS = 1; // Procesamos 1 solicitud por lote para cumplir con el límite
 
 const FootballDataApi = {
     /**
@@ -73,7 +72,7 @@ const FootballDataApi = {
             const batch = tasks.splice(0, MAX_CONCURRENT_REQUESTS);
             const batchResults = await Promise.allSettled(batch.map(task => task()));
             results.push(...batchResults);
-            console.log(`Esperando ${RETRY_DELAY / 1000} segundos antes de procesar el siguiente lote...`);
+            console.log(`Esperando ${Math.round(RETRY_DELAY)} ms antes de procesar el siguiente lote...`);
             await new Promise(resolve => setTimeout(resolve, RETRY_DELAY)); // Retraso entre lotes
         }
         return results;
