@@ -202,15 +202,41 @@ const Model = {
             "German Bundesliga"
         ];
 
-        equipos.forEach(equipo => {
-            if (ligasPermitidas.includes(equipo.strLeague)) {
-                if (!ligasMap.has(equipo.strLeague)) {
-                    ligasMap.set(equipo.strLeague, new Liga(ligasMap.size + 1, equipo.strLeague, []));
+        // Crear las ligas permitidas vacías
+        ligasPermitidas.forEach((ligaNombre, index) => {
+            ligasMap.set(ligaNombre, new Liga(index + 1, ligaNombre, []));
+        });
+
+        // Clasificar equipos por strLeague y strLeague1 a strLeague10
+        const equiposPorLiga = equipos.reduce((clasificacion, equipo) => {
+            let ligaAsignada = equipo.strLeague; // Liga nacional principal
+
+            // Comprobar strLeague1 a strLeague10 para la Champions League
+            for (let i = 1; i <= 10; i++) {
+                const leagueKey = `strLeague${i}`;
+                if (equipo[leagueKey] === "UEFA Champions League") {
+                    ligaAsignada = "UEFA Champions League"; // Asignar temporalmente para clasificación
+                    break;
                 }
-                ligasMap.get(equipo.strLeague).agregarEquipo(equipo);
+            }
+
+            if (ligasPermitidas.includes(ligaAsignada)) {
+                if (!clasificacion[ligaAsignada]) {
+                    clasificacion[ligaAsignada] = [];
+                }
+                clasificacion[ligaAsignada].push(equipo);
+            }
+            return clasificacion;
+        }, {});
+
+        // Asignar equipos clasificados a las ligas correspondientes
+        Object.entries(equiposPorLiga).forEach(([ligaNombre, equiposLiga]) => {
+            if (ligasMap.has(ligaNombre)) {
+                equiposLiga.forEach(equipo => ligasMap.get(ligaNombre).agregarEquipo(equipo));
             }
         });
 
+        // Convertir el mapa a un array
         ligas = Array.from(ligasMap.values());
         this.guardarEstado();
         console.log("Ligas creadas y guardadas en el modelo.");

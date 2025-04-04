@@ -12,8 +12,9 @@ class Equipo {
      * @param {number} intFormedYear - Año de fundación del equipo.
      * @param {string} strStadium - Nombre del estadio del equipo.
      * @param {number} intStadiumCapacity - Capacidad del estadio.
+     * @param {string|null} strLeague1 - Liga adicional (ej. Champions League).
      */
-    constructor(strTeam, strLeague, strCountry, intFormedYear, strStadium, intStadiumCapacity) {
+    constructor(strTeam, strLeague, strCountry, intFormedYear, strStadium, intStadiumCapacity, strLeague1 = null) {
         this.idTeam = equipoIdCounter++; // Auto-generated ID
         this.strTeam = strTeam;
         this.strLeague = strLeague;
@@ -21,6 +22,7 @@ class Equipo {
         this.intFormedYear = intFormedYear;
         this.strStadium = strStadium;
         this.intStadiumCapacity = intStadiumCapacity;
+        this.strLeague1 = strLeague1; // Liga adicional
     }
 
     // Métodos para acceder a los atributos del equipo.
@@ -46,6 +48,18 @@ class Equipo {
 
     getIntStadiumCapacity() {
         return this.intStadiumCapacity;
+    }
+
+    getStrLeague1() {
+        return this.strLeague1;
+    }
+
+    /**
+     * Método para establecer la liga adicional.
+     * @param {string} strLeague1 - Liga adicional (ej. Champions League).
+     */
+    setStrLeague1(strLeague1) {
+        this.strLeague1 = strLeague1;
     }
 }
 
