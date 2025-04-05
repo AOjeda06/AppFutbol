@@ -51,3 +51,4 @@ class View {
     </div>`
     }
 }
+export default View;

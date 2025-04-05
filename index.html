@@ -7,7 +7,8 @@
     <title>Futbol App</title>
     <link rel="icon" type="img/futbol.icon" href="img/favicon.png">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script type="module" src="js/model/model.js"></script>
     <script type="module" src="js/view/view.js"></script>
     <script type="module" src="js/controller/controller.js"></script>
@@ -38,7 +39,9 @@
     <script type="module" src="./js/main.js"></script>
     <script>
         // Cuando el documento se cargue, inicializa el controlador.
-
+        $(document).ready(function () {
+            const controller = new Controller();
+        });
 
 
 
