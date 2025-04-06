@@ -170,6 +170,90 @@ const Model = {
 
         this.guardarEstado(); // Guardar el estado actualizado
         console.log("Datos iniciales cargados en el modelo.");
+    },
+
+    /**
+     * Obtiene todos los datos de jugadores desde localStorage.
+     * @returns {Array} Lista de jugadores.
+     */
+    obtenerDatosJugadores: function () {
+        let jugadoresCompactos = [];
+        let index = 0;
+        while (localStorage.getItem(`jugadores_${index}`)) {
+            jugadoresCompactos.push(...JSON.parse(localStorage.getItem(`jugadores_${index}`)));
+            index++;
+        }
+        return jugadoresCompactos;
+    },
+
+    /**
+     * Actualiza los datos de un jugador en localStorage.
+     * @param {number} jugadorId - ID del jugador a actualizar.
+     * @param {Object} nuevosDatos - Nuevos datos del jugador.
+     */
+    actualizarJugador: function (jugadorId, nuevosDatos) {
+        const jugadoresCompactos = this.obtenerDatosJugadores();
+        const jugadorIndex = jugadoresCompactos.findIndex(j => j.idPlayer === jugadorId);
+        if (jugadorIndex === -1) throw new Error("Jugador no encontrado.");
+
+        // Actualizar los datos del jugador
+        jugadoresCompactos[jugadorIndex] = { ...jugadoresCompactos[jugadorIndex], ...nuevosDatos };
+
+        // Guardar los datos actualizados en fragmentos
+        const fragmentSize = 100;
+        for (let i = 0; i < jugadoresCompactos.length; i += fragmentSize) {
+            localStorage.setItem(`jugadores_${i / fragmentSize}`, JSON.stringify(jugadoresCompactos.slice(i, i + fragmentSize)));
+        }
+    },
+
+    /**
+     * Obtiene todos los datos de equipos desde localStorage.
+     * @returns {Array} Lista de equipos.
+     */
+    obtenerDatosEquipos: function () {
+        return JSON.parse(localStorage.getItem('equipos')) || [];
+    },
+
+    /**
+     * Actualiza los datos de un equipo en localStorage.
+     * @param {number} equipoId - ID del equipo a actualizar.
+     * @param {Object} nuevosDatos - Nuevos datos del equipo.
+     */
+    actualizarEquipo: function (equipoId, nuevosDatos) {
+        const equipos = this.obtenerDatosEquipos();
+        const equipoIndex = equipos.findIndex(e => e.id === equipoId);
+        if (equipoIndex === -1) throw new Error("Equipo no encontrado.");
+
+        // Actualizar los datos del equipo
+        equipos[equipoIndex] = { ...equipos[equipoIndex], ...nuevosDatos };
+
+        // Guardar los datos actualizados
+        localStorage.setItem('equipos', JSON.stringify(equipos));
+    },
+
+    /**
+     * Obtiene todos los datos de ligas desde localStorage.
+     * @returns {Array} Lista de ligas.
+     */
+    obtenerDatosLigas: function () {
+        return JSON.parse(localStorage.getItem('ligas')) || [];
+    },
+
+    /**
+     * Actualiza los datos de una liga en localStorage.
+     * @param {number} ligaId - ID de la liga a actualizar.
+     * @param {Object} nuevosDatos - Nuevos datos de la liga.
+     */
+    actualizarLiga: function (ligaId, nuevosDatos) {
+        const ligas = this.obtenerDatosLigas();
+        const ligaIndex = ligas.findIndex(l => l.id === ligaId);
+        if (ligaIndex === -1) throw new Error("Liga no encontrada.");
+
+        // Actualizar los datos de la liga
+        ligas[ligaIndex] = { ...ligas[ligaIndex], ...nuevosDatos };
+
+        // Guardar los datos actualizados
+        localStorage.setItem('ligas', JSON.stringify(ligas));
     }
 };
 
