@@ -1,6 +1,5 @@
 const BASE_URL = 'https://www.thesportsdb.com/api/v1/json/3/';
-const RETRY_DELAY = 1000 / 1.5; // 1 segundo dividido entre 1.5 peticiones (~667 ms por lote)
-const MAX_CONCURRENT_REQUESTS = 1; // Procesamos 1 solicitud por lote para cumplir con el límite
+const RETRY_DELAY = 667; // ~667 ms por lote (1 segundo dividido entre 1.5 peticiones)
 
 const FootballDataApi = {
     /**
@@ -10,20 +9,22 @@ const FootballDataApi = {
      * @returns {Promise<Object>} Respuesta de la solicitud.
      */
     fetchWithRetry: async function (url, retries = 3) {
-        try {
-            const response = await fetch(url); // Removed PROXY_URL
-            if (response.status === 429 && retries > 0) {
-                console.warn(`Rate limit hit. Retrying in ${RETRY_DELAY / 1000} seconds...`);
-                await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
-                return this.fetchWithRetry(url, retries - 1);
+        while (retries > 0) {
+            try {
+                const response = await fetch(url);
+                if (response.ok) return await response.json();
+                if (response.status === 429) {
+                    console.warn(`Rate limit hit. Retrying in ${RETRY_DELAY / 1000} seconds...`);
+                    await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+                } else {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+            } catch (error) {
+                if (--retries === 0) {
+                    console.error(`Error fetching ${url}:`, error);
+                    throw error;
+                }
             }
-            if (!response.ok) {
-                throw new Error(`Error HTTP: ${response.status}`);
-            }
-            return await response.json();
-        } catch (error) {
-            console.error(`Error fetching ${url}:`, error);
-            throw error;
         }
     },
 
@@ -33,49 +34,9 @@ const FootballDataApi = {
      * @returns {Promise<Array>} Lista de equipos de la liga.
      */
     obtenerEquipos: async function (leagueName) {
+        const url = `${BASE_URL}search_all_teams.php?l=${encodeURIComponent(leagueName)}`;
         console.log(`Obteniendo equipos de la liga: ${leagueName}`);
-        try {
-            const url = `${BASE_URL}search_all_teams.php?l=${encodeURIComponent(leagueName)}`;
-            const response = await this.fetchWithRetry(url);
-            return response.teams || [];
-        } catch (error) {
-            console.error(`Error al obtener equipos de la liga ${leagueName}:`, error);
-            throw error;
-        }
-    },
-
-    /**
-     * Obtiene los jugadores de un equipo específico.
-     * @param {number} teamId - ID del equipo.
-     * @returns {Promise<Array>} Lista de jugadores del equipo.
-     */
-    obtenerJugadoresEquipo: async function (teamId) {
-        console.log(`Obteniendo jugadores del equipo ID: ${teamId}`);
-        try {
-            const url = `${BASE_URL}lookup_all_players.php?id=${teamId}`;
-            const response = await this.fetchWithRetry(url);
-            return response.player || [];
-        } catch (error) {
-            console.error(`Error al obtener jugadores del equipo ID ${teamId}:`, error);
-            throw error;
-        }
-    },
-
-    /**
-     * Procesa solicitudes en lotes para limitar la concurrencia.
-     * @param {Array<Function>} tasks - Array de funciones que devuelven promesas.
-     * @returns {Promise<Array>} Resultados de las tareas.
-     */
-    processInBatches: async function (tasks) {
-        const results = [];
-        while (tasks.length > 0) {
-            const batch = tasks.splice(0, MAX_CONCURRENT_REQUESTS);
-            const batchResults = await Promise.allSettled(batch.map(task => task()));
-            results.push(...batchResults);
-            console.log(`Esperando ${Math.round(RETRY_DELAY)} ms antes de procesar el siguiente lote...`);
-            await new Promise(resolve => setTimeout(resolve, RETRY_DELAY)); // Retraso entre lotes
-        }
-        return results;
+        return (await this.fetchWithRetry(url)).teams || [];
     }
 };
 

@@ -11,18 +11,16 @@ class Jugador {
      * @param {string} strNationality - Nacionalidad del jugador.
      * @param {string} dateBorn - Fecha de nacimiento del jugador.
      * @param {string} strTeam - Nombre del equipo actual del jugador.
-     * @param {string} strHeight - Altura del jugador.
-     * @param {string} strWeight - Peso del jugador.
+     * @param {number} numero - Número de camiseta del jugador.
      */
-    constructor(strPlayer, strPosition, strNationality, dateBorn, strTeam, strHeight, strWeight) {
+    constructor(strPlayer, strPosition, strNationality, dateBorn, strTeam, numero) {
         this.idPlayer = jugadorIdCounter++; // Auto-generated ID
         this.strPlayer = strPlayer;
         this.strPosition = strPosition;
         this.strNationality = strNationality;
         this.dateBorn = dateBorn;
         this.strTeam = strTeam;
-        this.strHeight = strHeight;
-        this.strWeight = strWeight;
+        this.numero = numero; // Número de camiseta
     }
 
     // Métodos para acceder a los atributos del jugador.
@@ -50,12 +48,8 @@ class Jugador {
         return this.strTeam;
     }
 
-    getStrHeight() {
-        return this.strHeight;
-    }
-
-    getStrWeight() {
-        return this.strWeight;
+    getNumero() {
+        return this.numero; // Getter para el número de camiseta
     }
 }
 
