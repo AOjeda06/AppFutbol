@@ -51,7 +51,18 @@ class View {
     </div>`
     }
 
-    renderTeams(teams) {
+    renderTeams() {
+        teams = [
+            { strTeam: "Barcelona", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg" },
+            { strTeam: "Real Madrid", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg" },
+            { strTeam: "Atlético de Madrid", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/6/6f/Atl%C3%A9tico_de_Madrid_logo.svg" },
+            { strTeam: "Manchester United", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/d/da/Manchester_United_FC_crest.svg" },
+            { strTeam: "Liverpool", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC_logo.svg" },
+            { strTeam: "Chelsea", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/c/c3/Chelsea_FC.svg" },
+            { strTeam: "Bayern Munich", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/b/ba/FC_Bayern_Munich_logo.svg" },
+            { strTeam: "Paris Saint-Germain", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/e/e7/Paris_Saint-Germain_F.C..svg" }
+        ]
+
         // Obtenemos el contenedor de la vista
         const vista = document.getElementById('vista');
         if (!vista) {
