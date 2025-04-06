@@ -25,11 +25,9 @@ const Model = {
      * Carga los datos desde localStorage si están disponibles.
      */
     inicializar: async function () {
-        const equiposGuardados = localStorage.getItem('equipos');
         const jugadoresGuardados = localStorage.getItem('jugadores');
 
-        if (equiposGuardados && jugadoresGuardados) {
-            equipos = JSON.parse(equiposGuardados);
+        if (jugadoresGuardados) {
             jugadores = JSON.parse(jugadoresGuardados);
             console.log("Datos cargados desde localStorage.");
         } else {
@@ -42,40 +40,13 @@ const Model = {
      */
     guardarEstado: function () {
         try {
-            // Compactar datos de equipos
-            const equiposCompactos = (equipos || []).map(equipo => ({
-                idTeam: equipo?.idTeam || null,
-                strTeam: equipo?.strTeam || null,
-                strLeague: equipo?.strLeague || null,
-                strLeague2: equipo?.strLeague2 || null,
-                strLeague3: equipo?.strLeague3 || null,
-                strLeague4: equipo?.strLeague4 || null,
-                strLeague5: equipo?.strLeague5 || null,
-                strLeague6: equipo?.strLeague6 || null,
-                strLeague7: equipo?.strLeague7 || null
-            }));
-
             // Compactar datos de jugadores
             const jugadoresCompactos = (jugadores || []).map(jugador => ({
                 idPlayer: jugador?.idPlayer || null,
                 strPlayer: jugador?.strPlayer || null,
                 dateBorn: jugador?.dateBorn || null,
                 strNationality: jugador?.strNationality || null,
-                strTeam: jugador?.strTeam || null, // Equipo en el que juega
-                strLeague: jugador?.strLeague || null, // Liga principal
-                strLeague1: jugador?.strLeague1 || null, // Liga adicional 1
-                strLeague2: jugador?.strLeague2 || null, // Liga adicional 2
-                strLeague3: jugador?.strLeague3 || null, // Liga adicional 3
-                strLeague4: jugador?.strLeague4 || null, // Liga adicional 4
-                strLeague5: jugador?.strLeague5 || null, // Liga adicional 5
-                strLeague6: jugador?.strLeague6 || null, // Liga adicional 6
-                strLeague7: jugador?.strLeague7 || null  // Liga adicional 7
-            }));
-
-            const ligasCompactas = (ligas || []).map(({ id, nombre, equipos }) => ({
-                id,
-                nombre,
-                equipos: (equipos || []).map(e => e?.idTeam || null)
+                strTeam: jugador?.strTeam || null // Equipo en el que juega
             }));
 
             // Dividir jugadores en fragmentos más pequeños
@@ -84,9 +55,6 @@ const Model = {
                 localStorage.setItem(`jugadores_${i / fragmentSize}`, JSON.stringify(jugadoresCompactos.slice(i, i + fragmentSize)));
             }
 
-            // Guardar equipos y ligas
-            localStorage.setItem('equipos', JSON.stringify(equiposCompactos));
-            localStorage.setItem('ligas', JSON.stringify(ligasCompactas));
             console.log("Estado guardado en localStorage.");
         } catch (error) {
             if (error.name === "QuotaExceededError") {
@@ -100,27 +68,21 @@ const Model = {
     /**
      * Agrega un nuevo jugador al modelo.
      * @param {string} nombre - Nombre del jugador.
-     * @param {string} apellidos - Apellidos del jugador.
-     * @param {string} apodo - Apodo del jugador.
      * @param {string} posicion - Posición del jugador.
-     * @param {number} numero - Número del jugador.
-     * @param {number} anioNacimiento - Año de nacimiento del jugador.
-     * @param {number} equipoId - ID del equipo al que pertenece el jugador.
+     * @param {string} nacimiento - Fecha de nacimiento del jugador.
+     * @param {number} equipo - ID del equipo al que pertenece el jugador.
      * @returns {Jugador} El jugador creado.
      */
-    agregarJugador: function (nombre, apellidos, apodo, posicion, numero, anioNacimiento, equipoId) {
+    agregarJugador: function (nombre, posicion, nacimiento, equipo) {
         const jugador = new Jugador(
             ++jugadorIdCounter,
             nombre,
-            apellidos,
-            apodo,
             posicion,
-            numero,
-            anioNacimiento,
-            equipoId
+            nacimiento,
+            equipo
         );
         jugadores.push(jugador);
-        this.guardarEstado(); // Guardar el estado actualizado
+        this.guardarEstado(); // Guardar el estado actualizado en localStorage
         return jugador;
     },
 
@@ -134,22 +96,20 @@ const Model = {
 
     /**
      * Agrega un nuevo equipo al modelo.
-     * @param {string} tipo - Tipo de equipo (e.g., club, selección).
      * @param {string} nombre - Nombre del equipo.
-     * @param {string|null} ciudad - Ciudad del equipo.
-     * @param {string|null} pais - País del equipo.
+     * @param {string} ciudad - Ciudad del equipo.
+     * @param {string} estadio - Estadio del equipo.
      * @returns {Equipo} El equipo creado.
      */
-    agregarEquipo: function (tipo, nombre, ciudad = null, pais = null) {
+    agregarEquipo: function (nombre, ciudad, estadio) {
         const equipo = new Equipo(
             ++equipoIdCounter,
-            tipo,
             nombre,
             ciudad,
-            pais
+            estadio
         );
         equipos.push(equipo);
-        this.guardarEstado(); // Guardar el estado actualizado
+        this.guardarEstado(); // Guardar el estado actualizado en localStorage
         return equipo;
     },
 
@@ -168,13 +128,27 @@ const Model = {
      * @throws {Error} Si el jugador o el equipo no existen.
      */
     asignarJugadorAEquipo: function (jugadorId, equipoId) {
-        const jugador = jugadores.find(j => j.getId() === jugadorId);
+        const jugador = jugadores.find(j => j.id === parseInt(jugadorId));
         if (!jugador) throw new Error("Jugador no encontrado.");
-        const equipo = equipos.find(e => e.getId() === equipoId);
-        if (!equipo) throw new Error("Equipo no encontrado.");
-        jugador.setEquipoId(equipoId);
-        equipo.agregarJugador(jugador);
-        this.guardarEstado(); // Guardar el estado actualizado
+        const nuevoEquipo = equipos.find(e => e.id === parseInt(equipoId));
+        if (!nuevoEquipo) throw new Error("Equipo no encontrado.");
+
+        // Eliminar al jugador de su equipo anterior, si tiene uno
+        if (jugador.equipo) {
+            const equipoAnterior = equipos.find(e => e.id === parseInt(jugador.equipo));
+            if (equipoAnterior) {
+                equipoAnterior.jugadores = equipoAnterior.jugadores.filter(j => j.id !== jugador.id);
+            }
+        }
+
+        // Asignar el nuevo equipo al jugador
+        jugador.equipo = equipoId;
+
+        // Añadir al jugador al nuevo equipo
+        if (!nuevoEquipo.jugadores) nuevoEquipo.jugadores = [];
+        nuevoEquipo.jugadores.push(jugador);
+
+        this.guardarEstado(); // Guardar el estado actualizado en localStorage
     },
 
     /**
@@ -194,68 +168,8 @@ const Model = {
             index++;
         }
 
-        // Reconstruir ligas
-        const ligasGuardadas = JSON.parse(localStorage.getItem('ligas')) || [];
-        ligas = ligasGuardadas.map(ligaData => {
-            const equiposLiga = equipos.filter(e => ligaData.equipos.includes(e.idTeam));
-            return new Liga(ligaData.id, ligaData.nombre, equiposLiga);
-        });
-
         this.guardarEstado(); // Guardar el estado actualizado
         console.log("Datos iniciales cargados en el modelo.");
-    },
-
-    /**
-     * Crear ligas a partir de los equipos.
-     */
-    crearLigas: function () {
-        const ligasMap = new Map();
-        const ligasPermitidas = [
-            "UEFA Champions League",
-            "English Premier League",
-            "Spanish La Liga",
-            "Italian Serie A",
-            "German Bundesliga"
-        ];
-
-        // Crear las ligas permitidas vacías
-        ligasPermitidas.forEach((ligaNombre, index) => {
-            ligasMap.set(ligaNombre, new Liga(index + 1, ligaNombre, []));
-        });
-
-        // Clasificar equipos por strLeague y strLeague1 a strLeague10
-        const equiposPorLiga = equipos.reduce((clasificacion, equipo) => {
-            let ligaAsignada = equipo.strLeague; // Liga nacional principal
-
-            // Comprobar strLeague1 a strLeague10 para la Champions League
-            for (let i = 1; i <= 10; i++) {
-                const leagueKey = `strLeague${i}`;
-                if (equipo[leagueKey] === "UEFA Champions League") {
-                    ligaAsignada = "UEFA Champions League"; // Asignar temporalmente para clasificación
-                    break;
-                }
-            }
-
-            if (ligasPermitidas.includes(ligaAsignada)) {
-                if (!clasificacion[ligaAsignada]) {
-                    clasificacion[ligaAsignada] = [];
-                }
-                clasificacion[ligaAsignada].push(equipo);
-            }
-            return clasificacion;
-        }, {});
-
-        // Asignar equipos clasificados a las ligas correspondientes
-        Object.entries(equiposPorLiga).forEach(([ligaNombre, equiposLiga]) => {
-            if (ligasMap.has(ligaNombre)) {
-                equiposLiga.forEach(equipo => ligasMap.get(ligaNombre).agregarEquipo(equipo));
-            }
-        });
-
-        // Convertir el mapa a un array
-        ligas = Array.from(ligasMap.values());
-        this.guardarEstado();
-        console.log("Ligas creadas y guardadas en el modelo.");
     }
 };
 

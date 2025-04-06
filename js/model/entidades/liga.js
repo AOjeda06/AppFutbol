@@ -5,88 +5,58 @@ class Liga {
     /**
      * Constructor: Inicializa los atributos de la liga.
      * @param {number} id - ID único de la liga.
-     * @param {string} nombre - Nombre de la liga.
-     * @param {Array} equipos - Equipos participantes.
+     * @param {string} name - Nombre de la liga.
+     * @param {string} code - Código de la liga.
+     * @param {string} type - Tipo de la liga (e.g., LEAGUE, CUP).
+     * @param {string} emblem - URL del emblema de la liga.
+     * @param {Object} season - Detalles de la temporada actual.
+     * @param {Array} teams - Equipos participantes en la liga.
      */
-    constructor(id, nombre, equipos = []) {
-        this._id = id;
-        this._nombre = nombre;
-        this._equipos = equipos;
-        this._pais = null; // País al que pertenece la liga
-        this._logo = null; // URL del logo de la liga
-        this._bandera = null; // URL de la bandera del país
-        this._temporadas = []; // Array de temporadas disponibles
+    constructor(id, name, code, type, emblem, season, teams = []) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
+        this.type = type;
+        this.emblem = emblem;
+        this.season = season; // Objeto con detalles de la temporada
+        this.teams = teams; // Lista de equipos participantes
     }
 
     // Métodos para acceder a los atributos de la liga.
     getId() {
-        return this._id;
+        return this.id;
     }
 
-    getNombre() {
-        return this._nombre;
+    getName() {
+        return this.name;
     }
 
-    getPais() {
-        return this._pais;
+    getCode() {
+        return this.code;
     }
 
-    getLogo() {
-        return this._logo;
+    getType() {
+        return this.type;
     }
 
-    getBandera() {
-        return this._bandera;
+    getEmblem() {
+        return this.emblem;
     }
 
-    getTemporadas() {
-        return this._temporadas;
+    getSeason() {
+        return this.season;
     }
 
-    /**
-     * Método para establecer las temporadas disponibles.
-     * @param {Array} temporadas - Array de temporadas.
-     */
-    setTemporadas(temporadas) {
-        this._temporadas = temporadas;
+    getTeams() {
+        return this.teams;
     }
 
     /**
      * Método para agregar un equipo a la liga.
-     * @param {Object} equipo - Objeto equipo a agregar.
+     * @param {Object} team - Objeto equipo a agregar.
      */
-    agregarEquipo(equipo) {
-        this._equipos.push(equipo);
-    }
-
-    /**
-     * Método para obtener los equipos de la liga.
-     * @returns {Array} Lista de equipos en la liga.
-     */
-    getEquipos() {
-        return this._equipos;
-    }
-
-    /**
-     * Método para calcular estadísticas de la liga.
-     * @returns {Object} Estadísticas agregadas de la liga.
-     */
-    calcularEstadisticas() {
-        const estadisticas = {
-            totalEquipos: this._equipos.length,
-            totalGolesFavor: 0,
-            totalGolesContra: 0,
-            totalPartidos: 0,
-        };
-
-        this._equipos.forEach(equipo => {
-            const equipoStats = equipo.getEstadisticas();
-            estadisticas.totalGolesFavor += equipoStats.golesFavor;
-            estadisticas.totalGolesContra += equipoStats.golesContra;
-            estadisticas.totalPartidos += equipoStats.ganados + equipoStats.perdidos + equipoStats.empatados;
-        });
-
-        return estadisticas;
+    addTeam(team) {
+        this.teams.push(team);
     }
 }
 

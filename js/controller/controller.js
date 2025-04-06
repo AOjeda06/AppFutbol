@@ -43,7 +43,7 @@ class Controller {
         const equipo = document.getElementById("equipo").value;
 
         if (nombre && posicion && nacimiento && equipo) {
-            this.model.agregarJugador({ nombre, posicion, nacimiento, equipo });
+            this.model.agregarJugador(nombre, posicion, nacimiento, equipo);
             alert("Jugador agregado correctamente");
         } else {
             alert("Por favor, complete todos los campos");
@@ -56,7 +56,7 @@ class Controller {
         const estadio = document.getElementById("estadio").value;
 
         if (nombre && ciudad && estadio) {
-            this.model.agregarEquipo({ nombre, ciudad, estadio });
+            this.model.agregarEquipo(nombre, ciudad, estadio);
             alert("Equipo agregado correctamente");
         } else {
             alert("Por favor, complete todos los campos");
@@ -65,11 +65,15 @@ class Controller {
 
     asociarJugadorEquipo() {
         const jugadorId = document.getElementById("jugador-id").value;
-        const equipo = document.getElementById("equipo").value;
+        const equipoId = document.getElementById("equipo").value;
 
-        if (jugadorId && equipo) {
-            this.model.asignarJugadorEquipo(jugadorId, equipo);
-            alert("Jugador asignado al equipo correctamente");
+        if (jugadorId && equipoId) {
+            try {
+                this.model.asignarJugadorAEquipo(jugadorId, equipoId);
+                alert("Jugador asignado al equipo correctamente");
+            } catch (error) {
+                alert(error.message);
+            }
         } else {
             alert("Por favor, complete todos los campos");
         }

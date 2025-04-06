@@ -6,53 +6,87 @@ let equipoIdCounter = 200000; // Auto-generated ID starting from 200000
 class Equipo {
     /**
      * Constructor: Inicializa los atributos del equipo.
-     * @param {string} strTeam - Nombre del equipo.
-     * @param {string} strLeague - Liga principal del equipo.
-     * @param {string} strCountry - País del equipo.
-     * @param {number} intFormedYear - Año de fundación del equipo.
-     * @param {string} strStadium - Nombre del estadio del equipo.
-     * @param {number} intStadiumCapacity - Capacidad del estadio.
+     * @param {number} id - ID del equipo.
+     * @param {string} name - Nombre del equipo.
+     * @param {string} shortName - Nombre corto del equipo.
+     * @param {string} tla - Abreviatura del equipo.
+     * @param {string} crest - URL del escudo del equipo.
+     * @param {string} address - Dirección del equipo.
+     * @param {string} website - Sitio web del equipo.
+     * @param {number} founded - Año de fundación del equipo.
+     * @param {string} clubColors - Colores del club.
+     * @param {string} venue - Nombre del estadio.
+     * @param {Array} runningCompetitions - Competencias en las que participa el equipo.
      */
     constructor(
-        strTeam,
-        strLeague,
-        strCountry,
-        intFormedYear,
-        strStadium,
-        intStadiumCapacity
+        id,
+        name,
+        shortName,
+        tla,
+        crest,
+        address,
+        website,
+        founded,
+        clubColors,
+        venue,
+        runningCompetitions = []
     ) {
-        this.idTeam = equipoIdCounter++; // Auto-generated ID
-        this.strTeam = strTeam;
-        this.strLeague = strLeague;
-        this.strCountry = strCountry;
-        this.intFormedYear = intFormedYear;
-        this.strStadium = strStadium;
-        this.intStadiumCapacity = intStadiumCapacity;
+        this.id = id || equipoIdCounter++; // Auto-generated ID if not provided
+        this.name = name;
+        this.shortName = shortName;
+        this.tla = tla;
+        this.crest = crest;
+        this.address = address;
+        this.website = website;
+        this.founded = founded;
+        this.clubColors = clubColors;
+        this.venue = venue;
+        this.runningCompetitions = runningCompetitions;
     }
 
     // Métodos para acceder a los atributos del equipo.
-    getIdTeam() {
-        return this.idTeam;
+    getId() {
+        return this.id;
     }
 
-    getStrTeam() {
-        return this.strTeam;
+    getName() {
+        return this.name;
     }
 
-    getStrLeague() {
-        return this.strLeague;
+    getShortName() {
+        return this.shortName;
     }
 
-    getStrCountry() {
-        return this.strCountry;
+    getTla() {
+        return this.tla;
     }
 
-    getStrStadium() {
-        return this.strStadium;
+    getCrest() {
+        return this.crest;
     }
 
-    getIntStadiumCapacity() {
-        return this.intStadiumCapacity;
+    getAddress() {
+        return this.address;
+    }
+
+    getWebsite() {
+        return this.website;
+    }
+
+    getFounded() {
+        return this.founded;
+    }
+
+    getClubColors() {
+        return this.clubColors;
+    }
+
+    getVenue() {
+        return this.venue;
+    }
+
+    getRunningCompetitions() {
+        return this.runningCompetitions;
     }
 }
 

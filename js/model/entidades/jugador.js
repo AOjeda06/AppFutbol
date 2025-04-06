@@ -6,50 +6,39 @@ let jugadorIdCounter = 300000; // Auto-generated ID starting from 300000
 class Jugador {
     /**
      * Constructor: Inicializa los atributos del jugador.
-     * @param {string} strPlayer - Nombre del jugador.
-     * @param {string} strPosition - Posición del jugador.
-     * @param {string} strNationality - Nacionalidad del jugador.
-     * @param {string} dateBorn - Fecha de nacimiento del jugador.
-     * @param {string} strTeam - Nombre del equipo actual del jugador.
-     * @param {number} numero - Número de camiseta del jugador.
+     * @param {number} id - ID del jugador.
+     * @param {string} name - Nombre del jugador.
+     * @param {string} position - Posición del jugador.
+     * @param {string} dateOfBirth - Fecha de nacimiento del jugador.
+     * @param {string} nationality - Nacionalidad del jugador.
      */
-    constructor(strPlayer, strPosition, strNationality, dateBorn, strTeam, numero) {
-        this.idPlayer = jugadorIdCounter++; // Auto-generated ID
-        this.strPlayer = strPlayer;
-        this.strPosition = strPosition;
-        this.strNationality = strNationality;
-        this.dateBorn = dateBorn;
-        this.strTeam = strTeam;
-        this.numero = numero; // Número de camiseta
+    constructor(id, name, position, dateOfBirth, nationality) {
+        this.id = id || jugadorIdCounter++; // Auto-generated ID if not provided
+        this.name = name;
+        this.position = position;
+        this.dateOfBirth = dateOfBirth;
+        this.nationality = nationality;
     }
 
     // Métodos para acceder a los atributos del jugador.
-    getIdPlayer() {
-        return this.idPlayer;
+    getId() {
+        return this.id;
     }
 
-    getStrPlayer() {
-        return this.strPlayer;
+    getName() {
+        return this.name;
     }
 
-    getStrPosition() {
-        return this.strPosition;
+    getPosition() {
+        return this.position;
     }
 
-    getStrNationality() {
-        return this.strNationality;
+    getDateOfBirth() {
+        return this.dateOfBirth;
     }
 
-    getDateBorn() {
-        return this.dateBorn;
-    }
-
-    getStrTeam() {
-        return this.strTeam;
-    }
-
-    getNumero() {
-        return this.numero; // Getter para el número de camiseta
+    getNationality() {
+        return this.nationality;
     }
 }
 
