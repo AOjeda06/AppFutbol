@@ -13,18 +13,18 @@ let equipos = [];
 let ligas = []; // Array para almacenar las ligas
 
 // El objeto Model actúa como una capa de datos para la aplicación.
-const Model = {
+export class Model {
     // Objeto para almacenar los datos de equipos
-    equipos: [],
+    equipos = [];
 
     // Objeto para almacenar los datos de jugadores
-    jugadores: [],
+    jugadores = [];
 
     /**
      * Inicializar el modelo con datos.
      * Carga los datos desde localStorage si están disponibles.
      */
-    inicializar: async function () {
+    async inicializar() {
         const jugadoresGuardados = localStorage.getItem('jugadores');
 
         if (jugadoresGuardados) {
@@ -33,12 +33,12 @@ const Model = {
         } else {
             console.log("No se encontraron datos en localStorage.");
         }
-    },
+    }
 
     /**
      * Guarda el estado actual en localStorage.
      */
-    guardarEstado: function () {
+    guardarEstado() {
         try {
             // Compactar datos de jugadores
             const jugadoresCompactos = (jugadores || []).map(jugador => ({
@@ -63,7 +63,7 @@ const Model = {
                 throw error;
             }
         }
-    },
+    }
 
     /**
      * Agrega un nuevo jugador al modelo.
@@ -73,7 +73,7 @@ const Model = {
      * @param {number} equipo - ID del equipo al que pertenece el jugador.
      * @returns {Jugador} El jugador creado.
      */
-    agregarJugador: function (nombre, posicion, nacimiento, equipo) {
+    agregarJugador(nombre, posicion, nacimiento, equipo) {
         const jugador = new Jugador(
             ++jugadorIdCounter,
             nombre,
@@ -84,15 +84,15 @@ const Model = {
         jugadores.push(jugador);
         this.guardarEstado(); // Guardar el estado actualizado en localStorage
         return jugador;
-    },
+    }
 
     /**
      * Obtiene todos los jugadores almacenados en el modelo.
      * @returns {Array} Lista de jugadores.
      */
-    obtenerJugadores: function () {
+    obtenerJugadores() {
         return jugadores;
-    },
+    }
 
     /**
      * Agrega un nuevo equipo al modelo.
@@ -101,7 +101,7 @@ const Model = {
      * @param {string} estadio - Estadio del equipo.
      * @returns {Equipo} El equipo creado.
      */
-    agregarEquipo: function (nombre, ciudad, estadio) {
+    agregarEquipo(nombre, ciudad, estadio) {
         const equipo = new Equipo(
             ++equipoIdCounter,
             nombre,
@@ -111,15 +111,15 @@ const Model = {
         equipos.push(equipo);
         this.guardarEstado(); // Guardar el estado actualizado en localStorage
         return equipo;
-    },
+    }
 
     /**
      * Obtiene todos los equipos almacenados en el modelo.
      * @returns {Array} Lista de equipos.
      */
-    obtenerEquipos: function () {
+    obtenerEquipos() {
         return equipos;
-    },
+    }
 
     /**
      * Asigna un jugador a un equipo.
@@ -127,7 +127,7 @@ const Model = {
      * @param {number} equipoId - ID del equipo.
      * @throws {Error} Si el jugador o el equipo no existen.
      */
-    asignarJugadorAEquipo: function (jugadorId, equipoId) {
+    asignarJugadorAEquipo(jugadorId, equipoId) {
         const jugador = jugadores.find(j => j.id === parseInt(jugadorId));
         if (!jugador) throw new Error("Jugador no encontrado.");
         const nuevoEquipo = equipos.find(e => e.id === parseInt(equipoId));
@@ -149,34 +149,13 @@ const Model = {
         nuevoEquipo.jugadores.push(jugador);
 
         this.guardarEstado(); // Guardar el estado actualizado en localStorage
-    },
-
-    /**
-     * Carga los datos iniciales en el modelo.
-     * @param {Object} datos - Objeto que contiene los datos iniciales.
-     * @param {Array} datos.equipos - Lista de equipos.
-     * @param {Array} datos.jugadores - Lista de jugadores.
-     */
-    cargarDatosIniciales: function ({ equipos: equiposNuevos, jugadores: jugadoresNuevos }) {
-        equipos = equiposNuevos;
-
-        // Reconstruir jugadores desde fragmentos
-        jugadores = [];
-        let index = 0;
-        while (localStorage.getItem(`jugadores_${index}`)) {
-            jugadores.push(...JSON.parse(localStorage.getItem(`jugadores_${index}`)));
-            index++;
-        }
-
-        this.guardarEstado(); // Guardar el estado actualizado
-        console.log("Datos iniciales cargados en el modelo.");
-    },
+    }
 
     /**
      * Obtiene todos los datos de jugadores desde localStorage.
      * @returns {Array} Lista de jugadores.
      */
-    obtenerDatosJugadores: function () {
+    obtenerDatosJugadores() {
         let jugadoresCompactos = [];
         let index = 0;
         while (localStorage.getItem(`jugadores_${index}`)) {
@@ -184,14 +163,14 @@ const Model = {
             index++;
         }
         return jugadoresCompactos;
-    },
+    }
 
     /**
      * Actualiza los datos de un jugador en localStorage.
      * @param {number} jugadorId - ID del jugador a actualizar.
      * @param {Object} nuevosDatos - Nuevos datos del jugador.
      */
-    actualizarJugador: function (jugadorId, nuevosDatos) {
+    actualizarJugador(jugadorId, nuevosDatos) {
         const jugadoresCompactos = this.obtenerDatosJugadores();
         const jugadorIndex = jugadoresCompactos.findIndex(j => j.idPlayer === jugadorId);
         if (jugadorIndex === -1) throw new Error("Jugador no encontrado.");
@@ -204,22 +183,22 @@ const Model = {
         for (let i = 0; i < jugadoresCompactos.length; i += fragmentSize) {
             localStorage.setItem(`jugadores_${i / fragmentSize}`, JSON.stringify(jugadoresCompactos.slice(i, i + fragmentSize)));
         }
-    },
+    }
 
     /**
      * Obtiene todos los datos de equipos desde localStorage.
      * @returns {Array} Lista de equipos.
      */
-    obtenerDatosEquipos: function () {
+    obtenerDatosEquipos() {
         return JSON.parse(localStorage.getItem('equipos')) || [];
-    },
+    }
 
     /**
      * Actualiza los datos de un equipo en localStorage.
      * @param {number} equipoId - ID del equipo a actualizar.
      * @param {Object} nuevosDatos - Nuevos datos del equipo.
      */
-    actualizarEquipo: function (equipoId, nuevosDatos) {
+    actualizarEquipo(equipoId, nuevosDatos) {
         const equipos = this.obtenerDatosEquipos();
         const equipoIndex = equipos.findIndex(e => e.id === equipoId);
         if (equipoIndex === -1) throw new Error("Equipo no encontrado.");
@@ -229,22 +208,22 @@ const Model = {
 
         // Guardar los datos actualizados
         localStorage.setItem('equipos', JSON.stringify(equipos));
-    },
+    }
 
     /**
      * Obtiene todos los datos de ligas desde localStorage.
      * @returns {Array} Lista de ligas.
      */
-    obtenerDatosLigas: function () {
+    obtenerDatosLigas() {
         return JSON.parse(localStorage.getItem('ligas')) || [];
-    },
+    }
 
     /**
      * Actualiza los datos de una liga en localStorage.
      * @param {number} ligaId - ID de la liga a actualizar.
      * @param {Object} nuevosDatos - Nuevos datos de la liga.
      */
-    actualizarLiga: function (ligaId, nuevosDatos) {
+    actualizarLiga(ligaId, nuevosDatos) {
         const ligas = this.obtenerDatosLigas();
         const ligaIndex = ligas.findIndex(l => l.id === ligaId);
         if (ligaIndex === -1) throw new Error("Liga no encontrada.");
@@ -255,6 +234,18 @@ const Model = {
         // Guardar los datos actualizados
         localStorage.setItem('ligas', JSON.stringify(ligas));
     }
-};
+
+    /**
+     * Carga los datos iniciales en el modelo.
+     * @param {Object} datos - Objeto que contiene los datos iniciales.
+     * @param {Array} datos.equipos - Lista de equipos.
+     * @param {Array} datos.jugadores - Lista de jugadores.
+     */
+    static cargarDatosIniciales({ equipos: equiposNuevos, jugadores: jugadoresNuevos }) {
+        equipos = equiposNuevos;
+        jugadores = jugadoresNuevos || [];
+        console.log("Datos iniciales cargados en el modelo.");
+    }
+}
 
 export default Model;

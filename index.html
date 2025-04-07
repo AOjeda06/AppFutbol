@@ -24,23 +24,23 @@
             <div class="dropdown">
                 <button class="dropbtn">Equipo</button>
                 <div class="dropdown-content">
-                    <button class="opcionesBoton" id="addTeams">Agregar Equipo</button>
+                    <button class="opcionesBoton" id="btnAgregarEquipo">Agregar Equipo</button>
                     <button class="opcionesBoton" id="showTeams">Mostrar Equipos</button>
                 </div>
             </div>
             <div class="dropdown">
                 <button class="dropbtn">Jugadores</button>
                 <div class="dropdown-content">
-                    <button class="opcionesBoton" id="addPlayer">Añadir Jugador</button>
+                    <button class="opcionesBoton" id="btnAgregarJugador">Añadir Jugador</button>
                     <button class="opcionesBoton" id="showPlayers">Mostrar Jugadores</button>
                 </div>
             </div>
         </div>
     </header>
     <div id="vista"></div>
-    <script>
+    <script type="module">
+        import { Controller } from './js/controller/controller.js';
         const controlador = new Controller();
-
     </script>
 </body>
 

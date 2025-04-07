@@ -1,15 +1,16 @@
-import Model from "../model/model.js";
+import { Model } from "../model/model.js";
 import View from "../view/view.js";
 
-class Controller {
+export class Controller {
     constructor() {
         this.model = new Model();
         this.view = new View();
 
-        // Asignar eventos a los botones
-        document.getElementById("btnAgregarJugador").addEventListener("click", () => this.mostrarFormularioJugador());
-        document.getElementById("btnAgregarEquipo").addEventListener("click", () => this.mostrarFormularioEquipo());
-        document.getElementById("btnAsignarEquipo").addEventListener("click", () => this.mostrarFormularioAsociacion());
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("btnAgregarJugador").addEventListener("click", () => this.mostrarFormularioJugador());
+            document.getElementById("btnAgregarEquipo").addEventListener("click", () => this.mostrarFormularioEquipo());
+            document.getElementById("btnAsignarEquipo").addEventListener("click", () => this.mostrarFormularioAsociacion());
+        });
     }
 
     mostrarFormularioJugador() {
@@ -79,5 +80,3 @@ class Controller {
         }
     }
 }
-
-export default Controller;
