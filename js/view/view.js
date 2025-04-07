@@ -136,5 +136,64 @@ class View {
             vista.appendChild(row);
         }
     }
+
+    renderPlayers(players) {
+        // Obtenemos el contenedor de la vista
+        const vista = document.getElementById('vista');
+        if (!vista) {
+            console.error("No se encontró el elemento con id 'vista'");
+            return;
+        }
+
+        // Limpiamos el contenido previo
+        vista.innerHTML = '';
+
+        // Recorrer el array de jugadores y agruparlos en filas de 3 columnas
+        let row;
+        players.forEach((player, index) => {
+            if (index % 3 === 0) {
+                // Cada 3 jugadores se crea una nueva fila
+                row = document.createElement('div');
+                row.className = 'row';
+            }
+
+            // Crear el div que contendrá la información del jugador
+            const col = document.createElement('div');
+            col.className = 'col-md-4'; // Usamos clases de Bootstrap para 3 columnas
+
+            // Crear un div interno para el jugador, con estilos opcionales
+            const playerDiv = document.createElement('div');
+            playerDiv.style.textAlign = 'center'; // Alineación al centro
+
+            // Crear el elemento de imagen del jugador
+            const foto = document.createElement('img');
+            foto.src = player.strPlayerPhoto || 'default-player.png'; // Imagen por defecto si no hay foto
+            foto.alt = player.strPlayer;
+            foto.style.width = '100px'; // Ajusta el tamaño según tu diseño
+            foto.style.height = 'auto';
+
+            // Crear el elemento con el nombre del jugador
+            const nombre = document.createElement('h3');
+            nombre.textContent = player.strPlayer;
+
+            // Crear el elemento con la posición del jugador
+            const posicion = document.createElement('p');
+            posicion.textContent = `Posición: ${player.strPosition}`;
+
+            // Insertamos la imagen, el nombre y la posición en el contenedor del jugador
+            playerDiv.appendChild(foto);
+            playerDiv.appendChild(nombre);
+            playerDiv.appendChild(posicion);
+
+            // Insertamos el contenedor del jugador en la columna y la columna en la fila
+            col.appendChild(playerDiv);
+            row.appendChild(col);
+
+            // Cada 3 jugadores, se añade la fila completa al contenedor principal
+            if ((index + 1) % 3 === 0) {
+                vista.appendChild(row);
+            }
+        });
+    }
 }
 export default View;
