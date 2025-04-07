@@ -5,6 +5,7 @@ class View {
 
     createPlayerForm() {
         this.view.innerHTML = `<div id="jugador-form">
+    <form>
     <h2>Crear Jugador</h2>
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" required>
@@ -18,12 +19,14 @@ class View {
     <label for="equipo">Equipo:</label>
     <input type="text" id="equipo" required>
     <br>
-    <button type="button">Enviar</button>
+    <button type="submit" id="addPlayer">Agregar Jugador</button>
+    </form>
     </div>`
     }
 
     createTeamForm() {
         this.view.innerHTML = `<div id="equipo-form">
+    <form>
     <h2>Crear Equipo</h2>
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" required>
@@ -34,12 +37,14 @@ class View {
     <label for="estadio">Estadio:</label>
     <input type="text" id="estadio" required>
     <br>
-    <button type="button">Enviar</button>
+    <button type="submit" id="addTeam">Agregar Equipo</button>
+    </form>
     </div>`
     }
 
     createAssociatorForm() {
         this.view.innerHTML = `<div id="asociador-form">
+    <form>
     <h2>Asociar Jugador a Equipo</h2>
     <label for="jugador">Jugador:</label>
     <input type="number" id="jugador-id" required>
@@ -47,22 +52,33 @@ class View {
     <label for="equipo">Equipo:</label>
     <input type="number" id="equipo" required>
     <br>
-    <button type="button">Asociar</button>
+    <button type="submit" id="addAssociator">Asignar Jugador</button>
+    </form>
     </div>`
     }
 
-    renderTeams() {
-        teams = [
-            { strTeam: "Barcelona", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg" },
-            { strTeam: "Real Madrid", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg" },
-            { strTeam: "Atlético de Madrid", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/6/6f/Atl%C3%A9tico_de_Madrid_logo.svg" },
-            { strTeam: "Manchester United", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/d/da/Manchester_United_FC_crest.svg" },
-            { strTeam: "Liverpool", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC_logo.svg" },
-            { strTeam: "Chelsea", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/c/c3/Chelsea_FC.svg" },
-            { strTeam: "Bayern Munich", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/b/ba/FC_Bayern_Munich_logo.svg" },
-            { strTeam: "Paris Saint-Germain", strTeamBadge: "https://upload.wikimedia.org/wikipedia/en/e/e7/Paris_Saint-Germain_F.C..svg" }
-        ]
+    createDeletePlayerForm() {
+        this.view.innerHTML = `<div id="borrar-form">
+    <form>
+    <h2>Borrar Jugador</h2>
+    <label>ID Jugador:</label>
+    <input type="number" id="jugador-id" required>
+    <button type="submit" id="deletePlayer">Borrar Jugador</button>
+    </form>
+    </div>`
+    }
+    createDeleteTeamForm() {
+        this.view.innerHTML = `<div id="borrar-form">
+    <form>
+    <h2>Borrar Equipo</h2>
+    <label>ID Equipo:</label>
+    <input type="number" id="equipo-id" required>
+    <button type="submit" id="deleteTeam">Borrar Eqiupo</button>
+    </form>
+    </div>`
+    }
 
+    renderTeams(teams) {
         // Obtenemos el contenedor de la vista
         const vista = document.getElementById('vista');
         if (!vista) {

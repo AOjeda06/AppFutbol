@@ -15,7 +15,7 @@ export class Controller {
 
     mostrarFormularioJugador() {
         this.view.createPlayerForm();
-        const submitButton = document.createElement("button");
+        const submitButton = document.querySelector("addPlayer");
         submitButton.textContent = "Guardar Jugador";
         submitButton.addEventListener("click", () => this.agregarJugador());
         document.getElementById("jugador-form").appendChild(submitButton);
@@ -23,7 +23,7 @@ export class Controller {
 
     mostrarFormularioEquipo() {
         this.view.createTeamForm();
-        const submitButton = document.createElement("button");
+        const submitButton = document.querySelector("addTeam");
         submitButton.textContent = "Guardar Equipo";
         submitButton.addEventListener("click", () => this.agregarEquipo());
         document.getElementById("equipo-form").appendChild(submitButton);
@@ -31,7 +31,7 @@ export class Controller {
 
     mostrarFormularioAsociacion() {
         this.view.createAssociatorForm();
-        const submitButton = document.createElement("button");
+        const submitButton = document.querySelector("addAssociator");
         submitButton.textContent = "Asignar Jugador";
         submitButton.addEventListener("click", () => this.asociarJugadorEquipo());
         document.getElementById("asociador-form").appendChild(submitButton);
