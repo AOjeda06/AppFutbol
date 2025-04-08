@@ -78,6 +78,27 @@ class View {
     </div>`
     }
 
+    getPlayerFormData() {
+
+        let player = [];
+        const nombre = document.getElementById("nombre").value;
+        const posicion = document.getElementById("posicion").value;
+        const nacimiento = document.getElementById("nacimiento").value;
+        const equipo = document.getElementById("equipo").value;
+        player.push(nombre, posicion, nacimiento, equipo);
+        return player;
+
+    }
+
+    getTeamFormData() {
+        let team = [];
+        const nombre = document.getElementById("nombre").value;
+        const ciudad = document.getElementById("ciudad").value;
+        const estadio = document.getElementById("estadio").value;
+        team.push(nombre, ciudad, estadio);
+        return team;
+    }
+
     renderTeams(teams) {
         // Obtenemos el contenedor de la vista
         const vista = document.getElementById('vista');
