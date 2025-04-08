@@ -10,16 +10,16 @@ class Liga {
      * @param {string} type - Tipo de la liga (e.g., LEAGUE, CUP).
      * @param {string} emblem - URL del emblema de la liga.
      * @param {Object} season - Detalles de la temporada actual.
-     * @param {Array} teams - Equipos participantes en la liga.
+     * @param {Array} equiposIds - IDs de los equipos participantes.
      */
-    constructor(id, name, code, type, emblem, season, teams = []) {
+    constructor(id, name, code, type, emblem, season, equiposIds = []) {
         this.id = id;
         this.name = name;
         this.code = code;
         this.type = type;
         this.emblem = emblem;
         this.season = season; // Objeto con detalles de la temporada
-        this.teams = teams; // Lista de equipos participantes
+        this.equiposIds = equiposIds; // Lista de IDs de equipos participantes
     }
 
     // Métodos para acceder a los atributos de la liga.
@@ -47,16 +47,16 @@ class Liga {
         return this.season;
     }
 
-    getTeams() {
-        return this.teams;
+    getEquiposIds() {
+        return this.equiposIds;
     }
 
     /**
-     * Método para agregar un equipo a la liga.
-     * @param {Object} team - Objeto equipo a agregar.
+     * Método para agregar un ID de equipo a la lista de equipos.
+     * @param {number} equipoId - ID del equipo a agregar.
      */
-    addTeam(team) {
-        this.teams.push(team);
+    addEquipoId(equipoId) {
+        this.equiposIds.push(equipoId);
     }
 }
 
