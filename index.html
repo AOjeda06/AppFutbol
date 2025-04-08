@@ -45,7 +45,12 @@
     <div id="vista"></div>
     <script type="module">
         import { Controller } from './js/controller/controller.js';
+        import Model from './js/model/model.js';
+
         const controlador = new Controller();
+
+        // Exponer Model al ámbito global para pruebas en la consola
+        window.Model = Model;
     </script>
 </body>
 

@@ -6,6 +6,13 @@ export class Controller {
         this.model = new Model();
         this.view = new View();
 
+        // Inicializar el modelo
+        this.model.inicializar().then(() => {
+            console.log("Modelo inicializado correctamente.");
+        }).catch(error => {
+            console.error("Error al inicializar el modelo:", error);
+        });
+
         document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("btnAgregarJugador").addEventListener("click", () => this.mostrarFormularioJugador());
             document.getElementById("btnAgregarEquipo").addEventListener("click", () => this.mostrarFormularioEquipo());

@@ -29,9 +29,9 @@ export class Model {
 
         if (jugadoresGuardados) {
             jugadores = JSON.parse(jugadoresGuardados);
-            console.log("Datos cargados desde localStorage.");
+            console.log("Datos de jugadores cargados desde localStorage.");
         } else {
-            console.log("No se encontraron datos en localStorage.");
+            console.log("No se encontraron datos de jugadores en localStorage. Es posible que sea la primera ejecución.");
         }
     }
 
@@ -40,13 +40,13 @@ export class Model {
      */
     guardarEstado() {
         try {
-            // Compactar datos de jugadores
+            // Compactar datos de jugadores con nombres consistentes
             const jugadoresCompactos = (jugadores || []).map(jugador => ({
-                idPlayer: jugador?.idPlayer || null,
-                strPlayer: jugador?.strPlayer || null,
-                dateBorn: jugador?.dateBorn || null,
-                strNationality: jugador?.strNationality || null,
-                strTeam: jugador?.strTeam || null // Equipo en el que juega
+                id: jugador?.id || null,
+                name: jugador?.name || null,
+                dateOfBirth: jugador?.dateOfBirth || null,
+                nationality: jugador?.nationality || null,
+                equipoId: jugador?.equipoId || null // ID del equipo al que pertenece
             }));
 
             // Dividir jugadores en fragmentos más pequeños
@@ -81,8 +81,17 @@ export class Model {
             nacimiento,
             equipo
         );
+
+        // Asegurarse de que el array jugadores está inicializado
+        if (!jugadores) jugadores = [];
+
+        // Añadir el jugador al array
         jugadores.push(jugador);
-        this.guardarEstado(); // Guardar el estado actualizado en localStorage
+
+        // Guardar el estado actualizado en localStorage
+        localStorage.setItem('jugadores', JSON.stringify(jugadores));
+
+        console.log("Jugador añadido y guardado en localStorage:", jugador);
         return jugador;
     }
 
@@ -172,7 +181,7 @@ export class Model {
      */
     actualizarJugador(jugadorId, nuevosDatos) {
         const jugadoresCompactos = this.obtenerDatosJugadores();
-        const jugadorIndex = jugadoresCompactos.findIndex(j => j.idPlayer === jugadorId);
+        const jugadorIndex = jugadoresCompactos.findIndex(j => j.id === jugadorId);
         if (jugadorIndex === -1) throw new Error("Jugador no encontrado.");
 
         // Actualizar los datos del jugador
@@ -239,12 +248,43 @@ export class Model {
      * Carga los datos iniciales en el modelo.
      * @param {Object} datos - Objeto que contiene los datos iniciales.
      * @param {Array} datos.equipos - Lista de equipos.
-     * @param {Array} datos.jugadores - Lista de jugadores.
      */
-    static cargarDatosIniciales({ equipos: equiposNuevos, jugadores: jugadoresNuevos }) {
-        equipos = equiposNuevos;
-        jugadores = jugadoresNuevos || [];
-        console.log("Datos iniciales cargados en el modelo.");
+    static cargarDatosIniciales({ equipos: equiposNuevos }) {
+        // Procesar equipos desde los datos iniciales
+        const equiposProcesados = equiposNuevos.map(equipo => ({
+            id: equipo.id,
+            name: equipo.name,
+            shortName: equipo.shortName,
+            tla: equipo.tla,
+            crest: equipo.crest,
+            address: equipo.address,
+            website: equipo.website,
+            founded: equipo.founded,
+            clubColors: equipo.clubColors,
+            venue: equipo.venue,
+            runningCompetitions: equipo.runningCompetitions || []
+        }));
+
+        // Extraer jugadores desde el array squad de cada equipo
+        const jugadoresProcesados = equiposNuevos.flatMap(equipo =>
+            (equipo.squad || []).map(jugador => ({
+                id: jugador.id,
+                name: jugador.name,
+                dateOfBirth: jugador.dateOfBirth,
+                nationality: jugador.nationality,
+                equipoId: equipo.id // Relación explícita con el equipo
+            }))
+        );
+
+        // Guardar los datos procesados en el modelo
+        equipos = equiposProcesados;
+        jugadores = jugadoresProcesados;
+
+        // Guardar en localStorage
+        localStorage.setItem('equipos', JSON.stringify(equipos));
+        localStorage.setItem('jugadores', JSON.stringify(jugadores));
+
+        console.log("Datos iniciales procesados y cargados en el modelo.");
     }
 }
 
