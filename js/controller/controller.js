@@ -149,7 +149,10 @@ export class Controller {
     mostrarFormularioEliminarEquipo() {
         this.view.createDeleteTeamForm();
         const submitButton = document.getElementById("deleteTeam"); // Updated selector
-        submitButton.addEventListener("click", () => this.eliminarEquipo());
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault(); // Evitar el comportamiento por defecto del formulario
+            this.eliminarEquipo();
+        });
     }
 
     eliminarJugador() {
@@ -165,8 +168,12 @@ export class Controller {
     eliminarEquipo() {
         const equipoId = document.getElementById("equipo-id").value;
         if (equipoId) {
-            this.model.eliminarEquipo(equipoId);
-            alert("Equipo eliminado correctamente");
+            try {
+                this.model.eliminarEquipo(equipoId);
+                alert("Equipo eliminado correctamente");
+            } catch (error) {
+                alert(error.message);
+            }
         } else {
             alert("Por favor, complete todos los campos");
         }

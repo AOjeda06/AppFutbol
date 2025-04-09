@@ -369,6 +369,26 @@ export class Model {
 
         console.log(`Datos iniciales de la liga '${competition.name}' procesados y cargados en el modelo.`);
     }
+
+    /**
+     * Método para eliminar un equipo.
+     * @param {number} equipoId - ID del equipo a eliminar.
+     * @throws {Error} Si el equipo no existe.
+     */
+    eliminarEquipo(equipoId) {
+        const equipoIndex = equipos.findIndex(equipo => equipo.id === parseInt(equipoId));
+        if (equipoIndex === -1) {
+            throw new Error("Equipo no encontrado.");
+        }
+
+        // Eliminar el equipo del array
+        equipos.splice(equipoIndex, 1);
+
+        // Guardar el estado actualizado en localStorage
+        localStorage.setItem('equipos', JSON.stringify(equipos));
+
+        console.log(`Equipo con ID ${equipoId} eliminado correctamente.`);
+    }
 }
 
 export default Model;
