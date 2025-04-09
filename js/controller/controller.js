@@ -1,5 +1,5 @@
-import { Model } from "../model/model.js";
-import View from "../view/view.js";
+import { Model } from "../model/model.js"; // Correcto: Model está exportado como named export
+import View from "../view/view.js"; // Correcto: View está exportado como default export
 
 export class Controller {
     constructor() {
@@ -14,19 +14,45 @@ export class Controller {
         });
 
         document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById("btnAgregarJugador").addEventListener("click", () => this.mostrarFormularioJugador());
-            document.getElementById("btnAgregarEquipo").addEventListener("click", () => this.mostrarFormularioEquipo());
-            document.getElementById("btnAsignarEquipo").addEventListener("click", () => this.mostrarFormularioAsociacion());
-            document.getElementById("btnEliminarJugador").addEventListener("click", () => this.mostrarFormularioEliminarJugador());
-            document.getElementById("btnEliminarEquipo").addEventListener("click", () => this.mostrarFormularioEliminarEquipo());
-            document.getElementById("btnBuscarJugador").addEventListener("click", () => this.mostrarFormularioBuscarJugador());
-            document.getElementById("btnBuscarEquipo").addEventListener("click", () => this.mostrarFormularioBuscarEquipo());
+            const btnAgregarJugador = document.getElementById("btnAgregarJugador");
+            const btnAgregarEquipo = document.getElementById("btnAgregarEquipo");
+            const btnAsignarEquipo = document.getElementById("btnAsignarEquipo");
+            const btnEliminarJugador = document.getElementById("btnEliminarJugador");
+            const btnEliminarEquipo = document.getElementById("btnEliminarEquipo");
+            const btnBuscarJugador = document.getElementById("btnBuscarJugador");
+            const btnBuscarEquipo = document.getElementById("btnBuscarEquipo");
+            const btnMostrarEquipos = document.getElementById("btnMostrarEquipos"); // Botón en el menú principal
+
+            if (btnAgregarJugador) {
+                btnAgregarJugador.addEventListener("click", () => this.mostrarFormularioJugador());
+            }
+            if (btnAgregarEquipo) {
+                btnAgregarEquipo.addEventListener("click", () => this.mostrarFormularioEquipo());
+            }
+            if (btnAsignarEquipo) {
+                btnAsignarEquipo.addEventListener("click", () => this.mostrarFormularioAsociacion());
+            }
+            if (btnEliminarJugador) {
+                btnEliminarJugador.addEventListener("click", () => this.mostrarFormularioEliminarJugador());
+            }
+            if (btnEliminarEquipo) {
+                btnEliminarEquipo.addEventListener("click", () => this.mostrarFormularioEliminarEquipo());
+            }
+            if (btnBuscarJugador) {
+                btnBuscarJugador.addEventListener("click", () => this.mostrarFormularioBuscarJugador());
+            }
+            if (btnBuscarEquipo) {
+                btnBuscarEquipo.addEventListener("click", () => this.mostrarFormularioBuscarEquipo());
+            }
+            if (btnMostrarEquipos) {
+                btnMostrarEquipos.addEventListener("click", () => this.mostrarFormularioSeleccionLiga());
+            }
         });
     }
 
     mostrarFormularioJugador() {
         this.view.createPlayerForm();
-        const submitButton = document.querySelector("addPlayer");
+        const submitButton = document.getElementById("addPlayer"); // Updated selector
         submitButton.textContent = "Guardar Jugador";
         submitButton.addEventListener("click", () => this.agregarJugador());
         document.getElementById("jugador-form").appendChild(submitButton);
@@ -34,18 +60,41 @@ export class Controller {
 
     mostrarFormularioEquipo() {
         this.view.createTeamForm();
-        const submitButton = document.querySelector("addTeam");
+        const submitButton = document.getElementById("addTeam");
         submitButton.textContent = "Guardar Equipo";
-        submitButton.addEventListener("click", () => this.agregarEquipo());
-        document.getElementById("equipo-form").appendChild(submitButton);
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault(); // Evitar el comportamiento por defecto del formulario
+            this.agregarEquipo();
+        });
     }
 
     mostrarFormularioAsociacion() {
         this.view.createAssociatorForm();
-        const submitButton = document.querySelector("addAssociator");
+        const submitButton = document.getElementById("addAssociator"); // Updated selector
         submitButton.textContent = "Asignar Jugador";
         submitButton.addEventListener("click", () => this.asociarJugadorEquipo());
         document.getElementById("asociador-form").appendChild(submitButton);
+    }
+
+    mostrarFormularioSeleccionLiga() {
+        this.view.createLeagueSelectionForm(); // Renderiza el formulario
+        const showTeamsButton = document.getElementById("showTeams"); // Botón dentro del formulario
+        if (showTeamsButton) {
+            showTeamsButton.addEventListener("click", () => this.mostrarEquiposPorLiga());
+        }
+    }
+
+    mostrarEquiposPorLiga() {
+        const ligaId = parseInt(document.getElementById("liga").value); // Obtiene el ID de la liga seleccionada
+        console.log("Liga seleccionada:", ligaId); // Debug: Verifica el ID de la liga seleccionada
+
+        const equipos = this.model.obtenerEquiposPorLiga(ligaId); // Obtiene los equipos de la liga
+        if (equipos.length > 0) {
+            this.view.renderTeams(equipos); // Renderiza los equipos
+        } else {
+            console.warn("No se encontraron equipos para la liga seleccionada."); // Debug: Mensaje de advertencia
+            alert("No se encontraron equipos para la liga seleccionada.");
+        }
     }
 
     agregarJugador() {
@@ -90,15 +139,16 @@ export class Controller {
             alert("Por favor, complete todos los campos");
         }
     }
+
     mostrarFormularioEliminarJugador() {
         this.view.createDeletePlayerForm();
-        const submitButton = document.querySelector("deletePlayer");
+        const submitButton = document.getElementById("deletePlayer"); // Updated selector
         submitButton.addEventListener("click", () => this.eliminarJugador());
     }
 
     mostrarFormularioEliminarEquipo() {
         this.view.createDeleteTeamForm();
-        const submitButton = document.querySelector("deleteTeam");
+        const submitButton = document.getElementById("deleteTeam"); // Updated selector
         submitButton.addEventListener("click", () => this.eliminarEquipo());
     }
 
@@ -111,6 +161,7 @@ export class Controller {
             alert("Por favor, complete todos los campos");
         }
     }
+
     eliminarEquipo() {
         const equipoId = document.getElementById("equipo-id").value;
         if (equipoId) {
@@ -120,9 +171,10 @@ export class Controller {
             alert("Por favor, complete todos los campos");
         }
     }
+
     mostrarFormularioBuscarEquipo() {
         this.view.createSearchTeamForm();
-        const submitButton = document.querySelector("searchTeam");
+        const submitButton = document.getElementById("searchTeam"); // Updated selector
         submitButton.addEventListener("click", () => this.buscarEquipo());
     }
 
@@ -139,9 +191,10 @@ export class Controller {
             alert("Por favor, complete todos los campos");
         }
     }
+
     mostrarFormularioBuscarJugador() {
         this.view.createSearchPlayerForm();
-        const submitButton = document.querySelector("searchPlayer");
+        const submitButton = document.getElementById("searchPlayer"); // Updated selector
         submitButton.addEventListener("click", () => this.buscarJugador());
     }
 

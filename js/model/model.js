@@ -106,19 +106,29 @@ export class Model {
     /**
      * Agrega un nuevo equipo al modelo.
      * @param {string} nombre - Nombre del equipo.
-     * @param {string} ciudad - Ciudad del equipo.
-     * @param {string} estadio - Estadio del equipo.
+     * @param {string} tla - Código TLA del equipo.
+     * @param {string} crest - URL del escudo del equipo.
+     * @param {string} website - Sitio web del equipo.
+     * @param {number} founded - Año de fundación del equipo.
+     * @param {string} clubColors - Colores del club.
+     * @param {string} venue - Estadio del equipo.
+     * @param {number} ligaId - ID de la liga.
      * @returns {Equipo} El equipo creado.
      */
-    agregarEquipo(nombre, ciudad, estadio) {
+    agregarEquipo(nombre, tla, crest, website, founded, clubColors, venue, ligaId) {
         const equipo = new Equipo(
             ++equipoIdCounter,
             nombre,
-            ciudad,
-            estadio
+            tla,
+            crest,
+            website,
+            founded,
+            clubColors,
+            venue,
+            ligaId
         );
         equipos.push(equipo);
-        this.guardarEstado(); // Guardar el estado actualizado en localStorage
+        this.guardarEstado();
         return equipo;
     }
 
@@ -128,6 +138,45 @@ export class Model {
      */
     obtenerEquipos() {
         return equipos;
+    }
+
+    /**
+     * Obtiene los equipos que pertenecen a una liga específica.
+     * @param {number} leagueId - ID de la liga.
+     * @returns {Array} Lista de equipos de la liga.
+     */
+    obtenerEquiposPorLiga(leagueId) {
+        console.log("Liga seleccionada:", leagueId); // Debug: Verifica el ID de la liga seleccionada
+        console.log("Equipos disponibles:", equipos); // Debug: Verifica los equipos cargados en el modelo
+
+        return equipos.filter(equipo => equipo.ligaId === leagueId); // Filtra equipos por ligaId
+    }
+
+    /**
+     * Obtiene los jugadores que pertenecen a un equipo específico.
+     * @param {number} teamId - ID del equipo.
+     * @returns {Array} Lista de jugadores del equipo.
+     */
+    obtenerJugadoresPorEquipo(teamId) {
+        return jugadores.filter(jugador => jugador.equipoId === teamId);
+    }
+
+    /**
+     * Busca equipos por nombre.
+     * @param {string} nombre - Nombre del equipo.
+     * @returns {Array} Lista de equipos que coinciden con el nombre.
+     */
+    buscarEquipoPorNombre(nombre) {
+        return equipos.filter(equipo => equipo.name.includes(nombre));
+    }
+
+    /**
+     * Busca jugadores por nombre.
+     * @param {string} nombre - Nombre del jugador.
+     * @returns {Jugador} Jugador que coincide con el nombre.
+     */
+    buscarJugadorPorNombre(nombre) {
+        return jugadores.find(jugador => jugador.name.includes(nombre));
     }
 
     /**
@@ -279,20 +328,21 @@ export class Model {
             equiposIds: teams.map(equipo => equipo.id) // IDs de los equipos participantes
         };
 
+        // Asegúrate de que el ID de la liga coincide con los predefinidos
+        const ligaIdPredefinido = competition.id; // ID predefinido de la liga
+
         // Procesar equipos y asignar ligaId
         const equiposProcesados = teams.map(equipo => ({
             id: equipo.id,
             name: equipo.name,
-            shortName: equipo.shortName,
             tla: equipo.tla,
-            crest: equipo.crest,
-            address: equipo.address,
+            crest: equipo.crest || 'img/default-team.png', // Imagen por defecto si no hay crest
             website: equipo.website,
             founded: equipo.founded,
             clubColors: equipo.clubColors,
             venue: equipo.venue,
             runningCompetitions: equipo.runningCompetitions || [],
-            ligaId: competition.id // Relación explícita con la liga
+            ligaId: ligaIdPredefinido // Asigna el ID predefinido de la liga
         }));
 
         // Extraer jugadores desde el array squad de cada equipo

@@ -10,8 +10,18 @@ class View {
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" required>
     <br>
-    <label for ="posicion">Posición:</label>
-    <input type="text" id="posicion" required>
+    <label for="posicion">Posición:</label>
+    <select id="posicion" required>
+        <option value="Portero">Portero</option>
+        <option value="Defensa Central">Defensa Central</option>
+        <option value="Lateral Derecho">Lateral Derecho</option>
+        <option value="Lateral Izquierdo">Lateral Izquierdo</option>
+        <option value="Mediocentro Defensivo">Mediocentro Defensivo</option>
+        <option value="Mediocentro Ofensivo">Mediocentro Ofensivo</option>
+        <option value="Extremo Derecho">Extremo Derecho</option>
+        <option value="Extremo Izquierdo">Extremo Izquierdo</option>
+        <option value="Delantero Centro">Delantero Centro</option>
+    </select>
     <br>
     <label for="nacimiento">Fecha de Nacimiento:</label>
     <input type="date" id="nacimiento" required>
@@ -21,7 +31,7 @@ class View {
     <br>
     <button type="submit" id="addPlayer">Agregar Jugador</button>
     </form>
-    </div>`
+    </div>`;
     }
 
     createTeamForm() {
@@ -31,15 +41,36 @@ class View {
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" required>
     <br>
-    <label for="ciudad">Ciudad:</label>
-    <input type="text" id="ciudad" required>
+    <label for="tla">Abreviatura (TLA):</label>
+    <input type="text" id="tla" required>
     <br>
-    <label for="estadio">Estadio:</label>
-    <input type="text" id="estadio" required>
+    <label for="crest">URL del Escudo:</label>
+    <input type="url" id="crest" required>
     <br>
-    <button type="submit" id="addTeam">Agregar Equipo</button>
+    <label for="website">Sitio Web:</label>
+    <input type="url" id="website" required>
+    <br>
+    <label for="founded">Año de Fundación:</label>
+    <input type="number" id="founded" required>
+    <br>
+    <label for="clubColors">Colores del Club:</label>
+    <input type="text" id="clubColors" required>
+    <br>
+    <label for="venue">Estadio:</label>
+    <input type="text" id="venue" required>
+    <br>
+    <label for="liga">Liga:</label>
+    <select id="liga" required>
+        <option value="1">Premier League</option>
+        <option value="2">La Liga</option>
+        <option value="3">Serie A</option>
+        <option value="4">Bundesliga</option>
+        <option value="5">Ligue 1</option>
+    </select>
+    <br>
+    <button type="submit" id="addTeam">Guardar Equipo</button> 
     </form>
-    </div>`
+    </div>`;
     }
 
     createAssociatorForm() {
@@ -54,7 +85,7 @@ class View {
     <br>
     <button type="submit" id="addAssociator">Asignar Jugador</button>
     </form>
-    </div>`
+    </div>`;
     }
 
     createDeletePlayerForm() {
@@ -65,7 +96,7 @@ class View {
     <input type="number" id="jugador-id" required>
     <button type="submit" id="deletePlayer">Borrar Jugador</button>
     </form>
-    </div>`
+    </div>`;
     }
     createDeleteTeamForm() {
         this.view.innerHTML = `<div id="borrar-form">
@@ -75,7 +106,7 @@ class View {
     <input type="number" id="equipo-id" required>
     <button type="submit" id="deleteTeam">Borrar Eqiupo</button>
     </form>
-    </div>`
+    </div>`;
     }
     createSearchTeamForm() {
         this.view.innerHTML = `<div id="buscar-equipo-form">
@@ -99,6 +130,24 @@ class View {
     </div>`;
     }
 
+    createLeagueSelectionForm() {
+        this.view.innerHTML = `<div id="liga-form">
+    <form>
+    <h2>Seleccionar Liga</h2>
+    <label for="liga">Liga:</label>
+    <select id="liga" required>
+        <option value="2021">Premier League</option> <!-- ID predefinido -->
+        <option value="2014">La Liga</option> <!-- ID predefinido -->
+        <option value="2019">Serie A</option> <!-- ID predefinido -->
+        <option value="2002">Bundesliga</option> <!-- ID predefinido -->
+        <option value="2015">Ligue 1</option> <!-- ID predefinido -->
+    </select>
+    <br>
+    <button type="button" id="showTeams">Mostrar Equipos</button>
+    </form>
+    </div>`;
+    }
+
     getPlayerFormData() {
 
         let player = [];
@@ -114,9 +163,14 @@ class View {
     getTeamFormData() {
         let team = [];
         const nombre = document.getElementById("nombre").value;
-        const ciudad = document.getElementById("ciudad").value;
-        const estadio = document.getElementById("estadio").value;
-        team.push(nombre, ciudad, estadio);
+        const tla = document.getElementById("tla").value;
+        const crest = document.getElementById("crest").value;
+        const website = document.getElementById("website").value;
+        const founded = document.getElementById("founded").value;
+        const clubColors = document.getElementById("clubColors").value;
+        const venue = document.getElementById("venue").value;
+        const liga = document.getElementById("liga").value;
+        team.push(nombre, tla, crest, website, founded, clubColors, venue, liga);
         return team;
     }
 
@@ -152,14 +206,14 @@ class View {
 
             // Crear el elemento de imagen del equipo
             const foto = document.createElement('img');
-            foto.src = team.strTeamBadge;
-            foto.alt = team.strTeam;
+            foto.src = team.crest || 'img/default-team.png'; // Usa el atributo crest o una imagen por defecto
+            foto.alt = team.name || 'Equipo desconocido'; // Texto alternativo
             foto.style.width = '100px'; // Ajusta el tamaño según tu diseño
             foto.style.height = 'auto';
 
             // Crear el elemento con el nombre del equipo
             const nombre = document.createElement('h3');
-            nombre.textContent = team.strTeam;
+            nombre.textContent = team.name || 'Equipo desconocido';
 
             // Insertamos la imagen y el nombre en el contenedor del equipo
             teamDiv.appendChild(foto);
@@ -176,6 +230,54 @@ class View {
         });
 
         // Si el número de equipos no es múltiplo de 3, se añade la última fila
+        if (teams.length % 3 !== 0) {
+            vista.appendChild(row);
+        }
+    }
+
+    renderTeamsByLeague(teams) {
+        // Render teams filtered by league
+        const vista = document.getElementById('vista');
+        if (!vista) {
+            console.error("No se encontró el elemento con id 'vista'");
+            return;
+        }
+
+        vista.innerHTML = '';
+
+        let row;
+        teams.forEach((team, index) => {
+            if (index % 3 === 0) {
+                row = document.createElement('div');
+                row.className = 'row';
+            }
+
+            const col = document.createElement('div');
+            col.className = 'col-md-4';
+
+            const teamDiv = document.createElement('div');
+            teamDiv.style.textAlign = 'center';
+
+            const foto = document.createElement('img');
+            foto.src = team.strTeamBadge;
+            foto.alt = team.strTeam;
+            foto.style.width = '100px';
+            foto.style.height = 'auto';
+
+            const nombre = document.createElement('h3');
+            nombre.textContent = team.strTeam;
+
+            teamDiv.appendChild(foto);
+            teamDiv.appendChild(nombre);
+
+            col.appendChild(teamDiv);
+            row.appendChild(col);
+
+            if ((index + 1) % 3 === 0) {
+                vista.appendChild(row);
+            }
+        });
+
         if (teams.length % 3 !== 0) {
             vista.appendChild(row);
         }
@@ -239,5 +341,134 @@ class View {
             }
         });
     }
+
+    renderPlayersByTeam(players) {
+        // Render players filtered by team
+        const vista = document.getElementById('vista');
+        if (!vista) {
+            console.error("No se encontró el elemento con id 'vista'");
+            return;
+        }
+
+        vista.innerHTML = '';
+
+        let row;
+        players.forEach((player, index) => {
+            if (index % 3 === 0) {
+                row = document.createElement('div');
+                row.className = 'row';
+            }
+
+            const col = document.createElement('div');
+            col.className = 'col-md-4';
+
+            const playerDiv = document.createElement('div');
+            playerDiv.style.textAlign = 'center';
+
+            const foto = document.createElement('img');
+            foto.src = player.strPlayerPhoto || 'default-player.png';
+            foto.alt = player.strPlayer;
+            foto.style.width = '100px';
+            foto.style.height = 'auto';
+
+            const nombre = document.createElement('h3');
+            nombre.textContent = player.strPlayer;
+
+            const posicion = document.createElement('p');
+            posicion.textContent = `Posición: ${player.strPosition}`;
+
+            playerDiv.appendChild(foto);
+            playerDiv.appendChild(nombre);
+            playerDiv.appendChild(posicion);
+
+            col.appendChild(playerDiv);
+            row.appendChild(col);
+
+            if ((index + 1) % 3 === 0) {
+                vista.appendChild(row);
+            }
+        });
+
+        if (players.length % 3 !== 0) {
+            vista.appendChild(row);
+        }
+    }
+
+    renderPlayerDetails(player) {
+        // Render details of a single player
+        const vista = document.getElementById('vista');
+        if (!vista) {
+            console.error("No se encontró el elemento con id 'vista'");
+            return;
+        }
+
+        vista.innerHTML = '';
+
+        const playerDiv = document.createElement('div');
+        playerDiv.style.textAlign = 'center';
+
+        const foto = document.createElement('img');
+        foto.src = player.strPlayerPhoto || 'default-player.png';
+        foto.alt = player.strPlayer;
+        foto.style.width = '150px';
+        foto.style.height = 'auto';
+
+        const nombre = document.createElement('h2');
+        nombre.textContent = player.strPlayer;
+
+        const posicion = document.createElement('p');
+        posicion.textContent = `Posición: ${player.strPosition}`;
+
+        const equipo = document.createElement('p');
+        equipo.textContent = `Equipo: ${player.strTeam}`;
+
+        playerDiv.appendChild(foto);
+        playerDiv.appendChild(nombre);
+        playerDiv.appendChild(posicion);
+        playerDiv.appendChild(equipo);
+
+        vista.appendChild(playerDiv);
+    }
+
+    renderTeamDetails(team) {
+        // Render details of a single team
+        const vista = document.getElementById('vista');
+        if (!vista) {
+            console.error("No se encontró el elemento con id 'vista'");
+            return;
+        }
+
+        vista.innerHTML = '';
+
+        const teamDiv = document.createElement('div');
+        teamDiv.style.textAlign = 'center';
+
+        const foto = document.createElement('img');
+        foto.src = team.strTeamBadge;
+        foto.alt = team.strTeam;
+        foto.style.width = '150px';
+        foto.style.height = 'auto';
+
+        const nombre = document.createElement('h2');
+        nombre.textContent = team.strTeam;
+
+        const ciudad = document.createElement('p');
+        ciudad.textContent = `Ciudad: ${team.strCity}`;
+
+        const estadio = document.createElement('p');
+        estadio.textContent = `Estadio: ${team.strStadium}`;
+
+        const liga = document.createElement('p');
+        liga.textContent = `Liga: ${team.strLeague}`;
+
+        teamDiv.appendChild(foto);
+        teamDiv.appendChild(nombre);
+        teamDiv.appendChild(ciudad);
+        teamDiv.appendChild(estadio);
+        teamDiv.appendChild(liga);
+
+        vista.appendChild(teamDiv);
+    }
 }
+
 export default View;

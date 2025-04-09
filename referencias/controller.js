@@ -45,5 +45,48 @@ const Controller = {
 
         // Actualizamos la tabla
         View.actualizarTabla(Model.obtenerTareas());
+    },
+
+    handleAddTeam: function (event) {
+        event.preventDefault();
+        const teamData = View.getTeamFormData();
+        Model.agregarEquipo(teamData.nombre, teamData.ciudad, teamData.estadio, teamData.liga);
+        View.renderTeams(Model.obtenerEquipos());
+    },
+
+    handleAddPlayer: function (event) {
+        event.preventDefault();
+        const playerData = View.getPlayerFormData();
+        Model.agregarJugador(playerData.nombre, playerData.posicion, playerData.nacimiento, playerData.equipo);
+        View.renderPlayers(Model.obtenerJugadores());
+    },
+
+    handleChangePlayerTeam: function (playerId, newTeamId) {
+        Model.asignarJugadorAEquipo(playerId, newTeamId);
+        View.renderPlayers(Model.obtenerJugadores());
+    },
+
+    handleSearchTeamByName: function (teamName) {
+        const teams = Model.obtenerEquipos().filter(team => team.name.includes(teamName));
+        View.renderTeams(teams);
+    },
+
+    handleShowTeamsByLeague: function (leagueId) {
+        const teams = Model.obtenerEquipos().filter(team => team.ligaId === leagueId);
+        View.renderTeamsByLeague(teams);
+    },
+
+    handleShowPlayersByTeam: function (teamId) {
+        const players = Model.obtenerJugadores().filter(player => player.equipoId === teamId);
+        View.renderPlayersByTeam(players);
+    },
+
+    handleSearchPlayerByName: function (playerName) {
+        const player = Model.obtenerJugadores().find(player => player.name.includes(playerName));
+        if (player) {
+            View.renderPlayerDetails(player);
+        } else {
+            alert("Jugador no encontrado.");
+        }
     }
 };

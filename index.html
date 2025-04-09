@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <script type="module" src="js/model/model.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="js/model/model.js"></script>
     <script type="module" src="js/view/view.js"></script>
     <script type="module" src="./js/main.js"></script>
     <script type="module" src="js/controller/controller.js"></script>
@@ -21,20 +21,21 @@
     <header>
         <h1>Futbol App</h1>
         <div id="acciones">
+            <!-- Dropdown for Equipo -->
             <div class="dropdown">
                 <button class="dropbtn">Equipo</button>
                 <div class="dropdown-content">
                     <button class="opcionesBoton" id="btnAgregarEquipo">Agregar Equipo</button>
-                    <button class="opcionesBoton" id="showTeams">Mostrar Equipos</button>
+                    <button class="opcionesBoton" id="btnMostrarEquipos">Mostrar Equipos</button> <!-- Correcto -->
                     <button class="opcionesBoton" id="btnBuscarEquipo">Buscar Equipo</button>
                     <button class="opcionesBoton" id="btnEliminarEquipo">Eliminar Equipo</button>
                 </div>
             </div>
+            <!-- Dropdown for Jugadores -->
             <div class="dropdown">
                 <button class="dropbtn">Jugadores</button>
                 <div class="dropdown-content">
                     <button class="opcionesBoton" id="btnAgregarJugador">Añadir Jugador</button>
-                    <button class="opcionesBoton" id="showPlayers">Mostrar Jugadores</button>
                     <button class="opcionesBoton" id="btnBuscarJugador">Buscar Jugador</button>
                     <button class="opcionesBoton" id="btnEliminarJugador">Eliminar Jugador</button>
                     <button class="opcionesBoton" id="btnAsignarEquipo">Asignar Equipo</button>
