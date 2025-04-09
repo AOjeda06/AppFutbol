@@ -245,66 +245,42 @@ export class Model {
     }
 
     /**
-     * Agrega una nueva liga al modelo.
-     * @param {Object} liga - Objeto con los datos de la liga.
-     * @returns {Liga} La liga creada.
-     */
-    agregarLiga(liga) {
-        const nuevaLiga = {
-            id: liga.id,
-            name: liga.name,
-            code: liga.code,
-            type: liga.type,
-            emblem: liga.emblem,
-            season: liga.season,
-            equiposIds: liga.teams.map(equipo => equipo.id) // Relación con equipos por ID
-        };
-
-        ligas.push(nuevaLiga);
-        localStorage.setItem('ligas', JSON.stringify(ligas));
-        console.log("Liga añadida y guardada en localStorage:", nuevaLiga);
-        return nuevaLiga;
-    }
-
-    /**
-     * Obtiene todas las ligas almacenadas en el modelo.
-     * @returns {Array} Lista de ligas.
-     */
-    obtenerLigas() {
-        return ligas;
-    }
-
-    /**
-     * Relaciona una liga con sus equipos.
-     * @param {number} ligaId - ID de la liga.
-     * @returns {Object} Liga con los equipos relacionados.
-     */
-    obtenerLigaConEquipos(ligaId) {
-        const liga = ligas.find(l => l.id === ligaId);
-        if (!liga) throw new Error("Liga no encontrada.");
-
-        const equiposRelacionados = liga.equiposIds.map(equipoId =>
-            equipos.find(e => e.id === equipoId)
-        );
-
-        return { ...liga, equipos: equiposRelacionados };
-    }
-
-    /**
      * Carga los datos iniciales en el modelo.
      * @param {Object} datos - Objeto que contiene los datos iniciales.
-     * @param {Array} datos.ligas - Lista de ligas.
-     * @param {Array} datos.equipos - Lista de equipos.
+     * @param {Object} datos.competition - Objeto que representa la liga.
+     * @param {Array} datos.teams - Lista de equipos de la liga.
      */
-    static cargarDatosIniciales({ ligas: ligasNuevas = [], equipos: equiposNuevos = [] }) {
-        // Validar que los datos de ligas y equipos sean arrays
-        if (!Array.isArray(ligasNuevas) || !Array.isArray(equiposNuevos)) {
-            console.error("Datos iniciales inválidos: 'ligas' o 'equipos' no son arrays.");
+    static cargarDatosIniciales(datos) {
+        if (!datos || typeof datos !== 'object') {
+            console.error("Error: Los datos iniciales no son un objeto válido.", datos);
             return;
         }
 
-        // Procesar equipos
-        const equiposProcesados = equiposNuevos.map(equipo => ({
+        const { competition, teams } = datos;
+
+        if (!competition || typeof competition !== 'object') {
+            console.error("Error: 'competition' no es un objeto válido.", competition);
+            return;
+        }
+
+        if (!Array.isArray(teams)) {
+            console.error("Error: 'teams' no es un array válido.", teams);
+            return;
+        }
+
+        // Procesar la liga
+        const ligaProcesada = {
+            id: competition.id,
+            name: competition.name,
+            code: competition.code,
+            type: competition.type,
+            emblem: competition.emblem,
+            season: competition.season,
+            equiposIds: teams.map(equipo => equipo.id) // IDs de los equipos participantes
+        };
+
+        // Procesar equipos y asignar ligaId
+        const equiposProcesados = teams.map(equipo => ({
             id: equipo.id,
             name: equipo.name,
             shortName: equipo.shortName,
@@ -315,29 +291,33 @@ export class Model {
             founded: equipo.founded,
             clubColors: equipo.clubColors,
             venue: equipo.venue,
-            runningCompetitions: equipo.runningCompetitions || []
+            runningCompetitions: equipo.runningCompetitions || [],
+            ligaId: competition.id // Relación explícita con la liga
         }));
 
-        // Procesar ligas
-        const ligasProcesadas = ligasNuevas.map(liga => ({
-            id: liga.id,
-            name: liga.name,
-            code: liga.code,
-            type: liga.type,
-            emblem: liga.emblem,
-            season: liga.season,
-            equiposIds: Array.isArray(liga.teams) ? liga.teams.map(equipo => equipo.id) : [] // Validar que 'teams' sea un array
-        }));
+        // Extraer jugadores desde el array squad de cada equipo
+        const jugadoresProcesados = teams.flatMap(equipo =>
+            Array.isArray(equipo.squad) ? equipo.squad.map(jugador => ({
+                id: jugador.id,
+                name: jugador.name,
+                position: jugador.position,
+                dateOfBirth: jugador.dateOfBirth,
+                nationality: jugador.nationality,
+                equipoId: equipo.id // Relación explícita con el equipo
+            })) : [] // Si no hay jugadores, devolver un array vacío
+        );
 
-        // Guardar en el modelo
-        equipos = equiposProcesados;
-        ligas = ligasProcesadas;
+        // Guardar los datos procesados en el modelo
+        ligas.push(ligaProcesada);
+        equipos.push(...equiposProcesados);
+        jugadores.push(...jugadoresProcesados);
 
         // Guardar en localStorage
-        localStorage.setItem('equipos', JSON.stringify(equipos));
         localStorage.setItem('ligas', JSON.stringify(ligas));
+        localStorage.setItem('equipos', JSON.stringify(equipos));
+        localStorage.setItem('jugadores', JSON.stringify(jugadores));
 
-        console.log("Datos iniciales de ligas y equipos procesados y cargados en el modelo.");
+        console.log(`Datos iniciales de la liga '${competition.name}' procesados y cargados en el modelo.`);
     }
 }
 

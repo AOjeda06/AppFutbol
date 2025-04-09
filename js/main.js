@@ -34,15 +34,16 @@ import Model from '../js/model/model.js';
         await cargarDatosInicialesDesdeArchivos();
 
         // Paso 2: Cargar los datos iniciales en el modelo
-        const equiposSerieA = JSON.parse(localStorage.getItem('SerieA') || '{"teams": []}').teams;
-        const equiposPremier = JSON.parse(localStorage.getItem('Premier') || '{"teams": []}').teams;
-        const equiposLaLiga = JSON.parse(localStorage.getItem('LaLiga') || '{"teams": []}').teams;
-        const equiposBundesliga = JSON.parse(localStorage.getItem('Bundesliga') || '{"teams": []}').teams;
-        const equiposLigue1 = JSON.parse(localStorage.getItem('Ligue1') || '{"teams": []}').teams;
-
-        const equipos = equiposSerieA.concat(equiposPremier, equiposLaLiga, equiposBundesliga, equiposLigue1);
-        Model.cargarDatosIniciales({ equipos });
-        console.log("Datos iniciales cargados en el modelo.");
+        const archivosEquipos = ['SerieA', 'Premier', 'LaLiga', 'Bundesliga', 'Ligue1'];
+        for (const clave of archivosEquipos) {
+            const datosLiga = JSON.parse(localStorage.getItem(clave));
+            if (datosLiga) {
+                Model.cargarDatosIniciales(datosLiga); // Pasar el objeto completo
+                console.log(`Datos iniciales de ${clave} cargados en el modelo.`);
+            } else {
+                console.warn(`No se encontraron datos para ${clave} en localStorage.`);
+            }
+        }
 
         console.log("Proceso completado.");
     } catch (error) {

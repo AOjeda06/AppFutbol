@@ -17,6 +17,7 @@ class Equipo {
      * @param {string} clubColors - Colores del club.
      * @param {string} venue - Nombre del estadio.
      * @param {Array} runningCompetitions - Competencias en las que participa el equipo.
+     * @param {number} ligaId - ID de la liga a la que pertenece el equipo.
      */
     constructor(
         id,
@@ -29,7 +30,8 @@ class Equipo {
         founded,
         clubColors,
         venue,
-        runningCompetitions = []
+        runningCompetitions = [],
+        ligaId = null
     ) {
         this.id = id || equipoIdCounter++; // Auto-generated ID if not provided
         this.name = name;
@@ -42,6 +44,7 @@ class Equipo {
         this.clubColors = clubColors;
         this.venue = venue;
         this.runningCompetitions = runningCompetitions;
+        this.ligaId = ligaId; // Identificador de la liga
     }
 
     // Métodos para acceder a los atributos del equipo.
@@ -87,6 +90,10 @@ class Equipo {
 
     getRunningCompetitions() {
         return this.runningCompetitions;
+    }
+
+    getLigaId() {
+        return this.ligaId;
     }
 }
 
