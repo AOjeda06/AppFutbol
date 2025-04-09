@@ -14,7 +14,7 @@ import Model from '../js/model/model.js';
                 { clave: 'Ligue1', ruta: 'js/model/DatosIniciales/Ligue1.json' }
             ];
 
-            for (const { clave, ruta } of archivosEquipos) {
+            for (const { ruta } of archivosEquipos) {
                 try {
                     console.log(`Intentando cargar: ${window.location.origin}/${ruta}`);
                     const respuesta = await fetch(ruta);
@@ -22,8 +22,8 @@ import Model from '../js/model/model.js';
                         throw new Error(`Archivo no encontrado: ${ruta}`);
                     }
                     const datos = await respuesta.json();
-                    localStorage.setItem(clave, JSON.stringify(datos));
-                    console.log(`Datos iniciales de ${clave} guardados en localStorage.`);
+                    Model.cargarDatosIniciales(datos); // Cargar directamente en el modelo
+                    console.log(`Datos iniciales cargados desde ${ruta}.`);
                 } catch (error) {
                     console.error(`Error al cargar el archivo JSON: ${ruta}`, error);
                 }
@@ -32,18 +32,6 @@ import Model from '../js/model/model.js';
 
         // Paso 1: Cargar datos iniciales desde archivos JSON
         await cargarDatosInicialesDesdeArchivos();
-
-        // Paso 2: Cargar los datos iniciales en el modelo
-        const archivosEquipos = ['SerieA', 'Premier', 'LaLiga', 'Bundesliga', 'Ligue1'];
-        for (const clave of archivosEquipos) {
-            const datosLiga = JSON.parse(localStorage.getItem(clave));
-            if (datosLiga) {
-                Model.cargarDatosIniciales(datosLiga); // Pasar el objeto completo
-                console.log(`Datos iniciales de ${clave} cargados en el modelo.`);
-            } else {
-                console.warn(`No se encontraron datos para ${clave} en localStorage.`);
-            }
-        }
 
         console.log("Proceso completado.");
     } catch (error) {
