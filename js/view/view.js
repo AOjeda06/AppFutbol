@@ -77,6 +77,27 @@ class View {
     </form>
     </div>`
     }
+    createSearchTeamForm() {
+        this.view.innerHTML = `<div id="buscar-equipo-form">
+    <form>
+    <h2>Buscar Equipo</h2>
+    <label for="equipo-nombre">Nombre del Equipo:</label>
+    <input type="text" id="equipo-nombre" required>
+    <button type="submit" id="searchTeam">Buscar Equipo</button>
+    </form>
+    </div>`;
+    }
+
+    createSearchPlayerForm() {
+        this.view.innerHTML = `<div id="buscar-jugador-form">
+    <form>
+    <h2>Buscar Jugador</h2>
+    <label for="jugador-nombre">Id del Jugador:</label>
+    <input type="text" id="jugador-id" required>
+    <button type="submit" id="searchPlayer">Buscar Jugador</button>
+    </form>
+    </div>`;
+    }
 
     getPlayerFormData() {
 
@@ -98,6 +119,8 @@ class View {
         team.push(nombre, ciudad, estadio);
         return team;
     }
+
+
 
     renderTeams(teams) {
         // Obtenemos el contenedor de la vista
