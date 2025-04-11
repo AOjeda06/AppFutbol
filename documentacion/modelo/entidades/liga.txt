@@ -1,0 +1,35 @@
+Clase: Liga
+Descripción: La clase `Liga` representa una liga de fútbol con sus detalles esenciales. 
+Se utiliza para modelar información básica de una liga, como su nombre, código, tipo, emblema y detalles de la temporada actual.
+
+Métodos:
+
+1. Nombre: `getId`
+   Descripción: Devuelve el ID único de la liga.
+   Parámetros de entrada: Ninguno.
+   Retorno: Número (ID de la liga).
+
+2. Nombre: `getName`
+   Descripción: Devuelve el nombre de la liga.
+   Parámetros de entrada: Ninguno.
+   Retorno: Cadena de texto (nombre de la liga).
+
+3. Nombre: `getCode`
+   Descripción: Devuelve el código de la liga.
+   Parámetros de entrada: Ninguno.
+   Retorno: Cadena de texto (código de la liga).
+
+4. Nombre: `getType`
+   Descripción: Devuelve el tipo de la liga (e.g., LEAGUE, CUP).
+   Parámetros de entrada: Ninguno.
+   Retorno: Cadena de texto (tipo de la liga).
+
+5. Nombre: `getEmblem`
+   Descripción: Devuelve la URL del emblema de la liga.
+   Parámetros de entrada: Ninguno.
+   Retorno: Cadena de texto (URL del emblema).
+
+6. Nombre: `getSeason`
+   Descripción: Devuelve los detalles de la temporada actual de la liga.
+   Parámetros de entrada: Ninguno.
+   Retorno: Objeto (detalles de la temporada actual).
