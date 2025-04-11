@@ -1,56 +1,52 @@
-// Importar las clases de las entidades
+// Importar las clases de las entidades.
 import Jugador from './entidades/jugador.js';
 import Equipo from './entidades/equipo.js';
 import Liga from './entidades/liga.js';
 
-// Contadores para asignar IDs únicos
+// Contadores para asignar IDs únicos.
 let jugadorIdCounter = 0;
 let equipoIdCounter = 0;
 
-// Arrays para almacenar los objetos
+// Arrays para almacenar los objetos.
 let jugadores = [];
 let equipos = [];
-let ligas = []; // Array para almacenar las ligas
+let ligas = []; // Array para almacenar las ligas.
 
-// El objeto Model actúa como una capa de datos para la aplicación.
+/**
+ * Clase Model: Actúa como una capa de datos para la aplicación.
+ */
 export class Model {
-    // Objeto para almacenar los datos de equipos
+    // Arrays para almacenar los datos de equipos y jugadores.
     equipos = [];
-
-    // Objeto para almacenar los datos de jugadores
     jugadores = [];
 
     /**
-     * Inicializar el modelo con datos.
-     * Carga los datos desde localStorage si están disponibles.
+     * Inicializa el modelo con datos desde localStorage si están disponibles.
      */
     async inicializar() {
         const jugadoresGuardados = localStorage.getItem('jugadores');
-
         if (jugadoresGuardados) {
             jugadores = JSON.parse(jugadoresGuardados);
             console.log("Datos de jugadores cargados desde localStorage.");
         } else {
-            console.log("No se encontraron datos de jugadores en localStorage. Es posible que sea la primera ejecución.");
+            console.log("No se encontraron datos de jugadores en localStorage.");
         }
     }
 
     /**
-     * Guarda el estado actual en localStorage.
+     * Guarda el estado actual de los datos en localStorage.
      */
     guardarEstado() {
         try {
-            // Compactar datos de jugadores con nombres consistentes
             const jugadoresCompactos = (jugadores || []).map(jugador => ({
                 id: jugador?.id || null,
                 name: jugador?.name || null,
                 dateOfBirth: jugador?.dateOfBirth || null,
                 nationality: jugador?.nationality || null,
-                equipoId: jugador?.equipoId || null // ID del equipo al que pertenece
+                equipoId: jugador?.equipoId || null
             }));
 
-            // Dividir jugadores en fragmentos más pequeños
-            const fragmentSize = 100; // Tamaño del fragmento
+            const fragmentSize = 100; // Tamaño de cada fragmento.
             for (let i = 0; i < jugadoresCompactos.length; i += fragmentSize) {
                 localStorage.setItem(`jugadores_${i / fragmentSize}`, JSON.stringify(jugadoresCompactos.slice(i, i + fragmentSize)));
             }
@@ -75,22 +71,17 @@ export class Model {
      */
     agregarJugador(nombre, posicion, nacimiento, equipo) {
         const jugador = new Jugador(
-            ++jugadorIdCounter,
-            nombre,
-            posicion,
-            nacimiento,
-            equipo
-        );
+++jugadorIdCounter,
+nombre,
+posicion,
+nacimiento,
+equipo
+);
 
         // Asegurarse de que el array jugadores está inicializado
         if (!jugadores) jugadores = [];
-
-        // Añadir el jugador al array
         jugadores.push(jugador);
-
-        // Guardar el estado actualizado en localStorage
         localStorage.setItem('jugadores', JSON.stringify(jugadores));
-
         console.log("Jugador añadido y guardado en localStorage:", jugador);
         return jugador;
     }
@@ -146,10 +137,9 @@ export class Model {
      * @returns {Array} Lista de equipos de la liga.
      */
     obtenerEquiposPorLiga(leagueId) {
-        console.log("Liga seleccionada:", leagueId); // Debug: Verifica el ID de la liga seleccionada
-        console.log("Equipos disponibles:", equipos); // Debug: Verifica los equipos cargados en el modelo
-
-        return equipos.filter(equipo => equipo.ligaId === leagueId); // Filtra equipos por ligaId
+        console.log("Liga seleccionada:", leagueId);
+        console.log("Equipos disponibles:", equipos);
+        return equipos.filter(equipo => equipo.ligaId === leagueId);
     }
 
     /**
@@ -167,7 +157,7 @@ export class Model {
      * @returns {Array} Lista de equipos que coinciden con el nombre.
      */
     buscarEquipoPorNombre(nombre) {
-        return equipos.filter(equipo => equipo.name.toLowerCase().startsWith(nombre.toLowerCase()));
+        return equipos.filter(equipo => equipo.name.includes(nombre));
     }
 
     /**
@@ -191,7 +181,6 @@ export class Model {
         const nuevoEquipo = equipos.find(e => e.id === parseInt(equipoId));
         if (!nuevoEquipo) throw new Error("Equipo no encontrado.");
 
-        // Eliminar al jugador de su equipo anterior, si tiene uno
         if (jugador.equipo) {
             const equipoAnterior = equipos.find(e => e.id === parseInt(jugador.equipo));
             if (equipoAnterior) {
@@ -199,14 +188,12 @@ export class Model {
             }
         }
 
-        // Asignar el nuevo equipo al jugador
         jugador.equipo = equipoId;
 
-        // Añadir al jugador al nuevo equipo
         if (!nuevoEquipo.jugadores) nuevoEquipo.jugadores = [];
         nuevoEquipo.jugadores.push(jugador);
 
-        this.guardarEstado(); // Guardar el estado actualizado en localStorage
+        this.guardarEstado();
     }
 
     /**
@@ -233,10 +220,8 @@ export class Model {
         const jugadorIndex = jugadoresCompactos.findIndex(j => j.id === jugadorId);
         if (jugadorIndex === -1) throw new Error("Jugador no encontrado.");
 
-        // Actualizar los datos del jugador
         jugadoresCompactos[jugadorIndex] = { ...jugadoresCompactos[jugadorIndex], ...nuevosDatos };
 
-        // Guardar los datos actualizados en fragmentos
         const fragmentSize = 100;
         for (let i = 0; i < jugadoresCompactos.length; i += fragmentSize) {
             localStorage.setItem(`jugadores_${i / fragmentSize}`, JSON.stringify(jugadoresCompactos.slice(i, i + fragmentSize)));
@@ -261,10 +246,8 @@ export class Model {
         const equipoIndex = equipos.findIndex(e => e.id === equipoId);
         if (equipoIndex === -1) throw new Error("Equipo no encontrado.");
 
-        // Actualizar los datos del equipo
         equipos[equipoIndex] = { ...equipos[equipoIndex], ...nuevosDatos };
 
-        // Guardar los datos actualizados
         localStorage.setItem('equipos', JSON.stringify(equipos));
     }
 
@@ -286,10 +269,8 @@ export class Model {
         const ligaIndex = ligas.findIndex(l => l.id === ligaId);
         if (ligaIndex === -1) throw new Error("Liga no encontrada.");
 
-        // Actualizar los datos de la liga
         ligas[ligaIndex] = { ...ligas[ligaIndex], ...nuevosDatos };
 
-        // Guardar los datos actualizados
         localStorage.setItem('ligas', JSON.stringify(ligas));
     }
 
@@ -317,7 +298,6 @@ export class Model {
             return;
         }
 
-        // Procesar la liga
         const ligaProcesada = {
             id: competition.id,
             name: competition.name,
@@ -325,27 +305,24 @@ export class Model {
             type: competition.type,
             emblem: competition.emblem,
             season: competition.season,
-            equiposIds: teams.map(equipo => equipo.id) // IDs de los equipos participantes
+            equiposIds: teams.map(equipo => equipo.id)
         };
 
-        // Asegúrate de que el ID de la liga coincide con los predefinidos
-        const ligaIdPredefinido = competition.id; // ID predefinido de la liga
+        const ligaIdPredefinido = competition.id;
 
-        // Procesar equipos y asignar ligaId
         const equiposProcesados = teams.map(equipo => ({
             id: equipo.id,
             name: equipo.name,
             tla: equipo.tla,
-            crest: equipo.crest || 'img/default-team.png', // Imagen por defecto si no hay crest
+            crest: equipo.crest || 'img/default-team.png',
             website: equipo.website,
             founded: equipo.founded,
             clubColors: equipo.clubColors,
             venue: equipo.venue,
             runningCompetitions: equipo.runningCompetitions || [],
-            ligaId: ligaIdPredefinido // Asigna el ID predefinido de la liga
+            ligaId: ligaIdPredefinido
         }));
 
-        // Extraer jugadores desde el array squad de cada equipo
         const jugadoresProcesados = teams.flatMap(equipo =>
             Array.isArray(equipo.squad) ? equipo.squad.map(jugador => ({
                 id: jugador.id,
@@ -353,16 +330,14 @@ export class Model {
                 position: jugador.position,
                 dateOfBirth: jugador.dateOfBirth,
                 nationality: jugador.nationality,
-                equipoId: equipo.id // Relación explícita con el equipo
-            })) : [] // Si no hay jugadores, devolver un array vacío
+                equipoId: equipo.id
+            })) : []
         );
 
-        // Guardar los datos procesados en el modelo
         ligas.push(ligaProcesada);
         equipos.push(...equiposProcesados);
         jugadores.push(...jugadoresProcesados);
 
-        // Guardar en localStorage
         localStorage.setItem('ligas', JSON.stringify(ligas));
         localStorage.setItem('equipos', JSON.stringify(equipos));
         localStorage.setItem('jugadores', JSON.stringify(jugadores));
@@ -371,7 +346,7 @@ export class Model {
     }
 
     /**
-     * Método para eliminar un equipo.
+     * Elimina un equipo del modelo.
      * @param {number} equipoId - ID del equipo a eliminar.
      * @throws {Error} Si el equipo no existe.
      */
@@ -381,10 +356,8 @@ export class Model {
             throw new Error("Equipo no encontrado.");
         }
 
-        // Eliminar el equipo del array
         equipos.splice(equipoIndex, 1);
 
-        // Guardar el estado actualizado en localStorage
         localStorage.setItem('equipos', JSON.stringify(equipos));
 
         console.log(`Equipo con ID ${equipoId} eliminado correctamente.`);

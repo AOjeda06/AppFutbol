@@ -4,6 +4,7 @@
 class Liga {
     /**
      * Constructor: Inicializa los atributos de la liga.
+     * 
      * @param {number} id - ID único de la liga.
      * @param {string} name - Nombre de la liga.
      * @param {string} code - Código de la liga.
@@ -18,6 +19,54 @@ class Liga {
         this.type = type;
         this.emblem = emblem;
         this.season = season; // Objeto con detalles de la temporada
+    }
+
+    /**
+     * Devuelve el ID único de la liga.
+     * @returns {number} ID de la liga.
+     */
+    getId() {
+        return this.id;
+    }
+
+    /**
+     * Devuelve el nombre de la liga.
+     * @returns {string} Nombre de la liga.
+     */
+    getName() {
+        return this.name;
+    }
+
+    /**
+     * Devuelve el código de la liga.
+     * @returns {string} Código de la liga.
+     */
+    getCode() {
+        return this.code;
+    }
+
+    /**
+     * Devuelve el tipo de la liga.
+     * @returns {string} Tipo de la liga.
+     */
+    getType() {
+        return this.type;
+    }
+
+    /**
+     * Devuelve la URL del emblema de la liga.
+     * @returns {string} URL del emblema.
+     */
+    getEmblem() {
+        return this.emblem;
+    }
+
+    /**
+     * Devuelve los detalles de la temporada actual de la liga.
+     * @returns {Object} Detalles de la temporada actual.
+     */
+    getSeason() {
+        return this.season;
     }
 }
 
