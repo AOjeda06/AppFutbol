@@ -217,6 +217,7 @@ class View {
                 dialog.className = 'dialog';
                 dialog.innerHTML = `
                     <h2>${team.name || 'Equipo desconocido'}</h2>
+                    <p><strong>ID del Equipo:</strong> ${team.id || 'N/A'}</p> <!-- Added team ID -->
                     <p><strong>Abreviatura (TLA):</strong> ${team.tla || 'N/A'}</p>
                     <p><strong>Fundación:</strong> ${team.founded || 'N/A'}</p>
                     <p><strong>Colores del Club:</strong> ${team.clubColors || 'N/A'}</p>
