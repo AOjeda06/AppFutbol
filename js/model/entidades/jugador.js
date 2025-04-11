@@ -15,21 +15,12 @@ class Jugador {
      * @param {number} equipoId - ID del equipo al que pertenece el jugador.
      */
     constructor(id, name, position, dateOfBirth, nationality, equipoId) {
-<<<<<<< HEAD
-        this.id = id || jugadorIdCounter++; 
-        this.name = name; // Asegúrate de que 'name' se usa en lugar de 'strPlayer'
-        this.position = position; // Asegúrate de que 'position' se usa en lugar de 'strPosition'
-        this.dateOfBirth = dateOfBirth;
-        this.nationality = nationality;
-        this.equipoId = equipoId;
-=======
         this.id = id || jugadorIdCounter++; // Genera un ID automáticamente si no se proporciona.
         this.name = name;
         this.position = position;
         this.dateOfBirth = dateOfBirth;
         this.nationality = nationality;
         this.equipoId = equipoId; // Relación con el equipo.
->>>>>>> 707f49b0f82462ce874fc020a889d427f667f401
     }
 
     /**

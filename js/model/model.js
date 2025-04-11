@@ -71,7 +71,6 @@ export class Model {
      */
     agregarJugador(nombre, posicion, nacimiento, equipo) {
         const jugador = new Jugador(
-<<<<<<< HEAD
             ++jugadorIdCounter,
             nombre,
             posicion,
@@ -79,14 +78,6 @@ export class Model {
             null, // Nacionalidad (puedes agregar un campo si es necesario)
             equipo
         );
-=======
-++jugadorIdCounter,
-nombre,
-posicion,
-nacimiento,
-equipo
-);
->>>>>>> 707f49b0f82462ce874fc020a889d427f667f401
 
         // Asegurarse de que el array jugadores está inicializado
         if (!jugadores) jugadores = [];
@@ -235,7 +226,6 @@ equipo
         const jugadorIndex = jugadores.findIndex(j => j.id === jugadorId);
         if (jugadorIndex === -1) throw new Error("Jugador no encontrado.");
 
-<<<<<<< HEAD
         // Actualizar los datos del jugador
         jugadores[jugadorIndex] = { ...jugadores[jugadorIndex], ...nuevosDatos };
 
@@ -254,13 +244,6 @@ equipo
         const jugadorIndex = jugadores.findIndex(j => j.id === parseInt(jugadorId));
         if (jugadorIndex === -1) {
             throw new Error("Jugador no encontrado.");
-=======
-        jugadoresCompactos[jugadorIndex] = { ...jugadoresCompactos[jugadorIndex], ...nuevosDatos };
-
-        const fragmentSize = 100;
-        for (let i = 0; i < jugadoresCompactos.length; i += fragmentSize) {
-            localStorage.setItem(`jugadores_${i / fragmentSize}`, JSON.stringify(jugadoresCompactos.slice(i, i + fragmentSize)));
->>>>>>> 707f49b0f82462ce874fc020a889d427f667f401
         }
 
         // Eliminar el jugador del array
