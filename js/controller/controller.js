@@ -211,16 +211,16 @@ export class Controller {
     }
 
     buscarJugador() {
-        const jugadorId = document.getElementById("jugador-id").value;
-        if (jugadorId) {
-            const jugador = this.model.buscarJugador(jugadorId);
-            if (jugador) {
-                alert(`Jugador encontrado: ${jugador.nombre}, Posición: ${jugador.posicion}, Nacimiento: ${jugador.nacimiento}, Equipo: ${jugador.equipo}`);
+        const jugadorNombre = document.getElementById("jugador-nombre").value; // Updated to use "jugador-nombre"
+        if (jugadorNombre) {
+            const jugadores = this.model.buscarJugadorPorNombre(jugadorNombre);
+            if (jugadores.length > 0) {
+                this.view.renderPlayers(jugadores); // Renderiza todos los jugadores encontrados
             } else {
-                alert("Jugador no encontrado");
+                alert("No se encontraron jugadores con ese nombre");
             }
         } else {
-            alert("Por favor, complete todos los campos");
+            alert("Por favor, complete el campo de búsqueda");
         }
     }
 }

@@ -123,8 +123,8 @@ class View {
         this.view.innerHTML = `<div id="buscar-jugador-form">
     <form>
     <h2>Buscar Jugador</h2>
-    <label for="jugador-nombre">Id del Jugador:</label>
-    <input type="text" id="jugador-id" required>
+    <label for="jugador-nombre">Nombre del Jugador:</label>
+    <input type="text" id="jugador-nombre" required>
     <button type="submit" id="searchPlayer">Buscar Jugador</button>
     </form>
     </div>`;
@@ -306,66 +306,6 @@ class View {
     }
 
     renderPlayers(players) {
-        // Obtenemos el contenedor de la vista
-        const vista = document.getElementById('vista');
-        if (!vista) {
-            console.error("No se encontró el elemento con id 'vista'");
-            return;
-        }
-
-        // Limpiamos el contenido previo
-        vista.innerHTML = '';
-
-        // Recorrer el array de jugadores y agruparlos en filas de 3 columnas
-        let row;
-        players.forEach((player, index) => {
-            if (index % 3 === 0) {
-                // Cada 3 jugadores se crea una nueva fila
-                row = document.createElement('div');
-                row.className = 'row';
-            }
-
-            // Crear el div que contendrá la información del jugador
-            const col = document.createElement('div');
-            col.className = 'col-md-4'; // Usamos clases de Bootstrap para 3 columnas
-
-            // Crear un div interno para el jugador, con estilos opcionales
-            const playerDiv = document.createElement('div');
-            playerDiv.style.textAlign = 'center'; // Alineación al centro
-
-            // Crear el elemento de imagen del jugador
-            const foto = document.createElement('img');
-            foto.src = player.strPlayerPhoto || 'default-player.png'; // Imagen por defecto si no hay foto
-            foto.alt = player.strPlayer;
-            foto.style.width = '100px'; // Ajusta el tamaño según tu diseño
-            foto.style.height = 'auto';
-
-            // Crear el elemento con el nombre del jugador
-            const nombre = document.createElement('h3');
-            nombre.textContent = player.strPlayer;
-
-            // Crear el elemento con la posición del jugador
-            const posicion = document.createElement('p');
-            posicion.textContent = `Posición: ${player.strPosition}`;
-
-            // Insertamos la imagen, el nombre y la posición en el contenedor del jugador
-            playerDiv.appendChild(foto);
-            playerDiv.appendChild(nombre);
-            playerDiv.appendChild(posicion);
-
-            // Insertamos el contenedor del jugador en la columna y la columna en la fila
-            col.appendChild(playerDiv);
-            row.appendChild(col);
-
-            // Cada 3 jugadores, se añade la fila completa al contenedor principal
-            if ((index + 1) % 3 === 0) {
-                vista.appendChild(row);
-            }
-        });
-    }
-
-    renderPlayersByTeam(players) {
-        // Render players filtered by team
         const vista = document.getElementById('vista');
         if (!vista) {
             console.error("No se encontró el elemento con id 'vista'");
@@ -388,16 +328,69 @@ class View {
             playerDiv.style.textAlign = 'center';
 
             const foto = document.createElement('img');
-            foto.src = player.strPlayerPhoto || 'default-player.png';
-            foto.alt = player.strPlayer;
+            foto.src = player.photo || 'img/default-player.png'; // Usar imagen por defecto si no hay foto
+            foto.alt = player.name || 'Jugador desconocido';
+            foto.onerror = () => { foto.src = 'img/default-player-image.png'; }; // Imagen por defecto si falla la carga
             foto.style.width = '100px';
             foto.style.height = 'auto';
 
             const nombre = document.createElement('h3');
-            nombre.textContent = player.strPlayer;
+            nombre.textContent = player.name || 'Jugador desconocido';
 
             const posicion = document.createElement('p');
-            posicion.textContent = `Posición: ${player.strPosition}`;
+            posicion.textContent = `Posición: ${player.position || 'N/A'}`;
+
+            playerDiv.appendChild(foto);
+            playerDiv.appendChild(nombre);
+            playerDiv.appendChild(posicion);
+
+            col.appendChild(playerDiv);
+            row.appendChild(col);
+
+            if ((index + 1) % 3 === 0) {
+                vista.appendChild(row);
+            }
+        });
+
+        if (players.length % 3 !== 0) {
+            vista.appendChild(row);
+        }
+    }
+
+    renderPlayersByTeam(players) {
+        const vista = document.getElementById('vista');
+        if (!vista) {
+            console.error("No se encontró el elemento con id 'vista'");
+            return;
+        }
+
+        vista.innerHTML = '';
+
+        let row;
+        players.forEach((player, index) => {
+            if (index % 3 === 0) {
+                row = document.createElement('div');
+                row.className = 'row';
+            }
+
+            const col = document.createElement('div');
+            col.className = 'col-md-4';
+
+            const playerDiv = document.createElement('div');
+            playerDiv.style.textAlign = 'center';
+
+            const foto = document.createElement('img');
+            foto.src = player.photo || 'img/default-player.png'; // Usar imagen por defecto si no hay foto
+            foto.alt = player.name || 'Jugador desconocido';
+            foto.onerror = () => { foto.src = 'img/default-player.png'; }; // Imagen por defecto si falla la carga
+            foto.style.width = '100px';
+            foto.style.height = 'auto';
+
+            const nombre = document.createElement('h3');
+            nombre.textContent = player.name || 'Jugador desconocido';
+
+            const posicion = document.createElement('p');
+            posicion.textContent = `Posición: ${player.position || 'N/A'}`;
 
             playerDiv.appendChild(foto);
             playerDiv.appendChild(nombre);
@@ -417,7 +410,6 @@ class View {
     }
 
     renderPlayerDetails(player) {
-        // Render details of a single player
         const vista = document.getElementById('vista');
         if (!vista) {
             console.error("No se encontró el elemento con id 'vista'");
@@ -430,19 +422,20 @@ class View {
         playerDiv.style.textAlign = 'center';
 
         const foto = document.createElement('img');
-        foto.src = player.strPlayerPhoto || 'default-player.png';
-        foto.alt = player.strPlayer;
+        foto.src = player.photo || 'img/default-player.png'; // Usar imagen por defecto si no hay foto
+        foto.alt = player.name || 'Jugador desconocido';
+        foto.onerror = () => { foto.src = 'img/default-player.png'; }; // Imagen por defecto si falla la carga
         foto.style.width = '150px';
         foto.style.height = 'auto';
 
         const nombre = document.createElement('h2');
-        nombre.textContent = player.strPlayer;
+        nombre.textContent = player.name || 'Jugador desconocido';
 
         const posicion = document.createElement('p');
-        posicion.textContent = `Posición: ${player.strPosition}`;
+        posicion.textContent = `Posición: ${player.position || 'N/A'}`;
 
         const equipo = document.createElement('p');
-        equipo.textContent = `Equipo: ${player.strTeam}`;
+        equipo.textContent = `Equipo: ${player.team || 'N/A'}`;
 
         playerDiv.appendChild(foto);
         playerDiv.appendChild(nombre);

@@ -79,6 +79,7 @@ export class Model {
             nombre,
             posicion,
             nacimiento,
+            null, // Nacionalidad (puedes agregar un campo si es necesario)
             equipo
         );
 
@@ -182,10 +183,12 @@ export class Model {
     /**
      * Busca jugadores por nombre.
      * @param {string} nombre - Nombre del jugador.
-     * @returns {Jugador} Jugador que coincide con el nombre.
+     * @returns {Array} Lista de jugadores que coinciden con el nombre.
      */
     buscarJugadorPorNombre(nombre) {
-        return jugadores.find(jugador => jugador.name.includes(nombre));
+        return jugadores.filter(jugador =>
+            jugador.name.toLowerCase().startsWith(nombre.toLowerCase())
+        );
     }
 
     /**
@@ -223,13 +226,7 @@ export class Model {
      * @returns {Array} Lista de jugadores.
      */
     obtenerDatosJugadores() {
-        let jugadoresCompactos = [];
-        let index = 0;
-        while (localStorage.getItem(`jugadores_${index}`)) {
-            jugadoresCompactos.push(...JSON.parse(localStorage.getItem(`jugadores_${index}`)));
-            index++;
-        }
-        return jugadoresCompactos;
+        return JSON.parse(localStorage.getItem('jugadores')) || [];
     }
 
     /**
@@ -238,18 +235,37 @@ export class Model {
      * @param {Object} nuevosDatos - Nuevos datos del jugador.
      */
     actualizarJugador(jugadorId, nuevosDatos) {
-        const jugadoresCompactos = this.obtenerDatosJugadores();
-        const jugadorIndex = jugadoresCompactos.findIndex(j => j.id === jugadorId);
+        const jugadores = this.obtenerDatosJugadores();
+        const jugadorIndex = jugadores.findIndex(j => j.id === jugadorId);
         if (jugadorIndex === -1) throw new Error("Jugador no encontrado.");
 
         // Actualizar los datos del jugador
-        jugadoresCompactos[jugadorIndex] = { ...jugadoresCompactos[jugadorIndex], ...nuevosDatos };
+        jugadores[jugadorIndex] = { ...jugadores[jugadorIndex], ...nuevosDatos };
 
-        // Guardar los datos actualizados en fragmentos
-        const fragmentSize = 100;
-        for (let i = 0; i < jugadoresCompactos.length; i += fragmentSize) {
-            localStorage.setItem(`jugadores_${i / fragmentSize}`, JSON.stringify(jugadoresCompactos.slice(i, i + fragmentSize)));
+        // Guardar los datos actualizados
+        localStorage.setItem('jugadores', JSON.stringify(jugadores));
+        console.log(`Jugador con ID ${jugadorId} actualizado correctamente.`);
+    }
+
+    /**
+     * Método para eliminar un jugador.
+     * @param {number} jugadorId - ID del jugador a eliminar.
+     * @throws {Error} Si el jugador no existe.
+     */
+    eliminarJugador(jugadorId) {
+        const jugadores = this.obtenerDatosJugadores();
+        const jugadorIndex = jugadores.findIndex(j => j.id === parseInt(jugadorId));
+        if (jugadorIndex === -1) {
+            throw new Error("Jugador no encontrado.");
         }
+
+        // Eliminar el jugador del array
+        jugadores.splice(jugadorIndex, 1);
+
+        // Guardar el estado actualizado en localStorage
+        localStorage.setItem('jugadores', JSON.stringify(jugadores));
+
+        console.log(`Jugador con ID ${jugadorId} eliminado correctamente.`);
     }
 
     /**
