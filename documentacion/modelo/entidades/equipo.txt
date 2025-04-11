@@ -2,6 +2,18 @@ Clase: Equipo
 Descripción: La clase `Equipo` representa un equipo de fútbol con sus detalles esenciales. 
 Se utiliza para modelar la información básica de un equipo, como su nombre, abreviatura, escudo, sitio web, año de fundación, colores del club, estadio, competencias en las que participa y la liga a la que pertenece.
 
+Atributos:
+1. `id` (Número): Identificador único del equipo.
+2. `name` (Cadena de texto): Nombre del equipo.
+3. `tla` (Cadena de texto): Abreviatura del equipo.
+4. `crest` (Cadena de texto): URL del escudo del equipo.
+5. `website` (Cadena de texto): Sitio web oficial del equipo.
+6. `founded` (Número): Año de fundación del equipo.
+7. `clubColors` (Cadena de texto): Colores representativos del club.
+8. `venue` (Cadena de texto): Nombre del estadio del equipo.
+9. `runningCompetitions` (Array): Lista de competencias en las que participa el equipo.
+10. `ligaId` (Número): Identificador de la liga a la que pertenece el equipo.
+
 Métodos:
 
 1. Nombre: `getId`

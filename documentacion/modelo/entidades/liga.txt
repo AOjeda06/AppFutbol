@@ -2,6 +2,14 @@ Clase: Liga
 Descripción: La clase `Liga` representa una liga de fútbol con sus detalles esenciales. 
 Se utiliza para modelar información básica de una liga, como su nombre, código, tipo, emblema y detalles de la temporada actual.
 
+Atributos:
+1. `id` (Número): Identificador único de la liga.
+2. `name` (Cadena de texto): Nombre de la liga.
+3. `code` (Cadena de texto): Código de la liga.
+4. `type` (Cadena de texto): Tipo de la liga (e.g., LEAGUE, CUP).
+5. `emblem` (Cadena de texto): URL del emblema de la liga.
+6. `season` (Objeto): Detalles de la temporada actual de la liga.
+
 Métodos:
 
 1. Nombre: `getId`

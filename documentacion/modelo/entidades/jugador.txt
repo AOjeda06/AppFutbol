@@ -2,6 +2,14 @@ Clase: Jugador
 Descripción: La clase `Jugador` representa un jugador de fútbol con sus detalles esenciales. 
 Se utiliza para modelar la información básica de un jugador, como su nombre, posición, fecha de nacimiento, nacionalidad y el equipo al que pertenece.
 
+Atributos:
+1. `id` (Número): Identificador único del jugador.
+2. `name` (Cadena de texto): Nombre del jugador.
+3. `position` (Cadena de texto): Posición del jugador en el campo.
+4. `dateOfBirth` (Cadena de texto): Fecha de nacimiento del jugador en formato ISO.
+5. `nationality` (Cadena de texto): Nacionalidad del jugador.
+6. `equipoId` (Número): Identificador del equipo al que pertenece el jugador.
+
 Métodos:
 
 1. Nombre: `getId`
