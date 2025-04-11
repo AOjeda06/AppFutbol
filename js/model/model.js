@@ -117,7 +117,7 @@ export class Model {
             founded,
             clubColors,
             venue,
-            ligaId
+            ligaId // Asegurarse de pasar ligaId correctamente
         );
 
         // Fetch the league object from localStorage using ligaId
