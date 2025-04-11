@@ -120,6 +120,22 @@ export class Model {
             ligaId
         );
 
+        // Fetch the league object from localStorage using ligaId
+        const ligasGuardadas = JSON.parse(localStorage.getItem('ligas')) || [];
+        const liga = ligasGuardadas.find(l => l.id === ligaId);
+        if (!liga) {
+            throw new Error("Liga no encontrada en localStorage.");
+        }
+
+        // Populate the runningCompetitions attribute with league details
+        equipo.runningCompetitions = [{
+            id: liga.id,
+            name: liga.name,
+            code: liga.code,
+            type: liga.type,
+            emblem: liga.emblem
+        }];
+
         // Ensure the equipos array is initialized
         if (!equipos) equipos = [];
 
