@@ -167,7 +167,7 @@ export class Model {
      * @returns {Array} Lista de equipos que coinciden con el nombre.
      */
     buscarEquipoPorNombre(nombre) {
-        return equipos.filter(equipo => equipo.name.includes(nombre));
+        return equipos.filter(equipo => equipo.name.toLowerCase().startsWith(nombre.toLowerCase()));
     }
 
     /**

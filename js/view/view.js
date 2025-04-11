@@ -211,6 +211,28 @@ class View {
             foto.style.width = '100px'; // Ajusta el tamaño según tu diseño
             foto.style.height = 'auto';
 
+            // Añadir evento para mostrar información en un dialog
+            foto.addEventListener('click', () => {
+                const dialog = document.createElement('dialog');
+                dialog.innerHTML = `
+                    <h2>${team.name || 'Equipo desconocido'}</h2>
+                    <p><strong>Abreviatura (TLA):</strong> ${team.tla || 'N/A'}</p>
+                    <p><strong>Fundación:</strong> ${team.founded || 'N/A'}</p>
+                    <p><strong>Colores del Club:</strong> ${team.clubColors || 'N/A'}</p>
+                    <p><strong>Estadio:</strong> ${team.venue || 'N/A'}</p>
+                    <p><strong>Sitio Web:</strong> <a href="${team.website}" target="_blank">${team.website || 'N/A'}</a></p>
+                    <button id="closeDialog">Cerrar</button>
+                `;
+                document.body.appendChild(dialog);
+                dialog.showModal();
+
+                // Cerrar el dialog
+                dialog.querySelector('#closeDialog').addEventListener('click', () => {
+                    dialog.close();
+                    dialog.remove();
+                });
+            });
+
             // Crear el elemento con el nombre del equipo
             const nombre = document.createElement('h3');
             nombre.textContent = team.name || 'Equipo desconocido';

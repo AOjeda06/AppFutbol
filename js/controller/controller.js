@@ -186,16 +186,16 @@ export class Controller {
     }
 
     buscarEquipo() {
-        const equipoId = document.getElementById("equipo-id").value;
-        if (equipoId) {
-            const equipo = this.model.buscarEquipo(equipoId);
-            if (equipo) {
-                alert(`Equipo encontrado: ${equipo.nombre}, Ciudad: ${equipo.ciudad}, Estadio: ${equipo.estadio}`);
+        const equipoNombre = document.getElementById("equipo-nombre").value;
+        if (equipoNombre) {
+            const equipos = this.model.buscarEquipoPorNombre(equipoNombre);
+            if (equipos.length > 0) {
+                this.view.renderTeams(equipos); // Renderiza todos los equipos encontrados
             } else {
-                alert("Equipo no encontrado");
+                alert("No se encontraron equipos con ese nombre");
             }
         } else {
-            alert("Por favor, complete todos los campos");
+            alert("Por favor, complete el campo de búsqueda");
         }
     }
 
