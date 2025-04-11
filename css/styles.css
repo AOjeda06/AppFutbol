@@ -1,4 +1,3 @@
-
 /* Formulario estilizado con animaciones */
 form {
     max-width: 500px;
@@ -7,7 +6,7 @@ form {
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 1s ease-in-out;
+    animation: none; /* Eliminamos la animación */
 }
 
 form h2 {
@@ -71,35 +70,9 @@ form .error {
     font-size: 0.9rem;
     margin-top: -15px;
     margin-bottom: 15px;
-    animation: shake 0.3s ease-in-out;
+    animation: none; /* Eliminamos la animación */
 }
 
-/* Animaciones */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(-5px);
-    }
-    50% {
-        transform: translateX(5px);
-    }
-    75% {
-        transform: translateX(-5px);
-    }
-}
 * {
     margin: 0;
     padding: 0;
@@ -218,7 +191,7 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     max-width: 400px;
     width: 100%;
-    animation: slideIn 0.4s ease-out;
+    animation: none; /* Eliminamos la animación */
 }
 
 .dialog h3 {
@@ -264,16 +237,4 @@ h1 {
 
 .dialog-buttons .cancel:hover {
     background-color: #d4d4d4;
-}
-
-/* Animación para el diálogo */
-@keyframes slideIn {
-    from {
-        transform: translateY(-20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
 }
