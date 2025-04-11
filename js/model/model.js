@@ -118,8 +118,17 @@ equipo
             venue,
             ligaId
         );
+
+        // Ensure the equipos array is initialized
+        if (!equipos) equipos = [];
+
+        // Add the team to the array
         equipos.push(equipo);
-        this.guardarEstado();
+
+        // Save the updated state to localStorage
+        localStorage.setItem('equipos', JSON.stringify(equipos));
+
+        console.log("Equipo añadido y guardado en localStorage:", equipo);
         return equipo;
     }
 
