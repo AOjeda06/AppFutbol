@@ -52,10 +52,12 @@ export class Controller {
 
     mostrarFormularioJugador() {
         this.view.createPlayerForm();
-        const submitButton = document.getElementById("addPlayer"); // Updated selector
+        const submitButton = document.getElementById("addPlayer");
         submitButton.textContent = "Guardar Jugador";
-        submitButton.addEventListener("click", () => this.agregarJugador());
-        document.getElementById("jugador-form").appendChild(submitButton);
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault(); // Prevent default form submission
+            this.agregarJugador();
+        });
     }
 
     mostrarFormularioEquipo() {
@@ -70,10 +72,12 @@ export class Controller {
 
     mostrarFormularioAsociacion() {
         this.view.createAssociatorForm();
-        const submitButton = document.getElementById("addAssociator"); // Updated selector
+        const submitButton = document.getElementById("addAssociator");
         submitButton.textContent = "Asignar Jugador";
-        submitButton.addEventListener("click", () => this.asociarJugadorEquipo());
-        document.getElementById("asociador-form").appendChild(submitButton);
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault(); // Prevent default form submission
+            this.asociarJugadorEquipo();
+        });
     }
 
     mostrarFormularioSeleccionLiga() {
