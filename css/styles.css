@@ -188,3 +188,92 @@ h1 {
 #vista {
     padding: 20px;
 }
+
+/* Estilos para el diálogo modal */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.dialog-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dialog {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    animation: slideIn 0.4s ease-out;
+}
+
+.dialog h3 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.dialog p {
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #555;
+}
+
+.dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.dialog-buttons button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dialog-buttons .confirm {
+    background-color: #007bff;
+    color: white;
+}
+
+.dialog-buttons .confirm:hover {
+    background-color: #0056b3;
+}
+
+.dialog-buttons .cancel {
+    background-color: #e6e6e6;
+    color: #333;
+}
+
+.dialog-buttons .cancel:hover {
+    background-color: #d4d4d4;
+}
+
+/* Animación para el diálogo */
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

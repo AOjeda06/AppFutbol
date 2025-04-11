@@ -61,11 +61,11 @@ class View {
     <br>
     <label for="liga">Liga:</label>
     <select id="liga" required>
-        <option value="1">Premier League</option>
-        <option value="2">La Liga</option>
-        <option value="3">Serie A</option>
-        <option value="4">Bundesliga</option>
-        <option value="5">Ligue 1</option>
+        <option value="2021">Premier League</option>
+        <option value="2015">La Liga</option>
+        <option value="2019">Serie A</option>
+        <option value="2002">Bundesliga</option>
+        <option value="2015">Ligue 1</option>
     </select>
     <br>
     <button type="submit" id="addTeam">Guardar Equipo</button> 
@@ -214,6 +214,7 @@ class View {
             // Añadir evento para mostrar información en un dialog
             foto.addEventListener('click', () => {
                 const dialog = document.createElement('dialog');
+                dialog.className = 'dialog';
                 dialog.innerHTML = `
                     <h2>${team.name || 'Equipo desconocido'}</h2>
                     <p><strong>Abreviatura (TLA):</strong> ${team.tla || 'N/A'}</p>
