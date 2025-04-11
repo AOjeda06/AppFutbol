@@ -113,11 +113,16 @@ export class Controller {
 
     agregarEquipo() {
         const nombre = document.getElementById("nombre").value;
-        const ciudad = document.getElementById("ciudad").value;
-        const estadio = document.getElementById("estadio").value;
+        const tla = document.getElementById("tla").value;
+        const crest = document.getElementById("crest").value;
+        const website = document.getElementById("website").value;
+        const founded = document.getElementById("founded").value;
+        const clubColors = document.getElementById("clubColors").value;
+        const venue = document.getElementById("venue").value;
+        const ligaId = parseInt(document.getElementById("liga").value);
 
-        if (nombre && ciudad && estadio) {
-            this.model.agregarEquipo(nombre, ciudad, estadio);
+        if (nombre && tla && crest && website && founded && clubColors && venue && ligaId) {
+            this.model.agregarEquipo(nombre, tla, crest, website, founded, clubColors, venue, ligaId);
             alert("Equipo agregado correctamente");
         } else {
             alert("Por favor, complete todos los campos");
