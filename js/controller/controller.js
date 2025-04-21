@@ -22,6 +22,7 @@ export class Controller {
             const btnBuscarJugador = document.getElementById("btnBuscarJugador");
             const btnBuscarEquipo = document.getElementById("btnBuscarEquipo");
             const btnMostrarEquipos = document.getElementById("btnMostrarEquipos"); // Botón en el menú principal
+            const btnFiltrarJugadoresEquipo = document.getElementById("btnFiltrarJugadoresEquipo");
 
             if (btnAgregarJugador) {
                 btnAgregarJugador.addEventListener("click", () => this.mostrarFormularioJugador());
@@ -46,6 +47,9 @@ export class Controller {
             }
             if (btnMostrarEquipos) {
                 btnMostrarEquipos.addEventListener("click", () => this.mostrarFormularioSeleccionLiga());
+            }
+            if (btnFiltrarJugadoresEquipo) {
+                btnFiltrarJugadoresEquipo.addEventListener("click", () => this.mostrarFormularioFiltrarJugadoresPorEquipo());
             }
         });
     }
@@ -225,6 +229,26 @@ export class Controller {
             }
         } else {
             alert("Por favor, complete el campo de búsqueda");
+        }
+    }
+
+    mostrarFormularioFiltrarJugadoresPorEquipo() {
+        this.view.createFilterPlayersByTeamForm();
+        const filterButton = document.getElementById("filterPlayers");
+        filterButton.addEventListener("click", () => this.filtrarJugadoresPorEquipo());
+    }
+
+    filtrarJugadoresPorEquipo() {
+        const equipoId = document.getElementById("equipo-id").value;
+        if (equipoId) {
+            const jugadores = this.model.filtrarJugadoresPorEquipo(equipoId);
+            if (jugadores.length > 0) {
+                this.view.renderPlayers(jugadores); // Render players in the same way as buscarJugador
+            } else {
+                alert("No se encontraron jugadores para este equipo.");
+            }
+        } else {
+            alert("Por favor, ingrese un ID de equipo válido.");
         }
     }
 }
