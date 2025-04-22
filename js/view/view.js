@@ -110,11 +110,18 @@ class View {
         this.view.innerHTML = `<div id="asociador-form">
     <form>
     <h2>Asociar Jugador a Equipo</h2>
-    <label for="jugador">Jugador:</label>
-    <input type="number" id="jugador-id" required>
+    <label for="liga">Liga:</label>
+    <select id="liga" required>
+        <!-- Options will be dynamically populated -->
+    </select>
     <br>
     <label for="equipo">Equipo:</label>
-    <input type="number" id="equipo" required>
+    <select id="equipo" required>
+        <!-- Options will be dynamically populated -->
+    </select>
+    <br>
+    <label for="jugador-id">ID del Jugador:</label>
+    <input type="number" id="jugador-id" required>
     <br>
     <button type="submit" id="addAssociator">Asignar Jugador</button>
     </form>

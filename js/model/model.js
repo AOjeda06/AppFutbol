@@ -228,19 +228,22 @@ export class Model {
         const nuevoEquipo = equipos.find(e => e.id === parseInt(equipoId));
         if (!nuevoEquipo) throw new Error("Equipo no encontrado.");
 
-        if (jugador.equipo) {
-            const equipoAnterior = equipos.find(e => e.id === parseInt(jugador.equipo));
-            if (equipoAnterior) {
+        // Remove player from the previous team if assigned
+        if (jugador.equipoId) {
+            const equipoAnterior = equipos.find(e => e.id === jugador.equipoId);
+            if (equipoAnterior && equipoAnterior.jugadores) {
                 equipoAnterior.jugadores = equipoAnterior.jugadores.filter(j => j.id !== jugador.id);
             }
         }
 
-        jugador.equipo = equipoId;
-
+        // Assign player to the new team
+        jugador.equipoId = equipoId;
         if (!nuevoEquipo.jugadores) nuevoEquipo.jugadores = [];
         nuevoEquipo.jugadores.push(jugador);
 
-        this.guardarEstado();
+        // Save updated state to localStorage
+        localStorage.setItem('jugadores', JSON.stringify(jugadores));
+        localStorage.setItem('equipos', JSON.stringify(equipos));
     }
 
     /**

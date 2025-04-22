@@ -76,6 +76,33 @@ export class Controller {
 
     mostrarFormularioAsociacion() {
         this.view.createAssociatorForm();
+        const ligaDropdown = document.getElementById("liga");
+        const equiposDropdown = document.getElementById("equipo");
+
+        // Populate leagues dropdown
+        const ligas = JSON.parse(localStorage.getItem("ligas")) || [];
+        ligas.forEach(liga => {
+            const option = document.createElement("option");
+            option.value = liga.id;
+            option.textContent = liga.name;
+            ligaDropdown.appendChild(option);
+        });
+
+        // Update teams dropdown when a league is selected
+        ligaDropdown.addEventListener("change", () => {
+            const selectedLigaId = parseInt(ligaDropdown.value);
+            const equipos = JSON.parse(localStorage.getItem("equipos")) || [];
+            const equiposDeLiga = equipos.filter(equipo => equipo.ligaId === selectedLigaId);
+
+            equiposDropdown.innerHTML = ""; // Clear existing options
+            equiposDeLiga.forEach(equipo => {
+                const option = document.createElement("option");
+                option.value = equipo.id;
+                option.textContent = equipo.name;
+                equiposDropdown.appendChild(option);
+            });
+        });
+
         const submitButton = document.getElementById("addAssociator");
         submitButton.textContent = "Asignar Jugador";
         submitButton.addEventListener("click", (event) => {
@@ -138,10 +165,11 @@ export class Controller {
     }
 
     asociarJugadorEquipo() {
-        const jugadorId = document.getElementById("jugador-id").value;
-        const equipoId = document.getElementById("equipo").value;
+        const ligaId = parseInt(document.getElementById("liga").value);
+        const equipoId = parseInt(document.getElementById("equipo").value);
+        const jugadorId = parseInt(document.getElementById("jugador-id").value);
 
-        if (jugadorId && equipoId) {
+        if (ligaId && equipoId && jugadorId) {
             try {
                 this.model.asignarJugadorAEquipo(jugadorId, equipoId);
                 alert("Jugador asignado al equipo correctamente");
