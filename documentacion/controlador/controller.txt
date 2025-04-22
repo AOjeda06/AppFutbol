@@ -7,7 +7,7 @@ Nombre: `constructor`
 Descripción: Este es el método que se ejecuta cuando se crea una instancia de la clase Controller. 
 Inicializa las instancias del modelo (Model) y la vista (View), configurando los eventos de la interfaz 
 de usuario (por ejemplo, los botones) para que el controlador pueda manejar las interacciones del usuario. 
-También se encarga de cargar los datos del modelo al iniciarse la aplicación.
+También se encarga de cargar los datos del modelo al iniciarse la aplicación. 
 
 Nombre: `mostrarFormularioJugador`
 Descripción: Muestra el formulario que permite ingresar los datos de un nuevo jugador. 
