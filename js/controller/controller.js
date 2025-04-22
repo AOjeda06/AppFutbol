@@ -109,10 +109,10 @@ export class Controller {
         const nombre = document.getElementById("nombre").value;
         const posicion = document.getElementById("posicion").value;
         const nacimiento = document.getElementById("nacimiento").value;
-        const equipo = document.getElementById("equipo").value;
+        const equipoId = parseInt(document.getElementById("equipo").value);
 
-        if (nombre && posicion && nacimiento && equipo) {
-            this.model.agregarJugador(nombre, posicion, nacimiento, equipo);
+        if (nombre && posicion && nacimiento && equipoId) {
+            this.model.agregarJugador(nombre, posicion, nacimiento, equipoId);
             alert("Jugador agregado correctamente");
         } else {
             alert("Por favor, complete todos los campos");

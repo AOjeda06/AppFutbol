@@ -26,12 +26,45 @@ class View {
     <label for="nacimiento">Fecha de Nacimiento:</label>
     <input type="date" id="nacimiento" required>
     <br>
+    <label for="liga">Liga:</label>
+    <select id="liga" required>
+        <!-- Options will be dynamically populated -->
+    </select>
+    <br>
     <label for="equipo">Equipo:</label>
-    <input type="text" id="equipo" required>
+    <select id="equipo" required>
+        <!-- Options will be dynamically populated -->
+    </select>
     <br>
     <button type="submit" id="addPlayer">Agregar Jugador</button>
     </form>
     </div>`;
+
+        // Populate leagues dropdown
+        const ligaDropdown = document.getElementById("liga");
+        const ligas = JSON.parse(localStorage.getItem("ligas")) || [];
+        ligas.forEach(liga => {
+            const option = document.createElement("option");
+            option.value = liga.id;
+            option.textContent = liga.name;
+            ligaDropdown.appendChild(option);
+        });
+
+        // Update teams dropdown when a league is selected
+        ligaDropdown.addEventListener("change", () => {
+            const selectedLigaId = parseInt(ligaDropdown.value);
+            const equipos = JSON.parse(localStorage.getItem("equipos")) || [];
+            const equiposDeLiga = equipos.filter(equipo => equipo.ligaId === selectedLigaId);
+
+            const equipoDropdown = document.getElementById("equipo");
+            equipoDropdown.innerHTML = ""; // Clear existing options
+            equiposDeLiga.forEach(equipo => {
+                const option = document.createElement("option");
+                option.value = equipo.id;
+                option.textContent = equipo.name;
+                equipoDropdown.appendChild(option);
+            });
+        });
     }
 
     createTeamForm() {
