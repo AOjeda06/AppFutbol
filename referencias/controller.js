@@ -58,7 +58,7 @@ const Controller = {
         event.preventDefault();
         const playerData = View.getPlayerFormData();
         Model.agregarJugador(playerData.nombre, playerData.posicion, playerData.nacimiento, playerData.equipo);
-        View.renderPlayers(Model.obtenerJugadores());
+        View.renderPlayers(Model.obtenerJugadores(), Model.obtenerEquipos()); // Pasar equipos
     },
 
     handleChangePlayerTeam: function (playerId, newTeamId) {
@@ -78,7 +78,7 @@ const Controller = {
 
     handleShowPlayersByTeam: function (teamId) {
         const players = Model.obtenerJugadores().filter(player => player.equipoId === teamId);
-        View.renderPlayersByTeam(players);
+        View.renderPlayersByTeam(players, Model.obtenerEquipos()); // Pasar equipos
     },
 
     handleSearchPlayerByName: function (playerName) {
@@ -88,5 +88,16 @@ const Controller = {
         } else {
             alert("Jugador no encontrado.");
         }
+    },
+
+    handleShowLeagues: function () {
+        const ligas = Model.obtenerDatosLigas();
+        console.log("Ligas disponibles:", ligas);
+        // Aquí puedes agregar lógica para renderizar las ligas si es necesario
+    },
+
+    handleFilterTeamsByCompetition: function (competitionId) {
+        const teams = Model.obtenerEquiposPorCompetencia(competitionId);
+        View.renderTeams(teams);
     }
 };

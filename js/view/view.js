@@ -148,6 +148,18 @@ class View {
     </div>`;
     }
 
+    createFilterPlayersByTeamForm() {
+        const vista = document.getElementById("vista");
+        vista.innerHTML = `
+            <form id="filterPlayersForm">
+                <label for="equipo-id">ID del Equipo:</label>
+                <input type="number" id="equipo-id" required>
+                <button type="button" id="filterPlayers">Filtrar</button>
+            </form>
+            <div id="filteredPlayers"></div>
+        `;
+    }
+
     getPlayerFormData() {
 
         let player = [];
@@ -307,7 +319,7 @@ class View {
         }
     }
 
-    renderPlayers(players) {
+    renderPlayers(players, equipos) {
         const vista = document.getElementById('vista');
         if (!vista) {
             console.error("No se encontró el elemento con id 'vista'");
@@ -335,6 +347,35 @@ class View {
             foto.onerror = () => { foto.src = 'img/default-player-image.png'; }; // Imagen por defecto si falla la carga
             foto.style.width = '100px';
             foto.style.height = 'auto';
+
+            foto.addEventListener('click', () => {
+                const dialog = document.createElement('dialog');
+                dialog.className = 'dialog';
+
+                // Fetch team name from localStorage using the team ID
+                const equipos = JSON.parse(localStorage.getItem('equipos')) || [];
+                const equipo = equipos.find(e => e.id === player.equipoId);
+                const equipoNombre = equipo ? equipo.name : 'Equipo desconocido';
+
+                dialog.innerHTML = `
+                    <h2>${player.name || 'Jugador desconocido'}</h2>
+                    <p><strong>ID del Jugador:</strong> ${player.id || 'N/A'}</p>
+                    <p><strong>Posición:</strong> ${player.position || 'N/A'}</p>
+                    <p><strong>Fecha de Nacimiento:</strong> ${player.dateOfBirth || 'N/A'}</p>
+                    <p><strong>Nacionalidad:</strong> ${player.nationality || 'N/A'}</p>
+                    <p><strong>Equipo:</strong> ${equipoNombre}</p>
+                    <button id="closeDialog">Cerrar</button>
+                `;
+
+                document.body.appendChild(dialog);
+                dialog.showModal();
+
+                // Cerrar el dialog
+                dialog.querySelector('#closeDialog').addEventListener('click', () => {
+                    dialog.close();
+                    dialog.remove();
+                });
+            });
 
             const nombre = document.createElement('h3');
             nombre.textContent = player.name || 'Jugador desconocido';
@@ -409,6 +450,13 @@ class View {
         if (players.length % 3 !== 0) {
             vista.appendChild(row);
         }
+    }
+
+    renderFilteredPlayers(players) {
+        const container = document.getElementById("filteredPlayers");
+        container.innerHTML = players.length
+            ? players.map(player => `<p>${player.name} - ${player.position}</p>`).join("")
+            : "<p>No se encontraron jugadores para este equipo.</p>";
     }
 
     renderPlayerDetails(player) {

@@ -9,7 +9,7 @@ let equipoIdCounter = 0;
 
 // Arrays para almacenar los objetos.
 let jugadores = [];
-let equipos = [];
+export let equipos = []; // Export equipos array for global access
 let ligas = []; // Array para almacenar las ligas.
 
 /**
@@ -30,6 +30,17 @@ export class Model {
             console.log("Datos de jugadores cargados desde localStorage.");
         } else {
             console.log("No se encontraron datos de jugadores en localStorage.");
+        }
+
+        // Load competitions into localStorage if not present
+        if (!localStorage.getItem('competitions')) {
+            const competitions = [
+                { id: 1, name: "Champions League" },
+                { id: 2, name: "Europa League" },
+                { id: 3, name: "Premier League" }
+            ];
+            localStorage.setItem('competitions', JSON.stringify(competitions));
+            console.log("Competencias iniciales cargadas en localStorage.");
         }
     }
 
@@ -93,6 +104,15 @@ export class Model {
      */
     obtenerJugadores() {
         return jugadores;
+    }
+
+    /**
+     * Filtra los jugadores por el ID del equipo.
+     * @param {number} equipoId - ID del equipo.
+     * @returns {Array} Lista de jugadores que pertenecen al equipo.
+     */
+    filtrarJugadoresPorEquipo(equipoId) {
+        return jugadores.filter(jugador => jugador.equipoId === parseInt(equipoId));
     }
 
     /**
@@ -298,7 +318,7 @@ export class Model {
      * Obtiene todos los datos de ligas desde localStorage.
      * @returns {Array} Lista de ligas.
      */
-    obtenerDatosLigas() {
+    static obtenerDatosLigas() {
         return JSON.parse(localStorage.getItem('ligas')) || [];
     }
 
@@ -308,7 +328,7 @@ export class Model {
      * @param {Object} nuevosDatos - Nuevos datos de la liga.
      */
     actualizarLiga(ligaId, nuevosDatos) {
-        const ligas = this.obtenerDatosLigas();
+        const ligas = Model.obtenerDatosLigas();
         const ligaIndex = ligas.findIndex(l => l.id === ligaId);
         if (ligaIndex === -1) throw new Error("Liga no encontrada.");
 
