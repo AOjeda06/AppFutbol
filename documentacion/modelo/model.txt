@@ -27,7 +27,13 @@ Métodos:
    Parámetros de entrada: Ninguno.
    Retorno: Array de jugadores.
 
-5. Nombre: `agregarEquipo`
+5. Nombre: `filtrarJugadoresPorEquipo`
+   Descripción: Filtra los jugadores que pertenecen a un equipo específico.
+   Parámetros de entrada:
+      - `equipoId` (number): ID del equipo.
+   Retorno: Array de jugadores del equipo.
+
+6. Nombre: `agregarEquipo`
    Descripción: Agrega un nuevo equipo al modelo y lo guarda en localStorage.
    Parámetros de entrada: 
       - `nombre` (string): Nombre del equipo.
@@ -40,85 +46,93 @@ Métodos:
       - `ligaId` (number): ID de la liga.
    Retorno: Objeto `Equipo` creado.
 
-6. Nombre: `obtenerEquipos`
+7. Nombre: `obtenerEquipos`
    Descripción: Obtiene todos los equipos almacenados en el modelo.
    Parámetros de entrada: Ninguno.
    Retorno: Array de equipos.
 
-7. Nombre: `obtenerEquiposPorLiga`
+8. Nombre: `obtenerEquiposPorLiga`
    Descripción: Obtiene los equipos que pertenecen a una liga específica.
    Parámetros de entrada: 
       - `leagueId` (number): ID de la liga.
    Retorno: Array de equipos de la liga.
 
-8. Nombre: `obtenerJugadoresPorEquipo`
+9. Nombre: `obtenerJugadoresPorEquipo`
    Descripción: Obtiene los jugadores que pertenecen a un equipo específico.
    Parámetros de entrada: 
       - `teamId` (number): ID del equipo.
    Retorno: Array de jugadores del equipo.
 
-9. Nombre: `buscarEquipoPorNombre`
-   Descripción: Busca equipos por nombre.
-   Parámetros de entrada: 
-      - `nombre` (string): Nombre del equipo.
-   Retorno: Array de equipos que coinciden con el nombre.
+10. Nombre: `buscarEquipoPorNombre`
+    Descripción: Busca equipos por nombre.
+    Parámetros de entrada: 
+       - `nombre` (string): Nombre del equipo.
+    Retorno: Array de equipos que coinciden con el nombre.
 
-10. Nombre: `buscarJugadorPorNombre`
+11. Nombre: `buscarJugadorPorNombre`
     Descripción: Busca jugadores por nombre.
     Parámetros de entrada: 
        - `nombre` (string): Nombre del jugador.
-    Retorno: Objeto `Jugador` que coincide con el nombre.
+    Retorno: Array de jugadores que coinciden con el nombre.
 
-11. Nombre: `asignarJugadorAEquipo`
+12. Nombre: `asignarJugadorAEquipo`
     Descripción: Asigna un jugador a un equipo, actualizando los datos en el modelo y en localStorage.
     Parámetros de entrada: 
        - `jugadorId` (number): ID del jugador.
        - `equipoId` (number): ID del equipo.
     Retorno: Ninguno.
 
-12. Nombre: `obtenerDatosJugadores`
+13. Nombre: `obtenerDatosJugadores`
     Descripción: Obtiene todos los datos de jugadores desde localStorage.
     Parámetros de entrada: Ninguno.
     Retorno: Array de jugadores.
 
-13. Nombre: `actualizarJugador`
+14. Nombre: `actualizarJugador`
     Descripción: Actualiza los datos de un jugador en localStorage.
     Parámetros de entrada: 
        - `jugadorId` (number): ID del jugador a actualizar.
        - `nuevosDatos` (object): Nuevos datos del jugador.
     Retorno: Ninguno.
 
-14. Nombre: `obtenerDatosEquipos`
+15. Nombre: `eliminarJugador`
+    Descripción: Elimina un jugador del modelo y actualiza localStorage.
+    Parámetros de entrada:
+       - `jugadorId` (number): ID del jugador a eliminar.
+    Retorno: Ninguno.
+
+16. Nombre: `obtenerDatosEquipos`
     Descripción: Obtiene todos los datos de equipos desde localStorage.
     Parámetros de entrada: Ninguno.
     Retorno: Array de equipos.
 
-15. Nombre: `actualizarEquipo`
+17. Nombre: `actualizarEquipo`
     Descripción: Actualiza los datos de un equipo en localStorage.
     Parámetros de entrada: 
        - `equipoId` (number): ID del equipo a actualizar.
        - `nuevosDatos` (object): Nuevos datos del equipo.
     Retorno: Ninguno.
 
-16. Nombre: `obtenerDatosLigas`
+18. Nombre: `obtenerDatosLigas`
     Descripción: Obtiene todos los datos de ligas desde localStorage.
     Parámetros de entrada: Ninguno.
     Retorno: Array de ligas.
 
-17. Nombre: `actualizarLiga`
+19. Nombre: `actualizarLiga`
     Descripción: Actualiza los datos de una liga en localStorage.
     Parámetros de entrada: 
        - `ligaId` (number): ID de la liga a actualizar.
        - `nuevosDatos` (object): Nuevos datos de la liga.
     Retorno: Ninguno.
 
-18. Nombre: `cargarDatosIniciales`
+20. Nombre: `cargarDatosIniciales`
     Descripción: Carga los datos iniciales en el modelo desde un objeto proporcionado.
     Parámetros de entrada: 
        - `datos` (object): Objeto que contiene los datos iniciales.
+          - `competition` (object): Objeto que representa la liga.
+          - `teams` (array): Lista de equipos de la liga.
     Retorno: Ninguno.
 
-19. Nombre: `eliminarEquipo`
+21. Nombre: `eliminarEquipo`
     Descripción: Elimina un equipo del modelo y actualiza localStorage.
     Parámetros de entrada: 
        - `equipoId` (number): ID del equipo a eliminar.
