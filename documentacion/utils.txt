@@ -1,0 +1,10 @@
+Archivo: utils.js
+Descripción: Este archivo contiene utilidades generales para la aplicación, como la carga de datos desde archivos JSON.
+
+Funciones:
+
+1. Nombre: `cargarDatosDesdeJSON`
+   Descripción: Carga datos desde un archivo JSON especificado por su ruta.
+   Parámetros de entrada:
+      - `rutaArchivo` (string): Ruta del archivo JSON a cargar.
+   Retorno: Una promesa que resuelve con los datos cargados (objeto) o `null` en caso de error.
