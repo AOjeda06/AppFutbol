@@ -1,0 +1,98 @@
+La clase `View` es responsable de manejar la interfaz de usuario (UI) de la aplicación. Se encarga de renderizar formularios, listas y detalles de jugadores y equipos en el DOM. Sirve como puente entre el controlador y la vista.
+
+---
+
+### Métodos:
+
+1. **createPlayerForm()**
+   - **Descripción**: Renderiza un formulario para agregar un nuevo jugador.
+   - **Parámetros**: Ninguno.
+   - **Relación**: Controlador (Controller) utiliza este método para mostrar el formulario.
+
+2. **createTeamForm()**
+   - **Descripción**: Renderiza un formulario para agregar un nuevo equipo.
+   - **Parámetros**: Ninguno.
+   - **Relación**: Controlador (Controller) utiliza este método para mostrar el formulario.
+
+3. **createAssociatorForm()**
+   - **Descripción**: Renderiza un formulario para asociar un jugador a un equipo.
+   - **Parámetros**: Ninguno.
+   - **Relación**: Controlador (Controller) utiliza este método para mostrar el formulario.
+
+4. **createDeletePlayerForm()**
+   - **Descripción**: Renderiza un formulario para eliminar un jugador.
+   - **Parámetros**: Ninguno.
+   - **Relación**: Controlador (Controller) utiliza este método para mostrar el formulario.
+
+5. **createDeleteTeamForm()**
+   - **Descripción**: Renderiza un formulario para eliminar un equipo.
+   - **Parámetros**: Ninguno.
+   - **Relación**: Controlador (Controller) utiliza este método para mostrar el formulario.
+
+6. **createSearchTeamForm()**
+   - **Descripción**: Renderiza un formulario para buscar equipos por nombre.
+   - **Parámetros**: Ninguno.
+   - **Relación**: Controlador (Controller) utiliza este método para mostrar el formulario.
+
+7. **createSearchPlayerForm()**
+   - **Descripción**: Renderiza un formulario para buscar jugadores por nombre.
+   - **Parámetros**: Ninguno.
+   - **Relación**: Controlador (Controller) utiliza este método para mostrar el formulario.
+
+8. **createLeagueSelectionForm()**
+   - **Descripción**: Renderiza un formulario para seleccionar una liga y mostrar sus equipos.
+   - **Parámetros**: Ninguno.
+   - **Relación**: Controlador (Controller) utiliza este método para mostrar el formulario.
+
+9. **getPlayerFormData()**
+   - **Descripción**: Obtiene los datos ingresados en el formulario de jugador.
+   - **Parámetros**: Ninguno.
+   - **Relación**: Controlador (Controller) utiliza este método para obtener los datos del formulario.
+
+10. **getTeamFormData()**
+    - **Descripción**: Obtiene los datos ingresados en el formulario de equipo.
+    - **Parámetros**: Ninguno.
+    - **Relación**: Controlador (Controller) utiliza este método para obtener los datos del formulario.
+
+11. **renderTeams(teams)**
+    - **Descripción**: Renderiza una lista de equipos en el DOM.
+    - **Parámetros**:
+      - `teams` (Array): Lista de equipos a renderizar.
+    - **Relación**: Controlador (Controller) utiliza este método para mostrar equipos.
+
+12. **renderTeamsByLeague(teams)**
+    - **Descripción**: Renderiza una lista de equipos filtrados por liga.
+    - **Parámetros**:
+      - `teams` (Array): Lista de equipos a renderizar.
+    - **Relación**: Controlador (Controller) utiliza este método para mostrar equipos por liga.
+
+13. **renderPlayers(players)**
+    - **Descripción**: Renderiza una lista de jugadores en el DOM.
+    - **Parámetros**:
+      - `players` (Array): Lista de jugadores a renderizar.
+    - **Relación**: Controlador (Controller) utiliza este método para mostrar jugadores.
+
+14. **renderPlayersByTeam(players)**
+    - **Descripción**: Renderiza una lista de jugadores filtrados por equipo.
+    - **Parámetros**:
+      - `players` (Array): Lista de jugadores a renderizar.
+    - **Relación**: Controlador (Controller) utiliza este método para mostrar jugadores por equipo.
+
+15. **renderPlayerDetails(player)**
+    - **Descripción**: Renderiza los detalles de un jugador específico.
+    - **Parámetros**:
+      - `player` (Object): Objeto que contiene los detalles del jugador.
+    - **Relación**: Controlador (Controller) utiliza este método para mostrar detalles de un jugador.
+
+16. **renderTeamDetails(team)**
+    - **Descripción**: Renderiza los detalles de un equipo específico.
+    - **Parámetros**:
+      - `team` (Object): Objeto que contiene los detalles del equipo.
+    - **Relación**: Controlador (Controller) utiliza este método para mostrar detalles de un equipo.
+
+---
+
+## Relación General:
+- **Modelo (Model)**: No interactúa directamente con el modelo.
+- **Controlador (Controller)**: El controlador utiliza los métodos de esta clase para actualizar la interfaz de usuario en función de las acciones del usuario y los datos del modelo.
+
