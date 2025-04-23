@@ -271,7 +271,7 @@ export class Controller {
     }
 
     filtrarJugadoresPorEquipo() {
-        const equipoId = document.getElementById("equipo-id").value;
+        const equipoId = parseInt(document.getElementById("equipo").value);
         if (equipoId) {
             const jugadores = this.model.filtrarJugadoresPorEquipo(equipoId);
             if (jugadores.length > 0) {
@@ -280,7 +280,7 @@ export class Controller {
                 alert("No se encontraron jugadores para este equipo.");
             }
         } else {
-            alert("Por favor, ingrese un ID de equipo válido.");
+            alert("Por favor, seleccione un equipo válido.");
         }
     }
 

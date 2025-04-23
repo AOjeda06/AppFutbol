@@ -189,16 +189,49 @@ class View {
     }
 
     createFilterPlayersByTeamForm() {
-        const vista = document.getElementById("vista");
-        vista.innerHTML = `
-        <form id="filterPlayersForm">
+        this.view.innerHTML = `
+    <form id="filterPlayersForm">
         <h2>Filtrar Jugadores por Equipo</h2>
-                <label for="equipo-id">ID del Equipo:</label>
-                <input type="number" id="equipo-id" required>
-                <button type="button" id="filterPlayers">Filtrar</button>
-            </form>
-            <div id="filteredPlayers"></div>
-        `;
+        <label for="liga">Liga:</label>
+        <select id="liga" required>
+            <!-- Options will be dynamically populated -->
+        </select>
+        <br>
+        <label for="equipo">Equipo:</label>
+        <select id="equipo" required>
+            <!-- Options will be dynamically populated -->
+        </select>
+        <br>
+        <button type="button" id="filterPlayers">Filtrar</button>
+    </form>
+    <div id="filteredPlayers"></div>
+    `;
+
+        // Populate leagues dropdown
+        const ligaDropdown = document.getElementById("liga");
+        const ligas = JSON.parse(localStorage.getItem("ligas")) || [];
+        ligas.forEach(liga => {
+            const option = document.createElement("option");
+            option.value = liga.id;
+            option.textContent = liga.name;
+            ligaDropdown.appendChild(option);
+        });
+
+        // Update teams dropdown when a league is selected
+        ligaDropdown.addEventListener("change", () => {
+            const selectedLigaId = parseInt(ligaDropdown.value);
+            const equipos = JSON.parse(localStorage.getItem("equipos")) || [];
+            const equiposDeLiga = equipos.filter(equipo => equipo.ligaId === selectedLigaId);
+
+            const equipoDropdown = document.getElementById("equipo");
+            equipoDropdown.innerHTML = ""; // Clear existing options
+            equiposDeLiga.forEach(equipo => {
+                const option = document.createElement("option");
+                option.value = equipo.id;
+                option.textContent = equipo.name;
+                equipoDropdown.appendChild(option);
+            });
+        });
     }
 
     createFilterPlayersByPositionForm() {
