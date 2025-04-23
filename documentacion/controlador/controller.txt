@@ -1,0 +1,92 @@
+Clase: Controlador
+Descripción: La clase `Controller` actúa como intermediario entre el modelo y la vista, siguiendo el patrón MVC. Su función principal es manejar la lógica de la aplicación y las interacciones del usuario. Cuando el usuario realiza una acción en la vista, el controlador procesa la solicitud y, en función de la operación, solicita al modelo que modifique o consulte los datos, como agregar jugadores, equipos o asociar jugadores a equipos. Además, el controlador actualiza la vista con los resultados o cambios, asegurando que la interfaz refleje correctamente el estado actual de la aplicación. También se encarga de gestionar la comunicación entre los distintos componentes, facilitando la interacción entre los datos y lo que ve el usuario.
+
+Métodos:
+
+Nombre: `constructor`
+Descripción: Este es el método que se ejecuta cuando se crea una instancia de la clase Controller. 
+Inicializa las instancias del modelo (Model) y la vista (View), configurando los eventos de la interfaz 
+de usuario (por ejemplo, los botones) para que el controlador pueda manejar las interacciones del usuario. 
+También se encarga de cargar los datos del modelo al iniciarse la aplicación. 
+
+Nombre: `mostrarFormularioJugador`
+Descripción: Muestra el formulario que permite ingresar los datos de un nuevo jugador. 
+Al hacer clic en el botón de "Guardar Jugador", se valida la información y el controlador la pasa al modelo para que se agregue el jugador a los datos. 
+Este método es responsable de crear la interfaz para la entrada de datos y gestionar la acción de guardar.
+
+Nombre: `mostrarFormularioEquipo`
+Descripción: Muestra el formulario para ingresar los datos de un nuevo equipo. Al hacer clic en el botón de "Guardar Equipo", 
+el controlador toma los datos ingresados, los valida y los pasa al modelo para que el equipo se agregue a la lista de equipos. 
+Este método gestiona tanto la visualización del formulario como la interacción con el modelo.
+
+Nombre: `mostrarFormularioAsociacion`
+Descripción: Este método muestra el formulario que permite asociar un jugador a un equipo. 
+Los usuarios seleccionan una liga y un equipo, y el controlador utiliza esa información para enviar una solicitud al modelo para asociar el jugador 
+al equipo correspondiente. Es esencial para gestionar la relación entre jugadores y equipos en el sistema.
+
+Nombre: `mostrarFormularioSeleccionLiga``
+Descripción: Este método muestra un formulario donde el usuario puede seleccionar una liga. Después de que el usuario elige una liga, el controlador 
+obtiene los equipos asociados a esa liga desde el modelo y los presenta en la vista, permitiendo al usuario ver qué equipos pertenecen a la liga seleccionada.
+
+Nombre: `mostrarEquiposPorLiga`
+Descripción: Una vez que el usuario selecciona una liga, este método obtiene los equipos que pertenecen a esa liga. 
+Utiliza el modelo para filtrar los equipos por la liga seleccionada y luego renderiza esos equipos en la interfaz de usuario. 
+Es esencial para mostrar los equipos de manera organizada por liga.
+
+Nombre: `agregarJugador`
+Descripción: Este método toma los datos del formulario de jugador, los valida y los envía al modelo para que el jugador sea agregado a la base de datos. 
+Tras la inserción del jugador en el modelo, se muestra una notificación al usuario para confirmar que el jugador se ha agregado correctamente.
+
+Nombre: `agregarEquipo`
+Descripción: El controlador gestiona la creación de un nuevo equipo a partir de los datos del formulario. 
+Después de que el usuario ingresa los detalles del equipo, el controlador valida la información y la pasa al modelo para agregar el equipo a la lista de equipos. 
+Una vez que el equipo se guarda, se notifica al usuario sobre el éxito de la operación.
+
+Nombre: `asociarJugadorEquipo`
+Descripción: Este método gestiona la asignación de un jugador a un equipo. 
+El controlador toma los datos del formulario (liga, equipo y jugador), y luego utiliza el modelo para realizar la asociación. 
+Es fundamental para actualizar las relaciones entre jugadores y equipos en el sistema.
+
+Nombre: `mostrarFormularioEliminarJugador`
+Descripción: Muestra el formulario que permite al usuario eliminar un jugador del sistema. 
+Al enviar el formulario, el controlador obtiene el ID del jugador a eliminar y lo pasa al modelo para que se elimine de la base de datos. 
+Este método se encarga de presentar la interfaz para la eliminación y realizar la acción cuando el usuario confirma.
+
+Nombre: `mostrarFormularioEliminarEquipo`
+Descripción: Similar al método de eliminación de jugadores, este método muestra el formulario para eliminar un equipo. 
+El controlador obtiene el ID del equipo a eliminar del formulario, lo pasa al modelo y elimina el equipo de la base de datos. 
+Al finalizar, se notifica al usuario sobre el éxito de la operación.
+
+Nombre: `eliminarJugador`
+Descripción: Este método elimina un jugador del modelo basándose en el ID proporcionado en el formulario de eliminación.
+El controlador se asegura de que los datos se actualicen correctamente en el modelo y luego se persistan en el almacenamiento local. 
+Además, el controlador muestra un mensaje de confirmación una vez que el jugador es eliminado.
+
+Nombre: `eliminarEquipo`
+Descripción: Al igual que el método de eliminación de jugadores, este método elimina un equipo utilizando el ID proporcionado en el formulario. 
+El controlador se encarga de eliminar el equipo del modelo y luego actualiza el almacenamiento local para reflejar la eliminación.
+
+Nombre: mostrarFormularioBuscarJugador
+Descripción: Muestra el formulario de búsqueda de jugadores, donde el usuario puede ingresar el nombre de un jugador para buscarlo. 
+El controlador se encarga de tomar la entrada del usuario y pasarla al modelo para realizar la búsqueda. 
+Los resultados de la búsqueda luego se muestran en la vista.
+
+Nombre: `buscarJugador`
+Descripción: Este método realiza una búsqueda de jugadores por nombre, tomando el nombre ingresado por el usuario y consultando el modelo para encontrar los jugadores que coincidan. Los resultados se muestran en la vista, permitiendo al usuario ver los jugadores encontrados.
+
+Nombre: `mostrarFormularioBuscarEquipo`
+Descripción: Muestra el formulario de búsqueda de equipos, permitiendo al usuario buscar equipos por su nombre. 
+Al igual que con los jugadores, el controlador maneja la entrada del usuario y la pasa al modelo para obtener los resultados. 
+Los equipos encontrados luego se muestran en la vista.
+
+Nombre: `buscarEquipo`
+Descripción: Realiza la búsqueda de equipos utilizando el nombre ingresado por el usuario. 
+El controlador toma la entrada del usuario, pasa la solicitud al modelo y luego muestra los equipos encontrados en la vista. Este método permite al usuario encontrar equipos específicos basados en su nombre.
+
+Nombre: `mostrarFormularioFiltrarJugadoresPorEquipo`
+Descripción: Muestra un formulario que permite al usuario filtrar jugadores por equipo. 
+El controlador gestiona la entrada del usuario, pasa la selección del equipo al modelo y muestra los jugadores que pertenecen a ese equipo en la vista.
+
+Nombre: `filtrarJugadoresPorEquipo`
+Descripción: Este método toma el ID del equipo seleccionado y filtra los jugadores que pertenecen a ese equipo. 
+Los jugadores filtrados se obtienen del modelo y luego se muestran en la vista, permitiendo al usuario ver los jugadores de un equipo específico.

@@ -77,20 +77,19 @@ export class Model {
      * @param {string} nombre - Nombre del jugador.
      * @param {string} posicion - Posición del jugador.
      * @param {string} nacimiento - Fecha de nacimiento del jugador.
-     * @param {number} equipo - ID del equipo al que pertenece el jugador.
+     * @param {number} equipoId - ID del equipo al que pertenece el jugador.
      * @returns {Jugador} El jugador creado.
      */
-    agregarJugador(nombre, posicion, nacimiento, equipo) {
+    agregarJugador(nombre, posicion, nacimiento, equipoId) {
         const jugador = new Jugador(
             ++jugadorIdCounter,
             nombre,
             posicion,
             nacimiento,
             null, // Nacionalidad (puedes agregar un campo si es necesario)
-            equipo
+            equipoId
         );
 
-        // Asegurarse de que el array jugadores está inicializado
         if (!jugadores) jugadores = [];
         jugadores.push(jugador);
         localStorage.setItem('jugadores', JSON.stringify(jugadores));
@@ -229,19 +228,22 @@ export class Model {
         const nuevoEquipo = equipos.find(e => e.id === parseInt(equipoId));
         if (!nuevoEquipo) throw new Error("Equipo no encontrado.");
 
-        if (jugador.equipo) {
-            const equipoAnterior = equipos.find(e => e.id === parseInt(jugador.equipo));
-            if (equipoAnterior) {
+        // Remove player from the previous team if assigned
+        if (jugador.equipoId) {
+            const equipoAnterior = equipos.find(e => e.id === jugador.equipoId);
+            if (equipoAnterior && equipoAnterior.jugadores) {
                 equipoAnterior.jugadores = equipoAnterior.jugadores.filter(j => j.id !== jugador.id);
             }
         }
 
-        jugador.equipo = equipoId;
-
+        // Assign player to the new team
+        jugador.equipoId = equipoId;
         if (!nuevoEquipo.jugadores) nuevoEquipo.jugadores = [];
         nuevoEquipo.jugadores.push(jugador);
 
-        this.guardarEstado();
+        // Save updated state to localStorage
+        localStorage.setItem('jugadores', JSON.stringify(jugadores));
+        localStorage.setItem('equipos', JSON.stringify(equipos));
     }
 
     /**
