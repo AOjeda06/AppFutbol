@@ -120,8 +120,7 @@ export class Model {
      * @returns {Array} Lista de jugadores con la posición especificada.
      */
     obtenerJugadoresPorPosicion(posicion) {
-        const jugadoresGuardados = JSON.parse(localStorage.getItem('jugadores')) || [];
-        return jugadoresGuardados.filter(jugador => jugador.position === posicion);
+        return jugadores.filter(jugador => jugador.position === posicion);
     }
 
     /**

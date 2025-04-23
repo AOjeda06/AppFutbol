@@ -23,6 +23,7 @@ export class Controller {
             const btnBuscarEquipo = document.getElementById("btnBuscarEquipo");
             const btnMostrarEquipos = document.getElementById("btnMostrarEquipos"); // Botón en el menú principal
             const btnFiltrarJugadoresEquipo = document.getElementById("btnFiltrarJugadoresEquipo");
+            const btnFiltrarJugadoresPosicion = document.getElementById("btnFiltrarJugadoresPosicion");
 
             if (btnAgregarJugador) {
                 btnAgregarJugador.addEventListener("click", () => this.mostrarFormularioJugador());
@@ -50,6 +51,9 @@ export class Controller {
             }
             if (btnFiltrarJugadoresEquipo) {
                 btnFiltrarJugadoresEquipo.addEventListener("click", () => this.mostrarFormularioFiltrarJugadoresPorEquipo());
+            }
+            if (btnFiltrarJugadoresPosicion) {
+                btnFiltrarJugadoresPosicion.addEventListener("click", () => this.mostrarFormularioFiltrarJugadoresPorPosicion());
             }
         });
     }
@@ -277,6 +281,34 @@ export class Controller {
             }
         } else {
             alert("Por favor, ingrese un ID de equipo válido.");
+        }
+    }
+
+    mostrarFormularioFiltrarJugadoresPorPosicion() {
+        this.view.createFilterPlayersByPositionForm();
+        const filterButton = document.getElementById("filterByPosition");
+        filterButton.addEventListener("click", () => this.filtrarJugadoresPorPosicion());
+    }
+
+    filtrarJugadoresPorPosicion() {
+        const posicion = document.getElementById("posicion").value;
+
+        const validPositions = [
+            "Goalkeeper", "Defence", "Midfield", "Offence", 
+            "Centre-Back", "Centre-Forward", "Right-Back", "Left-Back", 
+            "Attacking Midfield", "Central Midfield", "Right Winger", 
+            "Right Midfield", "Left Winger"
+        ];
+
+        if (validPositions.includes(posicion)) {
+            const jugadores = this.model.obtenerJugadoresPorPosicion(posicion);
+            if (jugadores.length > 0) {
+                this.view.renderPlayers(jugadores); // Render players in columns of 3
+            } else {
+                alert("No se encontraron jugadores para esta posición.");
+            }
+        } else {
+            alert("Por favor, seleccione una posición válida.");
         }
     }
 }

@@ -200,6 +200,32 @@ class View {
         `;
     }
 
+    createFilterPlayersByPositionForm() {
+        this.view.innerHTML = `<div id="filtrar-posicion-form">
+    <form>
+    <h2>Filtrar Jugadores por Posición</h2>
+    <label for="posicion">Posición:</label>
+    <select id="posicion" required>
+        <option value="Goalkeeper">Goalkeeper</option>
+        <option value="Defence">Defence</option>
+        <option value="Midfield">Midfield</option>
+        <option value="Offence">Offence</option>
+        <option value="Centre-Back">Centre-Back</option>
+        <option value="Centre-Forward">Centre-Forward</option>
+        <option value="Right-Back">Right-Back</option>
+        <option value="Left-Back">Left-Back</option>
+        <option value="Attacking Midfield">Attacking Midfield</option>
+        <option value="Central Midfield">Central Midfield</option>
+        <option value="Right Winger">Right Winger</option>
+        <option value="Right Midfield">Right Midfield</option>
+        <option value="Left Winger">Left Winger</option>
+    </select>
+    <br>
+    <button type="button" id="filterByPosition">Filtrar</button>
+    </form>
+    </div>`;
+    }
+
     getPlayerFormData() {
 
         let player = [];
