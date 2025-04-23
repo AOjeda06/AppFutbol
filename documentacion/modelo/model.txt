@@ -128,8 +128,8 @@ Métodos:
     Descripción: Carga los datos iniciales en el modelo desde un objeto proporcionado.
     Parámetros de entrada: 
        - `datos` (object): Objeto que contiene los datos iniciales.
-          - `competition` (object): Objeto que representa la liga.
-          - `teams` (array): Lista de equipos de la liga.
+       - `competition` (object): Objeto que representa la liga.
+       - `teams` (array): Lista de equipos de la liga.
     Retorno: Ninguno.
 
 21. Nombre: `eliminarEquipo`
