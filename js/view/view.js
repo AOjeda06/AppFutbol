@@ -191,7 +191,8 @@ class View {
     createFilterPlayersByTeamForm() {
         const vista = document.getElementById("vista");
         vista.innerHTML = `
-            <form id="filterPlayersForm">
+        <form id="filterPlayersForm">
+        <h2>Filtrar Jugadores por Equipo</h2>
                 <label for="equipo-id">ID del Equipo:</label>
                 <input type="number" id="equipo-id" required>
                 <button type="button" id="filterPlayers">Filtrar</button>
