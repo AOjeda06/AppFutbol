@@ -115,6 +115,16 @@ export class Model {
     }
 
     /**
+     * Obtiene los jugadores que tienen una posición específica.
+     * @param {string} posicion - Posición del jugador.
+     * @returns {Array} Lista de jugadores con la posición especificada.
+     */
+    obtenerJugadoresPorPosicion(posicion) {
+        const jugadoresGuardados = JSON.parse(localStorage.getItem('jugadores')) || [];
+        return jugadoresGuardados.filter(jugador => jugador.position === posicion);
+    }
+
+    /**
      * Agrega un nuevo equipo al modelo.
      * @param {string} nombre - Nombre del equipo.
      * @param {string} tla - Código TLA del equipo.
